@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UNLV C++ IDE</title>
+    <link rel="stylesheet" href="assets/styles.css">
+  </head>
+  <body>
+    <main>
+      <h1>UNLV C++ IDE</h1>
+      <pre><code>docker run -it --name unlv-cpp-ide \
+  -p 127.0.0.1:8080:8080 \
+  -v unlv_cpp_workspace:/home/coder/workspace \
+  seancnc/unlv-cpp-ide</code></pre>
+      <p>Open <code>http://127.0.0.1:8080</code>.</p>
+    </main>
+  </body>
+</html>
+

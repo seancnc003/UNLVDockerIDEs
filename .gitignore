@@ -1,0 +1,10 @@
+# Local and generated files
+.DS_Store
+*.log
+
+# Draft source documents kept locally, not published in the repo
+*.docx
+Dockerfile (old)
+
+# Reference papers should stay local unless redistribution is intentional
+literature/papers/*.pdf

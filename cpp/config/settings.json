@@ -1,0 +1,25 @@
+{
+  "code-runner.executorMap": {
+    "c": "cd $dir && gcc -std=c11 -Wall -g $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+    "cpp": "cd $dir && g++ -std=c++14 -Wall -g $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
+  },
+  "code-runner.runInTerminal": true,
+  "code-runner.saveFileBeforeRun": true,
+  "workbench.startupEditor": "none",
+  "workbench.colorTheme": "Default Dark Modern",
+  "workbench.tips.enabled": false,
+  "workbench.welcomePage.walkthroughs.openOnInstall": false,
+  "git.enabled": false,
+  "git.autorefresh": false,
+  "github.gitAuthentication": false,
+  "extensions.ignoreRecommendations": true,
+  "explorer.confirmDragAndDrop": false,
+  "clangd.arguments": [
+    "-j=1",
+    "--limit-results=50",
+    "--header-insertion=never",
+    "--clang-tidy=false"
+  ],
+  "clangd.checkUpdates": false
+}
+

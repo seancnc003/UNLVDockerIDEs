@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UNLV x86 Assembly IDE</title>
+    <link rel="stylesheet" href="assets/styles.css">
+  </head>
+  <body>
+    <main>
+      <h1>UNLV x86 Assembly IDE</h1>
+      <pre><code>docker run -it --name unlv-x86-ide \
+  --platform linux/amd64 \
+  -p 127.0.0.1:8081:8080 \
+  -v unlv_x86_workspace:/home/coder/workspace \
+  seancnc/unlv-x86-ide</code></pre>
+      <p>Open <code>http://127.0.0.1:8081</code>.</p>
+    </main>
+  </body>
+</html>
+
