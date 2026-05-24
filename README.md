@@ -14,7 +14,7 @@ The GitHub repository is the source of truth for Dockerfiles, configuration, doc
 ## Repository Layout
 
 ```text
-cpp/        C++ IDE Docker image, docs, settings, and examples
+cpp/        C++ IDE Docker image, docs, settings, and starter file
 x86/        x86 Assembly IDE Docker image, docs, settings, and examples
 docs/       GitHub Pages website
 literature/ Local reference materials, ignored by Git

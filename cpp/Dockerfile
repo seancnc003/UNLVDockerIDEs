@@ -24,8 +24,8 @@ RUN code-server --install-extension llvm-vs-code-extensions.vscode-clangd \
     && code-server --install-extension xaver.clang-format
 
 RUN mkdir -p /home/coder/workspace /home/coder/.local/share/code-server/User/
-COPY --chown=coder:coder examples/ /home/coder/workspace/
-COPY --chown=coder:coder config/settings.json /home/coder/.local/share/code-server/User/settings.json
+COPY --chown=coder:coder hello.cpp /home/coder/workspace/hello.cpp
+COPY --chown=coder:coder settings.json /home/coder/.local/share/code-server/User/settings.json
 
 VOLUME /home/coder/workspace
 
