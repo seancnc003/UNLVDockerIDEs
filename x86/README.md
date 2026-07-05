@@ -21,11 +21,10 @@ There is no Copilot, no chat, and no AI assistance of any kind — every AI feat
 ## Run It
 
 ```bash
-docker run -it --platform linux/amd64 --name unlv-x86-ide -p 127.0.0.1:8081:8080 \
-  -v "$HOME/UNLV/x86-workspace:/home/coder/workspace" seancnc/unlv-x86-ide
+docker run -it --platform linux/amd64 --name unlv-x86-ide -p 127.0.0.1:8081:8080 -v "$HOME/UNLV/x86-workspace:/home/coder/workspace" seancnc/unlv-x86-ide
 ```
 
-This uses the folder `~/UNLV/x86-workspace` on your own computer as the IDE's workspace — that's where all your files live. On Windows, run the command in PowerShell on one line with `-v "$HOME\UNLV\x86-workspace:/home/coder/workspace"`. On native Linux (not Docker Desktop), create the folder first with `mkdir -p ~/UNLV/x86-workspace`, otherwise Docker creates it owned by root; macOS and Windows handle ownership automatically.
+This uses the folder `~/UNLV/x86-workspace` on your own computer as the IDE's workspace — that's where all your files live. On Windows, run the command in PowerShell with `-v "$HOME\UNLV\x86-workspace:/home/coder/workspace"`. On native Linux (not Docker Desktop), create the folder first with `mkdir -p ~/UNLV/x86-workspace`, otherwise Docker creates it owned by root; macOS and Windows handle ownership automatically.
 
 Then open <http://127.0.0.1:8081>. Host port 8081 keeps it clear of the C++ IDE's 8080, so you can run both side by side. To start it again later:
 
@@ -56,8 +55,7 @@ Your files live in `~/UNLV/x86-workspace` on your own computer, so updating neve
 ```bash
 docker pull seancnc/unlv-x86-ide
 docker stop unlv-x86-ide && docker rm unlv-x86-ide
-docker run -it --platform linux/amd64 --name unlv-x86-ide -p 127.0.0.1:8081:8080 \
-  -v "$HOME/UNLV/x86-workspace:/home/coder/workspace" seancnc/unlv-x86-ide
+docker run -it --platform linux/amd64 --name unlv-x86-ide -p 127.0.0.1:8081:8080 -v "$HOME/UNLV/x86-workspace:/home/coder/workspace" seancnc/unlv-x86-ide
 ```
 
 ## Folder Contents

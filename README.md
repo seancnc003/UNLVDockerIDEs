@@ -24,18 +24,16 @@ Browser-based programming environments for UNLV computer science courses. Each i
 C++ IDE — then open <http://127.0.0.1:8080>:
 
 ```bash
-docker run -it --name unlv-cpp-ide -p 127.0.0.1:8080:8080 \
-  -v "$HOME/UNLV/cpp-workspace:/home/coder/workspace" seancnc/unlv-cpp-ide
+docker run -it --name unlv-cpp-ide -p 127.0.0.1:8080:8080 -v "$HOME/UNLV/cpp-workspace:/home/coder/workspace" seancnc/unlv-cpp-ide
 ```
 
 x86 Assembly IDE — then open <http://127.0.0.1:8081>:
 
 ```bash
-docker run -it --platform linux/amd64 --name unlv-x86-ide -p 127.0.0.1:8081:8080 \
-  -v "$HOME/UNLV/x86-workspace:/home/coder/workspace" seancnc/unlv-x86-ide
+docker run -it --platform linux/amd64 --name unlv-x86-ide -p 127.0.0.1:8081:8080 -v "$HOME/UNLV/x86-workspace:/home/coder/workspace" seancnc/unlv-x86-ide
 ```
 
-On Windows, run the same command in PowerShell on one line (no `\` continuations) with the path in Windows form: `-v "$HOME\UNLV\cpp-workspace:/home/coder/workspace"` (or `x86-workspace`).
+On Windows, run the same command in PowerShell with the path in Windows form: `-v "$HOME\UNLV\cpp-workspace:/home/coder/workspace"` (or `x86-workspace`).
 
 The two IDEs use different host ports (8080 and 8081), so you can run both at the same time. The x86 IDE always needs the `--platform linux/amd64` flag — see [`x86/README.md`](x86/README.md) for why.
 

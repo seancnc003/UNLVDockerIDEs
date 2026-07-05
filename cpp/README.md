@@ -16,11 +16,10 @@ There is no Copilot, no chat, and no AI assistance of any kind — every AI feat
 ## Run It
 
 ```bash
-docker run -it --name unlv-cpp-ide -p 127.0.0.1:8080:8080 \
-  -v "$HOME/UNLV/cpp-workspace:/home/coder/workspace" seancnc/unlv-cpp-ide
+docker run -it --name unlv-cpp-ide -p 127.0.0.1:8080:8080 -v "$HOME/UNLV/cpp-workspace:/home/coder/workspace" seancnc/unlv-cpp-ide
 ```
 
-This uses the folder `~/UNLV/cpp-workspace` on your own computer as the IDE's workspace — that's where all your files live. On Windows, run the command in PowerShell on one line with `-v "$HOME\UNLV\cpp-workspace:/home/coder/workspace"`. On native Linux (not Docker Desktop), create the folder first with `mkdir -p ~/UNLV/cpp-workspace`, otherwise Docker creates it owned by root; macOS and Windows handle ownership automatically.
+This uses the folder `~/UNLV/cpp-workspace` on your own computer as the IDE's workspace — that's where all your files live. On Windows, run the command in PowerShell with `-v "$HOME\UNLV\cpp-workspace:/home/coder/workspace"`. On native Linux (not Docker Desktop), create the folder first with `mkdir -p ~/UNLV/cpp-workspace`, otherwise Docker creates it owned by root; macOS and Windows handle ownership automatically.
 
 Then open <http://127.0.0.1:8080>. To start it again later (the container already exists):
 
@@ -51,8 +50,7 @@ Your files live in `~/UNLV/cpp-workspace` on your own computer, so updating neve
 ```bash
 docker pull seancnc/unlv-cpp-ide
 docker stop unlv-cpp-ide && docker rm unlv-cpp-ide
-docker run -it --name unlv-cpp-ide -p 127.0.0.1:8080:8080 \
-  -v "$HOME/UNLV/cpp-workspace:/home/coder/workspace" seancnc/unlv-cpp-ide
+docker run -it --name unlv-cpp-ide -p 127.0.0.1:8080:8080 -v "$HOME/UNLV/cpp-workspace:/home/coder/workspace" seancnc/unlv-cpp-ide
 ```
 
 ## Folder Contents
