@@ -10,7 +10,7 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
-    curl build-essential gdb cmake valgrind clang-format clangd sudo \
+    curl build-essential gdb cmake valgrind clang-format clangd sudo tini \
     && rm -rf /var/lib/apt/lists/*
 
 # install.sh detects the build platform's architecture, so this stays
@@ -46,5 +46,8 @@ COPY image/branding/ /usr/lib/code-server/src/browser/media/
 # image is run without -v.
 EXPOSE 8080
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+# tini runs as PID 1 to reap orphaned processes (code-server's node process
+# doesn't, so zombies would accumulate over long sessions) and forwards
+# SIGTERM so `docker stop` stays instant.
+ENTRYPOINT ["/usr/bin/tini", "--", "/usr/local/bin/entrypoint.sh"]
 CMD ["code-server", "--bind-addr", "0.0.0.0:8080", "--auth", "none", "--app-name", "UNLV C++ IDE", "--disable-telemetry", "--disable-update-check", "/home/coder/workspace"]

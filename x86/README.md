@@ -8,7 +8,7 @@ The coursework is x86-64 Linux assembly, so the container itself must be x86-64 
 
 **On Apple Silicon Macs** this still works: Docker Desktop translates the container's x86-64 instructions to ARM on the fly (emulation), so everything behaves the same, just a little slower. The `--platform linux/amd64` flag makes this explicit and silences Docker's platform warning — but if you forget it, everything still works; you'll just see a one-line warning.
 
-**One emulation limitation:** assembling, linking, and running programs all work on Apple Silicon, but `gdb` cannot debug under emulation (the emulator does not implement `ptrace`). For assignments that require running gdb/debugger scripts, use an Intel/AMD machine (Windows PC, Intel Mac, or a campus lab computer).
+**One emulation limitation:** assembling, linking, and running programs all work on Apple Silicon, but `gdb` cannot debug under emulation (the emulator does not implement `ptrace`). For assignments that require running gdb/debugger scripts, use an Intel/AMD machine (Windows PC, Intel Mac, or a campus lab computer). Be careful: on Apple Silicon a gdb script still *appears* to finish successfully — it exits without an error and writes its output file — but the file will contain only the labels with none of the actual values. If an assignment's deliverable is gdb output, do not trust a "successful" run on an Apple Silicon Mac; produce that file on a native x86-64 machine.
 
 ## What's Inside
 
@@ -27,6 +27,8 @@ docker run -it --platform linux/amd64 --name unlv-x86-ide -p 127.0.0.1:8218:8080
 ```
 
 This uses the folder `~/UNLV/x86-workspace` on your own computer as the IDE's workspace — that's where all your files live. On Windows, run the command in PowerShell with `-v "$HOME\UNLV\x86-workspace:/home/coder/workspace"`. On native Linux (not Docker Desktop), create the folder first with `mkdir -p ~/UNLV/x86-workspace`, otherwise Docker creates it owned by root; macOS and Windows handle ownership automatically.
+
+**Never drop the `-v` part of the command.** It is what keeps your files on your own computer — without it, everything you write lives only inside the container and is permanently deleted when the container is removed (which the update steps below do).
 
 Then open <http://127.0.0.1:8218> — the port matches the course number, CS 218, and keeps clear of the C++ IDE's 8135 so you can run both side by side. To start it again later:
 
@@ -48,7 +50,7 @@ You should see `Hello, x86!`.
 
 Closing the browser tab does **not** stop the IDE or lose any work — the container keeps running and using RAM until you stop it. When you're done, press `Ctrl+C` in the terminal you started it from (or close that terminal), click stop in Docker Desktop, or run `docker stop unlv-x86-ide`. After `docker start unlv-x86-ide`, reopening <http://127.0.0.1:8218> reconnects to everything exactly as you left it.
 
-The run command deliberately has no `--restart` flag, so the IDE never launches itself in the background. On a modest machine, consider also turning off Docker Desktop's "start at login" setting.
+The run command deliberately has no `--restart` flag, so the IDE never launches itself in the background. On a modest machine, consider also turning off Docker Desktop's "start at login" setting. If your machine has 8 GB of RAM or less, you can also cap how much the IDE may use by adding `--memory=2g --cpus=2` right after `docker run -it` — everything else in the command stays the same, and an accidental infinite loop in your program then can't slow down the rest of your computer.
 
 ## Updating
 

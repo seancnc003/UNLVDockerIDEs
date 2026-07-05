@@ -21,6 +21,8 @@ docker run -it --name unlv-cpp-ide -p 127.0.0.1:8135:8080 -v "$HOME/UNLV/cpp-wor
 
 This uses the folder `~/UNLV/cpp-workspace` on your own computer as the IDE's workspace — that's where all your files live. On Windows, run the command in PowerShell with `-v "$HOME\UNLV\cpp-workspace:/home/coder/workspace"`. On native Linux (not Docker Desktop), create the folder first with `mkdir -p ~/UNLV/cpp-workspace`, otherwise Docker creates it owned by root; macOS and Windows handle ownership automatically.
 
+**Never drop the `-v` part of the command.** It is what keeps your files on your own computer — without it, everything you write lives only inside the container and is permanently deleted when the container is removed (which the update steps below do).
+
 Then open <http://127.0.0.1:8135> — the port matches the course number, CS 135. To start it again later (the container already exists):
 
 ```bash
@@ -41,7 +43,7 @@ You should see `Hello, C++!`. Clicking the Run button on `hello.cpp` does the sa
 
 Closing the browser tab does **not** stop the IDE or lose any work — the container keeps running and using RAM until you stop it. When you're done, press `Ctrl+C` in the terminal you started it from (or close that terminal), click stop in Docker Desktop, or run `docker stop unlv-cpp-ide`. After `docker start unlv-cpp-ide`, reopening <http://127.0.0.1:8135> reconnects to everything exactly as you left it.
 
-The run command deliberately has no `--restart` flag, so the IDE never launches itself in the background. On a modest machine, consider also turning off Docker Desktop's "start at login" setting.
+The run command deliberately has no `--restart` flag, so the IDE never launches itself in the background. On a modest machine, consider also turning off Docker Desktop's "start at login" setting. If your machine has 8 GB of RAM or less, you can also cap how much the IDE may use by adding `--memory=2g --cpus=2` right after `docker run -it` — everything else in the command stays the same, and an accidental infinite loop in your program then can't slow down the rest of your computer.
 
 ## Updating
 
