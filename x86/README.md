@@ -6,7 +6,7 @@ VS Code in your browser with an x86-64 Linux assembly toolchain (NASM), packaged
 
 The coursework is x86-64 Linux assembly, so the container itself must be x86-64 — there is deliberately no ARM version, because your `.asm` files could not assemble or run inside one. That's why the run command always includes `--platform linux/amd64`.
 
-**On Apple Silicon Macs** this still works: Docker Desktop translates the container's x86-64 instructions to ARM on the fly (emulation), so everything behaves the same, just a little slower. Forgetting the `--platform linux/amd64` flag is the number one gotcha — always include it.
+**On Apple Silicon Macs** this still works: Docker Desktop translates the container's x86-64 instructions to ARM on the fly (emulation), so everything behaves the same, just a little slower. The `--platform linux/amd64` flag makes this explicit and silences Docker's platform warning — but if you forget it, everything still works; you'll just see a one-line warning.
 
 **One emulation limitation:** assembling, linking, and running programs all work on Apple Silicon, but `gdb` cannot debug under emulation (the emulator does not implement `ptrace`). For assignments that require running gdb/debugger scripts, use an Intel/AMD machine (Windows PC, Intel Mac, or a campus lab computer).
 
@@ -79,8 +79,10 @@ Build locally (from the repo root) — always amd64, never multi-arch:
 docker build --platform linux/amd64 -t seancnc/unlv-x86-ide x86/
 ```
 
-Publish (amd64 only):
+Publish (amd64 only — `--provenance=false --sbom=false` is required so the
+image is a plain manifest and flagless pulls on ARM hosts emulate instead of
+failing):
 
 ```bash
-docker buildx build --platform linux/amd64 --push -t seancnc/unlv-x86-ide x86/
+docker buildx build --platform linux/amd64 --provenance=false --sbom=false --push -t seancnc/unlv-x86-ide x86/
 ```

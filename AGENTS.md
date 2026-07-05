@@ -38,8 +38,11 @@ docker build --platform linux/amd64 -t seancnc/unlv-x86-ide x86/
 # C++ is multi-arch by design
 docker buildx build --platform linux/amd64,linux/arm64 --push -t seancnc/unlv-cpp-ide cpp/
 
-# x86 is amd64-only by design
-docker buildx build --platform linux/amd64 --push -t seancnc/unlv-x86-ide x86/
+# x86 is amd64-only by design. --provenance=false --sbom=false is REQUIRED:
+# it publishes a plain single-platform manifest, so a flagless `docker pull`
+# on ARM hosts emulates automatically instead of hard-failing with
+# "no matching manifest" (an OCI index without an arm64 entry does fail).
+docker buildx build --platform linux/amd64 --provenance=false --sbom=false --push -t seancnc/unlv-x86-ide:latest -t seancnc/unlv-x86-ide:2026.07 x86/
 ```
 
 **Never build/publish x86 multi-arch.** The coursework is x86-64 assembly; an arm64 variant would give students an ARM userland where NASM x86-64 sources cannot assemble or run. ARM hosts (Apple Silicon) run the amd64 image under Docker Desktop emulation via `--platform linux/amd64` — this is prescribed in the design doc.

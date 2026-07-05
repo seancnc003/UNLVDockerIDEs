@@ -35,7 +35,7 @@ docker run -it --platform linux/amd64 --name unlv-x86-ide -p 127.0.0.1:8218:8080
 
 On Windows, run the same command in PowerShell with the path in Windows form: `-v "$HOME\UNLV\cpp-workspace:/home/coder/workspace"` (or `x86-workspace`).
 
-Each IDE’s port is its course number — 8135 for the C++ IDE (CS 135), 8218 for the x86 IDE (CS 218) — so the two never conflict and you can run both at the same time. The x86 IDE always needs the `--platform linux/amd64` flag — see [`x86/README.md`](x86/README.md) for why.
+Each IDE’s port is its course number — 8135 for the C++ IDE (CS 135), 8218 for the x86 IDE (CS 218) — so the two never conflict and you can run both at the same time. The x86 IDE's command includes `--platform linux/amd64` (it is an x86-64 image by design — see [`x86/README.md`](x86/README.md)); omitting the flag still works on every machine, it just prints a platform warning.
 
 When you're done, stop the container — closing the browser tab does **not** stop it; it keeps running and using RAM. Press `Ctrl+C` in the terminal you started it from, use Docker Desktop's stop button, or run `docker stop unlv-cpp-ide` / `docker stop unlv-x86-ide`. Nothing auto-restarts: the commands above deliberately have no `--restart` flag.
 
