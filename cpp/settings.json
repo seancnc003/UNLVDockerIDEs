@@ -5,6 +5,23 @@
   },
   "code-runner.runInTerminal": true,
   "code-runner.saveFileBeforeRun": true,
+  "files.autoSave": "afterDelay",
+
+  "chat.disableAIFeatures": true,
+  "chat.agent.enabled": false,
+  "chat.agentsControl.enabled": "hidden",
+  "chat.titleBar.signIn.enabled": false,
+  "chat.extensionTools.enabled": false,
+  "chat.mcp.access": "none",
+  "editor.inlineSuggest.enabled": false,
+  "workbench.settings.showAISearchToggle": false,
+  "workbench.settings.enableNaturalLanguageSearch": false,
+
+  "extensions.autoUpdate": "off",
+  "extensions.autoCheckUpdates": false,
+  "extensions.ignoreRecommendations": true,
+  "workbench.enableExperiments": false,
+
   "workbench.startupEditor": "none",
   "workbench.colorTheme": "Default Dark Modern",
   "workbench.tips.enabled": false,
@@ -12,7 +29,6 @@
   "git.enabled": false,
   "git.autorefresh": false,
   "github.gitAuthentication": false,
-  "extensions.ignoreRecommendations": true,
   "explorer.confirmDragAndDrop": false,
   "clangd.arguments": [
     "-j=1",
@@ -22,4 +38,3 @@
   ],
   "clangd.checkUpdates": false
 }
-

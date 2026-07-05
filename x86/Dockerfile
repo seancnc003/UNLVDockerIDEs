@@ -1,10 +1,14 @@
 # ------------------------------------------------------------------------------
 # UNLV x86 Assembly IDE - Sandbox Edition
 # ------------------------------------------------------------------------------
+# This image is x86-64 (linux/amd64) only: the coursework targets x86-64 Linux
+# assembly, so the container userland must be x86-64. On Apple Silicon and
+# other ARM hosts, Docker Desktop runs it under emulation via --platform.
+#
+# Student files live on the host: bind-mount a local folder as the workspace.
+#
 # Usage:
-#   docker run -it --name unlv-x86-ide --platform linux/amd64 \
-#     -p 127.0.0.1:8081:8080 \
-#     -v unlv_x86_workspace:/home/coder/workspace seancnc/unlv-x86-ide
+#   docker run -it --platform linux/amd64 --name unlv-x86-ide -p 127.0.0.1:8081:8080 -v "$HOME/UNLV/x86-workspace:/home/coder/workspace" seancnc/unlv-x86-ide
 # ------------------------------------------------------------------------------
 FROM ubuntu:22.04
 
@@ -23,13 +27,18 @@ USER coder
 RUN code-server --install-extension formulahendry.code-runner
 
 RUN mkdir -p /home/coder/workspace /home/coder/.local/share/code-server/User/
-COPY --chown=coder:coder examples/ /home/coder/workspace/
-COPY --chown=coder:coder config/settings.json /home/coder/.local/share/code-server/User/settings.json
+COPY --chown=coder:coder settings.json /home/coder/.local/share/code-server/User/settings.json
 
-VOLUME /home/coder/workspace
+# Starter files can't be baked into the workspace itself: a bind-mounted host
+# folder would shadow them. The entrypoint seeds them on first run instead.
+COPY --chown=coder:coder hello.asm Makefile /opt/starter/
+COPY --chown=coder:coder entrypoint.sh /usr/local/bin/entrypoint.sh
+
+# No VOLUME instruction on purpose: students bind-mount a host folder (see
+# Usage above). A VOLUME here would silently create stray anonymous volumes
+# whenever the container is run without -v.
 
 EXPOSE 8080
-ENV PASSWORD=none
 
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["code-server", "--bind-addr", "0.0.0.0:8080", "--auth", "none", "--disable-telemetry", "--disable-update-check", "/home/coder/workspace"]
-

@@ -1,0 +1,29 @@
+{
+  "code-runner.executorMap": {
+    "asm": "cd $dir && nasm -f elf64 $fileName -o $fileNameWithoutExt.o && ld $fileNameWithoutExt.o -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
+  },
+  "code-runner.runInTerminal": true,
+  "code-runner.saveFileBeforeRun": true,
+  "files.autoSave": "afterDelay",
+  "workbench.startupEditor": "none",
+  "workbench.colorTheme": "Default Dark Modern",
+  "workbench.tips.enabled": false,
+  "workbench.welcomePage.walkthroughs.openOnInstall": false,
+  "workbench.enableExperiments": false,
+  "workbench.settings.enableNaturalLanguageSearch": false,
+  "chat.commandCenter.enabled": false,
+  "chat.experimental.offerSetup": false,
+  "chat.detectParticipant.enabled": false,
+  "inlineChat.lineEmptyHint": false,
+  "inlineChat.lineNaturalLanguageHint": false,
+  "terminal.integrated.initialHint": false,
+  "editor.inlineSuggest.enabled": false,
+  "extensions.autoUpdate": false,
+  "extensions.autoCheckUpdates": false,
+  "extensions.ignoreRecommendations": true,
+  "telemetry.telemetryLevel": "off",
+  "git.enabled": false,
+  "git.autorefresh": false,
+  "github.gitAuthentication": false,
+  "explorer.confirmDragAndDrop": false
+}

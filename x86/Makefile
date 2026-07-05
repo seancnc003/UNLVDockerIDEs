@@ -20,4 +20,3 @@ clean:
 	rm -f $(TARGET) $(OBJECT)
 
 .PHONY: all run clean
-
