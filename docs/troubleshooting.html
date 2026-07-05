@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Troubleshooting</title>
+    <link rel="stylesheet" href="assets/styles.css">
+  </head>
+  <body>
+    <main>
+      <h1>Troubleshooting</h1>
+      <h2>Port Already In Use</h2>
+      <p>Change the left side of the port mapping, for example <code>8082:8080</code>.</p>
+      <h2>Files Missing After Update</h2>
+      <p>Make sure the same named volume is used when recreating the container.</p>
+      <h2>Apple Silicon and x86</h2>
+      <p>Run the x86 image with <code>--platform linux/amd64</code>.</p>
+    </main>
+  </body>
+</html>
+
