@@ -21,12 +21,12 @@ There is no Copilot, no chat, and no AI assistance of any kind — every AI feat
 ## Run It
 
 ```bash
-docker run -it --platform linux/amd64 --name unlv-x86-ide -p 127.0.0.1:8081:8080 -v "$HOME/UNLV/x86-workspace:/home/coder/workspace" seancnc/unlv-x86-ide
+docker run -it --platform linux/amd64 --name unlv-x86-ide -p 127.0.0.1:8218:8080 -v "$HOME/UNLV/x86-workspace:/home/coder/workspace" seancnc/unlv-x86-ide
 ```
 
 This uses the folder `~/UNLV/x86-workspace` on your own computer as the IDE's workspace — that's where all your files live. On Windows, run the command in PowerShell with `-v "$HOME\UNLV\x86-workspace:/home/coder/workspace"`. On native Linux (not Docker Desktop), create the folder first with `mkdir -p ~/UNLV/x86-workspace`, otherwise Docker creates it owned by root; macOS and Windows handle ownership automatically.
 
-Then open <http://127.0.0.1:8081>. Host port 8081 keeps it clear of the C++ IDE's 8080, so you can run both side by side. To start it again later:
+Then open <http://127.0.0.1:8218> — the port matches the course number, CS 218, and keeps clear of the C++ IDE's 8135 so you can run both side by side. To start it again later:
 
 ```bash
 docker start unlv-x86-ide
@@ -44,7 +44,7 @@ You should see `Hello, x86!`.
 
 ## Stopping and Restarting
 
-Closing the browser tab does **not** stop the IDE or lose any work — the container keeps running and using RAM until you stop it. When you're done, press `Ctrl+C` in the terminal you started it from (or close that terminal), click stop in Docker Desktop, or run `docker stop unlv-x86-ide`. After `docker start unlv-x86-ide`, reopening <http://127.0.0.1:8081> reconnects to everything exactly as you left it.
+Closing the browser tab does **not** stop the IDE or lose any work — the container keeps running and using RAM until you stop it. When you're done, press `Ctrl+C` in the terminal you started it from (or close that terminal), click stop in Docker Desktop, or run `docker stop unlv-x86-ide`. After `docker start unlv-x86-ide`, reopening <http://127.0.0.1:8218> reconnects to everything exactly as you left it.
 
 The run command deliberately has no `--restart` flag, so the IDE never launches itself in the background. On a modest machine, consider also turning off Docker Desktop's "start at login" setting.
 
@@ -55,7 +55,7 @@ Your files live in `~/UNLV/x86-workspace` on your own computer, so updating neve
 ```bash
 docker pull seancnc/unlv-x86-ide
 docker stop unlv-x86-ide && docker rm unlv-x86-ide
-docker run -it --platform linux/amd64 --name unlv-x86-ide -p 127.0.0.1:8081:8080 -v "$HOME/UNLV/x86-workspace:/home/coder/workspace" seancnc/unlv-x86-ide
+docker run -it --platform linux/amd64 --name unlv-x86-ide -p 127.0.0.1:8218:8080 -v "$HOME/UNLV/x86-workspace:/home/coder/workspace" seancnc/unlv-x86-ide
 ```
 
 ## Folder Contents

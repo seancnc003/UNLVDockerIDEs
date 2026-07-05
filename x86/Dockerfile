@@ -8,7 +8,7 @@
 # Student files live on the host: bind-mount a local folder as the workspace.
 #
 # Usage:
-#   docker run -it --platform linux/amd64 --name unlv-x86-ide -p 127.0.0.1:8081:8080 -v "$HOME/UNLV/x86-workspace:/home/coder/workspace" seancnc/unlv-x86-ide
+#   docker run -it --platform linux/amd64 --name unlv-x86-ide -p 127.0.0.1:8218:8080 -v "$HOME/UNLV/x86-workspace:/home/coder/workspace" seancnc/unlv-x86-ide
 # ------------------------------------------------------------------------------
 FROM ubuntu:22.04
 

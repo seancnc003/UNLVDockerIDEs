@@ -21,21 +21,21 @@ Browser-based programming environments for UNLV computer science courses. Each i
 1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) and make sure it is running.
 2. Run the IDE you need.
 
-C++ IDE — then open <http://127.0.0.1:8080>:
+C++ IDE — then open <http://127.0.0.1:8135>:
 
 ```bash
-docker run -it --name unlv-cpp-ide -p 127.0.0.1:8080:8080 -v "$HOME/UNLV/cpp-workspace:/home/coder/workspace" seancnc/unlv-cpp-ide
+docker run -it --name unlv-cpp-ide -p 127.0.0.1:8135:8080 -v "$HOME/UNLV/cpp-workspace:/home/coder/workspace" seancnc/unlv-cpp-ide
 ```
 
-x86 Assembly IDE — then open <http://127.0.0.1:8081>:
+x86 Assembly IDE — then open <http://127.0.0.1:8218>:
 
 ```bash
-docker run -it --platform linux/amd64 --name unlv-x86-ide -p 127.0.0.1:8081:8080 -v "$HOME/UNLV/x86-workspace:/home/coder/workspace" seancnc/unlv-x86-ide
+docker run -it --platform linux/amd64 --name unlv-x86-ide -p 127.0.0.1:8218:8080 -v "$HOME/UNLV/x86-workspace:/home/coder/workspace" seancnc/unlv-x86-ide
 ```
 
 On Windows, run the same command in PowerShell with the path in Windows form: `-v "$HOME\UNLV\cpp-workspace:/home/coder/workspace"` (or `x86-workspace`).
 
-The two IDEs use different host ports (8080 and 8081), so you can run both at the same time. The x86 IDE always needs the `--platform linux/amd64` flag — see [`x86/README.md`](x86/README.md) for why.
+Each IDE’s port is its course number — 8135 for the C++ IDE (CS 135), 8218 for the x86 IDE (CS 218) — so the two never conflict and you can run both at the same time. The x86 IDE always needs the `--platform linux/amd64` flag — see [`x86/README.md`](x86/README.md) for why.
 
 When you're done, stop the container — closing the browser tab does **not** stop it; it keeps running and using RAM. Press `Ctrl+C` in the terminal you started it from, use Docker Desktop's stop button, or run `docker stop unlv-cpp-ide` / `docker stop unlv-x86-ide`. Nothing auto-restarts: the commands above deliberately have no `--restart` flag.
 

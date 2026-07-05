@@ -4,7 +4,7 @@ VS Code in your browser with a full C++ toolchain, packaged as the Docker image 
 
 ## What's Inside
 
-- Ubuntu 22.04 with code-server 4.126.0 (auth disabled, served on port 8080)
+- Ubuntu 22.04 with code-server 4.126.0 (auth disabled, served on port 8080 inside the container; browse to host port 8135)
 - g++ 11.4 and gcc (via `build-essential`), gdb 12.1, cmake, valgrind, clang-format, clangd
 - Extensions: clangd (code intelligence), Code Runner, Clang-Format
 - The Run button compiles with `g++ -std=c++14 -Wall -g` and runs in the integrated terminal
@@ -16,12 +16,12 @@ There is no Copilot, no chat, and no AI assistance of any kind — every AI feat
 ## Run It
 
 ```bash
-docker run -it --name unlv-cpp-ide -p 127.0.0.1:8080:8080 -v "$HOME/UNLV/cpp-workspace:/home/coder/workspace" seancnc/unlv-cpp-ide
+docker run -it --name unlv-cpp-ide -p 127.0.0.1:8135:8080 -v "$HOME/UNLV/cpp-workspace:/home/coder/workspace" seancnc/unlv-cpp-ide
 ```
 
 This uses the folder `~/UNLV/cpp-workspace` on your own computer as the IDE's workspace — that's where all your files live. On Windows, run the command in PowerShell with `-v "$HOME\UNLV\cpp-workspace:/home/coder/workspace"`. On native Linux (not Docker Desktop), create the folder first with `mkdir -p ~/UNLV/cpp-workspace`, otherwise Docker creates it owned by root; macOS and Windows handle ownership automatically.
 
-Then open <http://127.0.0.1:8080>. To start it again later (the container already exists):
+Then open <http://127.0.0.1:8135> — the port matches the course number, CS 135. To start it again later (the container already exists):
 
 ```bash
 docker start unlv-cpp-ide
@@ -39,7 +39,7 @@ You should see `Hello, C++!`. Clicking the Run button on `hello.cpp` does the sa
 
 ## Stopping and Restarting
 
-Closing the browser tab does **not** stop the IDE or lose any work — the container keeps running and using RAM until you stop it. When you're done, press `Ctrl+C` in the terminal you started it from (or close that terminal), click stop in Docker Desktop, or run `docker stop unlv-cpp-ide`. After `docker start unlv-cpp-ide`, reopening <http://127.0.0.1:8080> reconnects to everything exactly as you left it.
+Closing the browser tab does **not** stop the IDE or lose any work — the container keeps running and using RAM until you stop it. When you're done, press `Ctrl+C` in the terminal you started it from (or close that terminal), click stop in Docker Desktop, or run `docker stop unlv-cpp-ide`. After `docker start unlv-cpp-ide`, reopening <http://127.0.0.1:8135> reconnects to everything exactly as you left it.
 
 The run command deliberately has no `--restart` flag, so the IDE never launches itself in the background. On a modest machine, consider also turning off Docker Desktop's "start at login" setting.
 
@@ -50,7 +50,7 @@ Your files live in `~/UNLV/cpp-workspace` on your own computer, so updating neve
 ```bash
 docker pull seancnc/unlv-cpp-ide
 docker stop unlv-cpp-ide && docker rm unlv-cpp-ide
-docker run -it --name unlv-cpp-ide -p 127.0.0.1:8080:8080 -v "$HOME/UNLV/cpp-workspace:/home/coder/workspace" seancnc/unlv-cpp-ide
+docker run -it --name unlv-cpp-ide -p 127.0.0.1:8135:8080 -v "$HOME/UNLV/cpp-workspace:/home/coder/workspace" seancnc/unlv-cpp-ide
 ```
 
 ## Folder Contents

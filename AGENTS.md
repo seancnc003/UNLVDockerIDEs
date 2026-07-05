@@ -49,13 +49,13 @@ docker buildx build --platform linux/amd64 --push -t seancnc/unlv-x86-ide x86/
 Run without `-v`: the container workspace starts empty, so the entrypoint seeds the starter files into it.
 
 ```bash
-docker run -d --name smoke-cpp -p 127.0.0.1:8080:8080 seancnc/unlv-cpp-ide
-curl -i http://127.0.0.1:8080/healthz          # expect 200 (GET / gives 302 to the workspace folder)
+docker run -d --name smoke-cpp -p 127.0.0.1:8135:8080 seancnc/unlv-cpp-ide
+curl -i http://127.0.0.1:8135/healthz          # expect 200 (GET / gives 302 to the workspace folder)
 docker exec smoke-cpp bash -c 'cd ~/workspace && g++ hello.cpp -o hello && ./hello'   # "Hello, C++!"
 docker rm -f smoke-cpp
 
-docker run -d --platform linux/amd64 --name smoke-x86 -p 127.0.0.1:8081:8080 seancnc/unlv-x86-ide
-curl -i http://127.0.0.1:8081/healthz          # expect 200
+docker run -d --platform linux/amd64 --name smoke-x86 -p 127.0.0.1:8218:8080 seancnc/unlv-x86-ide
+curl -i http://127.0.0.1:8218/healthz          # expect 200
 docker exec smoke-x86 bash -c 'cd ~/workspace && make && ./hello'                     # "Hello, x86!"
 docker rm -f smoke-x86
 ```
@@ -65,7 +65,7 @@ docker rm -f smoke-x86
 - The `.docx` files ("Design Document", "Update Instructions") are the primary student deliverables, edited only by the maintainer. **Never modify them.**
 - `README.md` and `*.docx` are excluded from build contexts via each folder's `.dockerignore` — doc edits never change image content.
 - code-server versions are pinned in the Dockerfiles (cpp: 4.126.0, x86: 4.96.4). Bump deliberately, not incidentally.
-- Container port is always 8080; documented host ports are 8080 (cpp) and 8081 (x86) so both IDEs run side by side.
+- Container port is always 8080; documented host ports mirror the course numbers — 8135 (cpp, CS 135) and 8218 (x86, CS 218) — so both IDEs run side by side.
 - Auth is disabled (`--auth none`) and documented run commands bind to 127.0.0.1 only.
 - Student files live in host folders bind-mounted over `/home/coder/workspace` (documented as `~/UNLV/cpp-workspace` / `~/UNLV/x86-workspace`) — never named volumes. Update path: `docker pull`, stop/remove the container, re-run with the same `-v`; host files are untouched.
 - Starter files ship in `/opt/starter/`; `entrypoint.sh` seeds them only into an empty workspace on first run and never overwrites existing student work.

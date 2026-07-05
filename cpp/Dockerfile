@@ -2,8 +2,7 @@
 # UNLV C++ IDE - Sandbox Edition
 # ------------------------------------------------------------------------------
 # Usage:
-#   docker run -it --name unlv-cpp-ide -p 127.0.0.1:8080:8080 \
-#     -v "$HOME/UNLV/cpp-workspace:/home/coder/workspace" seancnc/unlv-cpp-ide
+#   docker run -it --name unlv-cpp-ide -p 127.0.0.1:8135:8080 -v "$HOME/UNLV/cpp-workspace:/home/coder/workspace" seancnc/unlv-cpp-ide
 # Student files live in the bind-mounted host folder. Do not add --restart;
 # the container should only run when explicitly started.
 # ------------------------------------------------------------------------------
