@@ -3,19 +3,265 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>UNLV Docker IDEs</title>
-    <link rel="stylesheet" href="assets/styles.css">
+    <title>UNLV Docker IDEs — Browser-based C++ and x86 Assembly environments</title>
+    <meta name="description" content="One-command, browser-based VS Code environments for UNLV computer science courses. Identical C++ and x86-64 assembly toolchains on Windows, macOS, and Linux.">
+    <meta name="theme-color" content="#b10202">
+    <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+    <link rel="canonical" href="https://seancnc003.github.io/UNLVDockerIDEs/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="UNLV Docker IDEs">
+    <meta property="og:description" content="One-command, browser-based VS Code environments for UNLV computer science courses.">
+    <meta property="og:url" content="https://seancnc003.github.io/UNLVDockerIDEs/">
+    <link rel="stylesheet" href="assets/css/tokens.css">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/components.css">
   </head>
   <body>
-    <main>
-      <h1>UNLV Docker IDEs</h1>
-      <p>Browser-based programming environments for C++ and x86 assembly.</p>
-      <nav>
-        <a href="cpp.html">C++ IDE</a>
-        <a href="x86.html">x86 Assembly IDE</a>
-        <a href="troubleshooting.html">Troubleshooting</a>
-      </nav>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="container site-header__inner">
+        <a class="brand" href="index.html">
+          <svg class="brand__mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#b10202"/><path d="M17 21l14 11-14 11" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="35" y="40" width="14" height="6" rx="3" fill="#fff"/></svg>
+          <span>UNLV</span>&nbsp;Docker IDEs
+        </a>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">
+          <span class="visually-hidden">Menu</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+        <nav class="site-nav" id="site-nav" aria-label="Main">
+          <a href="cpp.html">C++ IDE</a>
+          <a href="x86.html">x86 Assembly IDE</a>
+          <a href="troubleshooting.html">Troubleshooting</a>
+          <a href="https://github.com/seancnc003/UNLVDockerIDEs">GitHub</a>
+          <a class="btn btn--primary" href="#get-started">Get Started</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- Hero -->
+      <section class="hero">
+        <div class="container hero__inner">
+          <div>
+            <p class="badge">Built for UNLV CS 135 &amp; CS 218</p>
+            <h1>The same IDE for every student. Zero setup.</h1>
+            <p class="hero__lead">
+              VS Code in your browser with a complete, course-ready toolchain —
+              packaged as a Docker image. One command to launch. Identical
+              compilers, debuggers, and settings on Windows, macOS, and Linux.
+            </p>
+            <div class="hero__actions">
+              <a class="btn btn--primary btn--lg" href="#get-started">Get started</a>
+              <a class="btn btn--secondary btn--lg" href="https://github.com/seancnc003/UNLVDockerIDEs">View on GitHub</a>
+            </div>
+          </div>
+          <div class="terminal" role="img" aria-label="Terminal showing the single command that launches the C++ IDE">
+            <div class="terminal__bar" aria-hidden="true">
+              <span class="terminal__dot"></span>
+              <span class="terminal__dot"></span>
+              <span class="terminal__dot"></span>
+            </div>
+            <div class="terminal__body"><span class="comment"># one command — VS Code + full toolchain</span>
+<span class="prompt">$</span> docker run -it --name unlv-cpp-ide \
+    -p 127.0.0.1:8135:8080 \
+    -v "$HOME/UNLV/cpp-workspace:/home/coder/workspace" \
+    seancnc/unlv-cpp-ide
+
+<span class="comment"># then open your browser</span>
+<span class="prompt">→</span> http://127.0.0.1:8135</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Stats -->
+      <section class="section section--alt">
+        <div class="container stats">
+          <div class="stat">
+            <div class="stat__value">2</div>
+            <div class="stat__label">Course-ready environments</div>
+          </div>
+          <div class="stat">
+            <div class="stat__value">1</div>
+            <div class="stat__label">Command to launch</div>
+          </div>
+          <div class="stat">
+            <div class="stat__value">3</div>
+            <div class="stat__label">Platforms — Windows, macOS, Linux</div>
+          </div>
+          <div class="stat">
+            <div class="stat__value">0</div>
+            <div class="stat__label">AI assistants — by design</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features -->
+      <section class="section">
+        <div class="container">
+          <p class="section__eyebrow">Why Docker IDEs</p>
+          <h2 class="section__title">Everything the course needs. Nothing it doesn't.</h2>
+          <p class="section__lead">
+            No compiler hunting, no version mismatches, no "it works on my machine."
+            Install Docker Desktop, paste one command, and start writing code.
+          </p>
+          <div class="grid grid--3">
+            <div class="card">
+              <div class="card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg>
+              </div>
+              <h3>One-command setup</h3>
+              <p>The only prerequisite is Docker Desktop. A single <code>docker run</code> pulls the image, seeds a starter program, and serves the IDE at a fixed local port.</p>
+            </div>
+            <div class="card">
+              <div class="card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6l-5 6 5 6M16 6l5 6-5 6"/></svg>
+              </div>
+              <h3>Real VS Code, in the browser</h3>
+              <p>Powered by code-server: the full VS Code editing experience — integrated terminal, extensions, Run button — with nothing to install or configure locally.</p>
+            </div>
+            <div class="card">
+              <div class="card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5-9 5-9-5 9-5zM3 12l9 5 9-5M3 17l9 5 9-5"/></svg>
+              </div>
+              <h3>Identical for everyone</h3>
+              <p>Every student — and every grader — gets the same compiler versions, same debugger, same settings. Assignments behave the same on every machine.</p>
+            </div>
+            <div class="card">
+              <div class="card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+              </div>
+              <h3>Your files are sacred</h3>
+              <p>Work lives in a normal folder on your own computer, never inside the container. Autosave writes to disk as you type — deleting the container can't take your work with it.</p>
+            </div>
+            <div class="card">
+              <div class="card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M5.5 5.5l13 13"/></svg>
+              </div>
+              <h3>No AI, by design</h3>
+              <p>No Copilot, no chat, no agents. Every AI surface in VS Code is deliberately disabled through pinned settings, per the course philosophy. You write the code.</p>
+            </div>
+            <div class="card">
+              <div class="card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 119-9"/><path d="M12 12l4-4"/><path d="M21 16h-5v5"/></svg>
+              </div>
+              <h3>Light on resources</h3>
+              <p>Containers run only when you start them and never auto-restart. On modest hardware, an optional flag caps the IDE's memory and CPU so runaway code can't slow your machine.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Products -->
+      <section class="section section--alt" id="environments">
+        <div class="container">
+          <p class="section__eyebrow">The Environments</p>
+          <h2 class="section__title">Pick your course. Both can run side by side.</h2>
+          <p class="section__lead">
+            Each IDE's port is its course number, so the two never conflict.
+          </p>
+          <div class="grid grid--2">
+            <div class="card product-card">
+              <div class="product-card__header">
+                <h3>UNLV C++ IDE</h3>
+                <span class="tag">CS 135</span>
+              </div>
+              <p>A complete C++ toolchain: g++ 11.4, gdb, cmake, valgrind, clang-format, and clangd code intelligence. One-click compile and run with warnings on.</p>
+              <ul class="product-card__specs">
+                <li><strong>Image:</strong> <code>seancnc/unlv-cpp-ide</code></li>
+                <li><strong>Platforms:</strong> Intel/AMD + Apple Silicon (native on both)</li>
+                <li><strong>Opens at:</strong> <code>http://127.0.0.1:8135</code></li>
+              </ul>
+              <a class="btn btn--primary" href="cpp.html">C++ IDE guide</a>
+            </div>
+            <div class="card product-card">
+              <div class="product-card__header">
+                <h3>UNLV x86 Assembly IDE</h3>
+                <span class="tag">CS 218</span>
+              </div>
+              <p>An x86-64 Linux assembly toolchain: yasm and nasm assemblers, GNU ld, gdb, and make. The Run button assembles, links, and executes your <code>.asm</code> files.</p>
+              <ul class="product-card__specs">
+                <li><strong>Image:</strong> <code>seancnc/unlv-x86-ide</code></li>
+                <li><strong>Platforms:</strong> x86-64 by design (emulated on Apple Silicon)</li>
+                <li><strong>Opens at:</strong> <code>http://127.0.0.1:8218</code></li>
+              </ul>
+              <a class="btn btn--primary" href="x86.html">x86 IDE guide</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Get started -->
+      <section class="section" id="get-started">
+        <div class="container">
+          <p class="section__eyebrow">Get Started</p>
+          <h2 class="section__title">Up and running in three steps</h2>
+          <p class="section__lead">Works the same on Windows, macOS, and Linux.</p>
+          <ol class="steps">
+            <li>
+              <h3>Install Docker Desktop</h3>
+              <p>Download <a href="https://www.docker.com/products/docker-desktop/">Docker Desktop</a>, install it, and make sure it's running (the whale icon in your menu bar or system tray).</p>
+            </li>
+            <li>
+              <h3>Run the IDE you need</h3>
+              <p>C++ IDE (CS 135):</p>
+              <div class="codeblock">
+                <pre><code>docker run -it --name unlv-cpp-ide -p 127.0.0.1:8135:8080 -v "$HOME/UNLV/cpp-workspace:/home/coder/workspace" seancnc/unlv-cpp-ide</code></pre>
+              </div>
+              <p>x86 Assembly IDE (CS 218):</p>
+              <div class="codeblock">
+                <pre><code>docker run -it --platform linux/amd64 --name unlv-x86-ide -p 127.0.0.1:8218:8080 -v "$HOME/UNLV/x86-workspace:/home/coder/workspace" seancnc/unlv-x86-ide</code></pre>
+              </div>
+              <p>On Windows, run the same command in PowerShell with the path in Windows form: <code>-v "$HOME\UNLV\cpp-workspace:/home/coder/workspace"</code>.</p>
+            </li>
+            <li>
+              <h3>Open your browser</h3>
+              <p>Go to <code>http://127.0.0.1:8135</code> (C++) or <code>http://127.0.0.1:8218</code> (x86). The IDE opens straight into your workspace with a starter program ready to run. Each guide's page covers verifying, stopping, and updating.</p>
+            </li>
+          </ol>
+          <div class="callout">
+            <p class="callout__title">Returning students</p>
+            <p>The old <code>seancnc/unlv-cs-ide</code> image is retired. Switch to <code>seancnc/unlv-cpp-ide</code> (or <code>seancnc/unlv-x86-ide</code> for assembly) using the commands above — the new images work on both Intel/AMD and Apple Silicon machines.</p>
+          </div>
+        </div>
+      </section>
     </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="site-footer__grid">
+          <div>
+            <a class="brand" href="index.html">
+              <svg class="brand__mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#b10202"/><path d="M17 21l14 11-14 11" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="35" y="40" width="14" height="6" rx="3" fill="#fff"/></svg>
+              <span>UNLV</span>&nbsp;Docker IDEs
+            </a>
+            <p>Decentralized, browser-based programming environments for UNLV computer science coursework. Runs locally — no server, no account, no AI.</p>
+          </div>
+          <div>
+            <h3>Environments</h3>
+            <ul>
+              <li><a href="cpp.html">C++ IDE (CS 135)</a></li>
+              <li><a href="x86.html">x86 Assembly IDE (CS 218)</a></li>
+              <li><a href="troubleshooting.html">Troubleshooting</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Resources</h3>
+            <ul>
+              <li><a href="https://github.com/seancnc003/UNLVDockerIDEs">GitHub repository</a></li>
+              <li><a href="https://hub.docker.com/r/seancnc/unlv-cpp-ide">Docker Hub — C++ image</a></li>
+              <li><a href="https://hub.docker.com/r/seancnc/unlv-x86-ide">Docker Hub — x86 image</a></li>
+              <li><a href="https://www.docker.com/products/docker-desktop/">Docker Desktop</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="site-footer__legal">
+          <p>© <span id="year">2026</span> UNLV Docker IDEs. Maintained for UNLV computer science coursework.</p>
+          <p>Not an official University of Nevada, Las Vegas website.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
   </body>
 </html>
-

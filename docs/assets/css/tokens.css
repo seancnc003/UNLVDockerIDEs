@@ -1,0 +1,76 @@
+/* ==========================================================================
+   Design tokens — single source of truth for color, type, spacing, elevation.
+   UNLV palette: Scarlet #B10202, Gray #63666A.
+   ========================================================================== */
+
+:root {
+  /* Brand */
+  --scarlet-700: #8e0202;
+  --scarlet-600: #b10202;
+  --scarlet-500: #d32f2f;
+  --scarlet-100: #f9dcdc;
+  --scarlet-050: #fdf2f2;
+
+  /* Neutrals */
+  --ink-900: #1a1a1e;
+  --ink-700: #3c3e43;
+  --ink-500: #63666a;
+  --ink-300: #a9abaf;
+  --line-200: #e5e5e8;
+  --surface-100: #f7f7f8;
+  --surface-000: #ffffff;
+
+  /* Code blocks (always dark) */
+  --code-bg: #1e1f24;
+  --code-ink: #e8e9ec;
+  --code-muted: #9a9ca3;
+  --code-accent: #ff8a80;
+
+  /* Semantic */
+  --color-primary: var(--scarlet-600);
+  --color-primary-hover: var(--scarlet-700);
+  --color-bg: var(--surface-000);
+  --color-bg-alt: var(--surface-100);
+  --color-text: var(--ink-700);
+  --color-heading: var(--ink-900);
+  --color-muted: var(--ink-500);
+  --color-border: var(--line-200);
+
+  /* Type */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-hero: clamp(2.1rem, 4.5vw, 3.25rem);
+  --leading-body: 1.65;
+  --leading-tight: 1.2;
+
+  /* Space (4px scale) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --space-9: 6rem;
+
+  /* Shape & elevation */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 1px 2px rgba(26, 26, 30, 0.06);
+  --shadow-md: 0 4px 16px rgba(26, 26, 30, 0.08);
+  --shadow-lg: 0 12px 40px rgba(26, 26, 30, 0.14);
+
+  /* Layout */
+  --container-max: 72rem;
+  --header-height: 4rem;
+}

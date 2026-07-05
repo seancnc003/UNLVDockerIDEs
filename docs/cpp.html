@@ -3,18 +3,172 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>UNLV C++ IDE</title>
-    <link rel="stylesheet" href="assets/styles.css">
+    <title>UNLV C++ IDE — setup, usage, and updating</title>
+    <meta name="description" content="Run the UNLV C++ IDE for CS 135: VS Code in your browser with g++, gdb, cmake, valgrind, and clangd. One Docker command, works on Windows, macOS, and Linux.">
+    <meta name="theme-color" content="#b10202">
+    <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+    <link rel="canonical" href="https://seancnc003.github.io/UNLVDockerIDEs/cpp.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="UNLV C++ IDE">
+    <meta property="og:description" content="VS Code in your browser with a full C++ toolchain for CS 135. One Docker command.">
+    <meta property="og:url" content="https://seancnc003.github.io/UNLVDockerIDEs/cpp.html">
+    <link rel="stylesheet" href="assets/css/tokens.css">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/components.css">
   </head>
   <body>
-    <main>
-      <h1>UNLV C++ IDE</h1>
-      <pre><code>docker run -it --name unlv-cpp-ide \
-  -p 127.0.0.1:8135:8080 \
-  -v "$HOME/UNLV/cpp-workspace:/home/coder/workspace" \
-  seancnc/unlv-cpp-ide</code></pre>
-      <p>Open <code>http://127.0.0.1:8135</code>.</p>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="container site-header__inner">
+        <a class="brand" href="index.html">
+          <svg class="brand__mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#b10202"/><path d="M17 21l14 11-14 11" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="35" y="40" width="14" height="6" rx="3" fill="#fff"/></svg>
+          <span>UNLV</span>&nbsp;Docker IDEs
+        </a>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">
+          <span class="visually-hidden">Menu</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+        <nav class="site-nav" id="site-nav" aria-label="Main">
+          <a href="cpp.html" aria-current="page">C++ IDE</a>
+          <a href="x86.html">x86 Assembly IDE</a>
+          <a href="troubleshooting.html">Troubleshooting</a>
+          <a href="https://github.com/seancnc003/UNLVDockerIDEs">GitHub</a>
+          <a class="btn btn--primary" href="index.html#get-started">Get Started</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="page-hero">
+        <div class="container">
+          <p class="section__eyebrow">CS 135 · C++ Programming</p>
+          <h1>UNLV C++ IDE</h1>
+          <p>VS Code in your browser with a full C++ toolchain. Multi-architecture — runs natively on Intel/AMD machines and Apple Silicon Macs alike.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container prose">
+          <h2>At a glance</h2>
+          <div class="spec-table">
+            <table>
+              <tr><th scope="row">Docker Hub image</th><td><code>seancnc/unlv-cpp-ide</code></td></tr>
+              <tr><th scope="row">Platforms</th><td><code>linux/amd64</code> + <code>linux/arm64</code> — native everywhere</td></tr>
+              <tr><th scope="row">Opens at</th><td><code>http://127.0.0.1:8135</code> — the port matches the course number</td></tr>
+              <tr><th scope="row">Your files live in</th><td><code>~/UNLV/cpp-workspace</code> on your own computer</td></tr>
+              <tr><th scope="row">Base</th><td>Ubuntu 22.04 · code-server 4.126.0</td></tr>
+            </table>
+          </div>
+
+          <h2>Quick start</h2>
+          <ol class="steps">
+            <li>
+              <h3>Install Docker Desktop</h3>
+              <p>Download <a href="https://www.docker.com/products/docker-desktop/">Docker Desktop</a> and make sure it is running.</p>
+            </li>
+            <li>
+              <h3>Run the IDE</h3>
+              <div class="codeblock">
+                <pre><code>docker run -it --name unlv-cpp-ide -p 127.0.0.1:8135:8080 -v "$HOME/UNLV/cpp-workspace:/home/coder/workspace" seancnc/unlv-cpp-ide</code></pre>
+              </div>
+              <p>On Windows, run the command in PowerShell with <code>-v "$HOME\UNLV\cpp-workspace:/home/coder/workspace"</code>. On native Linux (not Docker Desktop), create the folder first with <code>mkdir -p ~/UNLV/cpp-workspace</code>, otherwise Docker creates it owned by root.</p>
+            </li>
+            <li>
+              <h3>Open the IDE and verify</h3>
+              <p>Go to <code>http://127.0.0.1:8135</code>. The IDE opens into your workspace with <code>hello.cpp</code> seeded. In the IDE's terminal:</p>
+              <div class="codeblock">
+                <pre><code>g++ hello.cpp -o hello &amp;&amp; ./hello</code></pre>
+              </div>
+              <p>You should see <code>Hello, C++!</code>. Clicking the Run button on <code>hello.cpp</code> does the same thing.</p>
+            </li>
+          </ol>
+
+          <div class="callout callout--danger">
+            <p class="callout__title">Never drop the -v part of the command</p>
+            <p>The <code>-v</code> flag is what keeps your files in a normal folder on your own computer. Without it, everything you write lives only inside the container and is permanently deleted when the container is removed — which the update steps below do.</p>
+          </div>
+
+          <h2>What's inside</h2>
+          <ul>
+            <li>g++ 11.4 and gcc (via <code>build-essential</code>), gdb 12.1, cmake, valgrind, clang-format, clangd</li>
+            <li>Extensions: clangd (code intelligence), Code Runner, Clang-Format</li>
+            <li>The Run button compiles with <code>g++ -std=c++14 -Wall -g</code> and runs in the integrated terminal</li>
+            <li>Autosave is on — your work is written to disk as you type</li>
+            <li>Starter program <code>hello.cpp</code>, seeded only when the workspace folder is empty; existing work is never overwritten</li>
+            <li>No Copilot, no chat, no AI assistance of any kind — deliberately disabled, per the course philosophy</li>
+          </ul>
+
+          <h2>Stopping and restarting</h2>
+          <p>Closing the browser tab does <strong>not</strong> stop the IDE — the container keeps running and using RAM until you stop it. When you're done, press <code>Ctrl+C</code> in the terminal you started it from, click stop in Docker Desktop, or run:</p>
+          <div class="codeblock">
+            <pre><code>docker stop unlv-cpp-ide</code></pre>
+          </div>
+          <p>To start it again later (the container already exists — no need to repeat the long command):</p>
+          <div class="codeblock">
+            <pre><code>docker start unlv-cpp-ide</code></pre>
+          </div>
+          <p>Then reopen <code>http://127.0.0.1:8135</code> — everything reconnects exactly as you left it. Nothing auto-restarts: the run command deliberately has no <code>--restart</code> flag.</p>
+
+          <div class="callout">
+            <p class="callout__title">On a machine with 8 GB of RAM or less</p>
+            <p>Cap how much the IDE may use by adding <code>--memory=2g --cpus=2</code> right after <code>docker run -it</code> — everything else in the command stays the same. An accidental infinite loop in your program then can't slow down the rest of your computer.</p>
+          </div>
+
+          <h2>Updating</h2>
+          <p>Your files live in <code>~/UNLV/cpp-workspace</code> on your own computer, so updating never touches them. Pull the latest image, replace the container, and rerun:</p>
+          <div class="codeblock">
+            <pre><code>docker stop unlv-cpp-ide &amp;&amp; docker rm unlv-cpp-ide
+docker pull seancnc/unlv-cpp-ide &amp;&amp; docker image prune -f
+docker run -it --name unlv-cpp-ide -p 127.0.0.1:8135:8080 -v "$HOME/UNLV/cpp-workspace:/home/coder/workspace" seancnc/unlv-cpp-ide</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-band">
+        <div class="container">
+          <h2>Something not working?</h2>
+          <p>Common issues — ports, Docker not running, missing files — and their fixes.</p>
+          <a class="btn btn--primary btn--lg" href="troubleshooting.html">Open troubleshooting</a>
+        </div>
+      </section>
     </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="site-footer__grid">
+          <div>
+            <a class="brand" href="index.html">
+              <svg class="brand__mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#b10202"/><path d="M17 21l14 11-14 11" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="35" y="40" width="14" height="6" rx="3" fill="#fff"/></svg>
+              <span>UNLV</span>&nbsp;Docker IDEs
+            </a>
+            <p>Decentralized, browser-based programming environments for UNLV computer science coursework. Runs locally — no server, no account, no AI.</p>
+          </div>
+          <div>
+            <h3>Environments</h3>
+            <ul>
+              <li><a href="cpp.html">C++ IDE (CS 135)</a></li>
+              <li><a href="x86.html">x86 Assembly IDE (CS 218)</a></li>
+              <li><a href="troubleshooting.html">Troubleshooting</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Resources</h3>
+            <ul>
+              <li><a href="https://github.com/seancnc003/UNLVDockerIDEs">GitHub repository</a></li>
+              <li><a href="https://hub.docker.com/r/seancnc/unlv-cpp-ide">Docker Hub — C++ image</a></li>
+              <li><a href="https://hub.docker.com/r/seancnc/unlv-x86-ide">Docker Hub — x86 image</a></li>
+              <li><a href="https://www.docker.com/products/docker-desktop/">Docker Desktop</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="site-footer__legal">
+          <p>© <span id="year">2026</span> UNLV Docker IDEs. Maintained for UNLV computer science coursework.</p>
+          <p>Not an official University of Nevada, Las Vegas website.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
   </body>
 </html>
-

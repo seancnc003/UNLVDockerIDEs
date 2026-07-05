@@ -3,19 +3,132 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Troubleshooting</title>
-    <link rel="stylesheet" href="assets/styles.css">
+    <title>Troubleshooting — UNLV Docker IDEs</title>
+    <meta name="description" content="Fixes for common UNLV Docker IDE issues: Docker not running, port conflicts, container name conflicts, missing files after updates, and Apple Silicon quirks.">
+    <meta name="theme-color" content="#b10202">
+    <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+    <link rel="canonical" href="https://seancnc003.github.io/UNLVDockerIDEs/troubleshooting.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Troubleshooting — UNLV Docker IDEs">
+    <meta property="og:description" content="Fixes for common UNLV Docker IDE issues.">
+    <meta property="og:url" content="https://seancnc003.github.io/UNLVDockerIDEs/troubleshooting.html">
+    <link rel="stylesheet" href="assets/css/tokens.css">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/components.css">
   </head>
   <body>
-    <main>
-      <h1>Troubleshooting</h1>
-      <h2>Port Already In Use</h2>
-      <p>Change the left side of the port mapping, for example <code>8082:8080</code>.</p>
-      <h2>Files Missing After Update</h2>
-      <p>Make sure the same named volume is used when recreating the container.</p>
-      <h2>Apple Silicon and x86</h2>
-      <p>Run the x86 image with <code>--platform linux/amd64</code>.</p>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="container site-header__inner">
+        <a class="brand" href="index.html">
+          <svg class="brand__mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#b10202"/><path d="M17 21l14 11-14 11" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="35" y="40" width="14" height="6" rx="3" fill="#fff"/></svg>
+          <span>UNLV</span>&nbsp;Docker IDEs
+        </a>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">
+          <span class="visually-hidden">Menu</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+        <nav class="site-nav" id="site-nav" aria-label="Main">
+          <a href="cpp.html">C++ IDE</a>
+          <a href="x86.html">x86 Assembly IDE</a>
+          <a href="troubleshooting.html" aria-current="page">Troubleshooting</a>
+          <a href="https://github.com/seancnc003/UNLVDockerIDEs">GitHub</a>
+          <a class="btn btn--primary" href="index.html#get-started">Get Started</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="page-hero">
+        <div class="container">
+          <p class="section__eyebrow">Support</p>
+          <h1>Troubleshooting</h1>
+          <p>The issues students actually hit, with the fixes. Commands below use the C++ IDE's names — for the x86 IDE, swap in <code>unlv-x86-ide</code> and port <code>8218</code>.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container prose">
+          <article class="issue">
+            <h2>"Cannot connect to the Docker daemon" or "docker: command not found"</h2>
+            <p>Docker Desktop isn't running (or isn't installed). Launch Docker Desktop and wait until the whale icon in your menu bar or system tray reports it's running, then retry the command. Docker Desktop must be running any time you start or use an IDE.</p>
+          </article>
+
+          <article class="issue">
+            <h2>"Port is already allocated" or the port is in use</h2>
+            <p>Something else on your machine is using the IDE's port. Change only the <em>left</em> side of the port mapping — for example <code>-p 127.0.0.1:8136:8080</code> — and open that port in your browser instead (<code>http://127.0.0.1:8136</code>). The right side, <code>8080</code>, is inside the container and must stay as is.</p>
+          </article>
+
+          <article class="issue">
+            <h2>"The container name is already in use"</h2>
+            <p>The container already exists from a previous run, so you don't need the long <code>docker run</code> command again — just start it:</p>
+            <div class="codeblock">
+              <pre><code>docker start unlv-cpp-ide</code></pre>
+            </div>
+            <p>If you actually want a fresh container (for example, mid-update), remove the old one first with <code>docker rm unlv-cpp-ide</code>, then rerun the full command. Your files are safe either way — they live in your workspace folder, not in the container.</p>
+          </article>
+
+          <article class="issue">
+            <h2>Files seem to be missing after an update</h2>
+            <p>Your files are not gone — they're in <code>~/UNLV/cpp-workspace</code> (or <code>~/UNLV/x86-workspace</code>) on your own computer; check that folder in Finder or Explorer. If the IDE opens to an empty or different workspace, the new container was started with a different <code>-v</code> path than before. Rerun the command with the exact same <code>-v "$HOME/UNLV/cpp-workspace:/home/coder/workspace"</code> mapping and everything reappears.</p>
+            <p><strong>Never drop the <code>-v</code> part of the run command</strong> — it's what keeps your work in a normal folder on your machine instead of inside the container.</p>
+          </article>
+
+          <article class="issue">
+            <h2>x86 IDE on an Apple Silicon Mac</h2>
+            <p>The x86 image is x86-64 only, by design — Docker Desktop runs it under emulation on Apple Silicon. Assembling, linking, and running all work (a little slower). Include <code>--platform linux/amd64</code> in the run command to silence the platform warning; forgetting it is harmless.</p>
+            <p>The one real limitation: <strong>gdb cannot debug under emulation</strong>, and a gdb script may <em>look</em> like it succeeded while its output file contains only labels with no values. If an assignment's deliverable is gdb output, produce it on a native x86-64 machine. Details on the <a href="x86.html">x86 IDE page</a>.</p>
+          </article>
+
+          <article class="issue">
+            <h2>The IDE makes my computer slow</h2>
+            <p>Two things help on modest hardware. First, stop the container when you're done working — closing the browser tab does <strong>not</strong> stop it: <code>docker stop unlv-cpp-ide</code>. Second, cap the IDE's resources by adding <code>--memory=2g --cpus=2</code> right after <code>docker run -it</code> in the run command; a runaway program then can't take down the rest of your machine. Turning off Docker Desktop's "start at login" setting also helps.</p>
+          </article>
+
+          <article class="issue">
+            <h2>Still stuck?</h2>
+            <p>Ask in class or office hours, or open an issue on the <a href="https://github.com/seancnc003/UNLVDockerIDEs/issues">GitHub repository</a> with the exact command you ran and the full error message.</p>
+          </article>
+        </div>
+      </section>
     </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="site-footer__grid">
+          <div>
+            <a class="brand" href="index.html">
+              <svg class="brand__mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#b10202"/><path d="M17 21l14 11-14 11" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="35" y="40" width="14" height="6" rx="3" fill="#fff"/></svg>
+              <span>UNLV</span>&nbsp;Docker IDEs
+            </a>
+            <p>Decentralized, browser-based programming environments for UNLV computer science coursework. Runs locally — no server, no account, no AI.</p>
+          </div>
+          <div>
+            <h3>Environments</h3>
+            <ul>
+              <li><a href="cpp.html">C++ IDE (CS 135)</a></li>
+              <li><a href="x86.html">x86 Assembly IDE (CS 218)</a></li>
+              <li><a href="troubleshooting.html">Troubleshooting</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Resources</h3>
+            <ul>
+              <li><a href="https://github.com/seancnc003/UNLVDockerIDEs">GitHub repository</a></li>
+              <li><a href="https://hub.docker.com/r/seancnc/unlv-cpp-ide">Docker Hub — C++ image</a></li>
+              <li><a href="https://hub.docker.com/r/seancnc/unlv-x86-ide">Docker Hub — x86 image</a></li>
+              <li><a href="https://www.docker.com/products/docker-desktop/">Docker Desktop</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="site-footer__legal">
+          <p>© <span id="year">2026</span> UNLV Docker IDEs. Maintained for UNLV computer science coursework.</p>
+          <p>Not an official University of Nevada, Las Vegas website.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
   </body>
 </html>
-
