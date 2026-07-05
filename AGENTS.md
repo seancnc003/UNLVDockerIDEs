@@ -9,10 +9,17 @@ This repo builds two browser-based (code-server) Docker IDE images for UNLV CS s
 - `cpp/` → `seancnc/unlv-cpp-ide` (C++; multi-arch: linux/amd64 + linux/arm64)
 - `x86/` → `seancnc/unlv-x86-ide` (x86-64 Linux assembly; **linux/amd64 only**)
 
+## Philosophy (agents must respect these)
+
+- **Decentralized:** one container per student, run locally on the student's machine. No server dependency, no internet after the initial pull; compilation is local.
+- **No AI, ever:** each `settings.json` deliberately disables every AI surface (chat, Copilot, agents, inline suggestions). Never re-enable AI features or add AI extensions.
+- **Student files are sacred:** work lives on the host via bind mounts, never inside the container or Docker's hidden storage, so deleting a container/volume or resetting Docker cannot lose it. Autosave (`files.autoSave: afterDelay`) is on in both images.
+- **Frugal with resources:** most students have far weaker machines than a MacBook Pro. Containers run only when explicitly started — never add `--restart` policies. The "Update Instructions" handout exists specifically to keep Docker's resource usage restrained.
+
 ## Layout
 
-- `cpp/`, `x86/` — the two Docker build contexts. Each contains: `Dockerfile`, `settings.json`, example program(s), `.dockerignore`, `README.md`, and two `.docx` student handouts.
-- `papers/` — reference literature (PDFs), not part of any build.
+- `cpp/`, `x86/` — the two Docker build contexts. Each contains: `Dockerfile`, an `image/` folder with everything copied into the image (`entrypoint.sh`, `settings.json`, `starter/` files seeded into student workspaces), `.dockerignore`, `README.md`, and two `.docx` student handouts.
+- `papers/` — untracked, maintainer-local reference literature (PDFs); publication undecided. Not repo content and not part of any build.
 - `archive/`, `code/` — gitignored, maintainer-local. `archive/` is the previous generation of this project: read-only historical reference, never modify it. `code/` is personal coursework.
 
 ## Build
@@ -39,6 +46,8 @@ docker buildx build --platform linux/amd64 --push -t seancnc/unlv-x86-ide x86/
 
 ## Smoke Test
 
+Run without `-v`: the container workspace starts empty, so the entrypoint seeds the starter files into it.
+
 ```bash
 docker run -d --name smoke-cpp -p 127.0.0.1:8080:8080 seancnc/unlv-cpp-ide
 curl -i http://127.0.0.1:8080/healthz          # expect 200 (GET / gives 302 to the workspace folder)
@@ -58,5 +67,8 @@ docker rm -f smoke-x86
 - code-server versions are pinned in the Dockerfiles (cpp: 4.126.0, x86: 4.96.4). Bump deliberately, not incidentally.
 - Container port is always 8080; documented host ports are 8080 (cpp) and 8081 (x86) so both IDEs run side by side.
 - Auth is disabled (`--auth none`) and documented run commands bind to 127.0.0.1 only.
-- Student files persist in named volumes (`unlv_cpp_workspace`, `unlv_x86_workspace`); the update path is `docker pull` + recreate the container with the same volume.
+- Student files live in host folders bind-mounted over `/home/coder/workspace` (documented as `~/UNLV/cpp-workspace` / `~/UNLV/x86-workspace`) — never named volumes. Update path: `docker pull`, stop/remove the container, re-run with the same `-v`; host files are untouched.
+- Starter files ship in `/opt/starter/`; `entrypoint.sh` seeds them only into an empty workspace on first run and never overwrites existing student work.
+- Each `settings.json` pins AI kill-switch keys validated against the bundled VS Code version: cpp (code-server 4.126.0 / Code 1.126) uses `chat.disableAIFeatures` and related keys; x86 (code-server 4.96.4 / Code 1.96) uses `chat.commandCenter.enabled` and related keys. Never remove or "clean up" these keys.
+- No `--restart` policy in any documented command, and no `VOLUME` instruction in the Dockerfiles (it would strand anonymous volumes).
 - Legacy Docker Hub image `seancnc/unlv-cs-ide` (arm64-only) is deprecated — do not build or publish to it.

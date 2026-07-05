@@ -31,12 +31,13 @@ RUN code-server --install-extension llvm-vs-code-extensions.vscode-clangd \
     && code-server --install-extension xaver.clang-format
 
 RUN mkdir -p /home/coder/workspace /home/coder/.local/share/code-server/User/
-COPY --chown=coder:coder settings.json /home/coder/.local/share/code-server/User/settings.json
+COPY --chown=coder:coder image/settings.json /home/coder/.local/share/code-server/User/settings.json
 
 # Starter files can't be baked into the workspace itself: a bind-mounted host
-# folder would shadow them. The entrypoint seeds them on first run instead.
-COPY --chown=coder:coder hello.cpp /opt/starter/
-COPY --chown=coder:coder entrypoint.sh /usr/local/bin/entrypoint.sh
+# folder would shadow them. The entrypoint seeds them on first run instead;
+# anything added to image/starter/ ships automatically.
+COPY --chown=coder:coder image/starter/ /opt/starter/
+COPY --chown=coder:coder image/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 # No VOLUME instruction: the documented run command bind-mounts the workspace,
 # and a VOLUME here would leave stray anonymous volumes behind whenever the

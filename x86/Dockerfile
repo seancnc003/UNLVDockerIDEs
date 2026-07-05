@@ -27,12 +27,13 @@ USER coder
 RUN code-server --install-extension formulahendry.code-runner
 
 RUN mkdir -p /home/coder/workspace /home/coder/.local/share/code-server/User/
-COPY --chown=coder:coder settings.json /home/coder/.local/share/code-server/User/settings.json
+COPY --chown=coder:coder image/settings.json /home/coder/.local/share/code-server/User/settings.json
 
 # Starter files can't be baked into the workspace itself: a bind-mounted host
-# folder would shadow them. The entrypoint seeds them on first run instead.
-COPY --chown=coder:coder hello.asm Makefile /opt/starter/
-COPY --chown=coder:coder entrypoint.sh /usr/local/bin/entrypoint.sh
+# folder would shadow them. The entrypoint seeds them on first run instead;
+# anything added to image/starter/ ships automatically.
+COPY --chown=coder:coder image/starter/ /opt/starter/
+COPY --chown=coder:coder image/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 # No VOLUME instruction on purpose: students bind-mount a host folder (see
 # Usage above). A VOLUME here would silently create stray anonymous volumes
