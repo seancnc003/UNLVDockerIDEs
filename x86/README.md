@@ -14,7 +14,7 @@ The coursework is x86-64 Linux assembly, so the container itself must be x86-64 
 
 - Ubuntu 22.04 with code-server 4.126.0 (auth disabled, served on port 8080 inside the container)
 - yasm and nasm assemblers (CS 218 makefiles use `yasm`), GNU ld (binutils), gdb 12.1, make, plus gcc/g++ (`build-essential`, `gcc-multilib`)
-- Extension: Code Runner — the Run button assembles with `nasm -f elf64`, links with `ld`, and runs the result
+- Extensions: Code Runner — the Run button assembles with `nasm -f elf64`, links with `ld`, and runs the result; x86 and x86_64 Assembly — syntax highlighting and word-based autocomplete for `.asm` files
 - Autosave is on (`files.autoSave: afterDelay`), so your work is written to disk as you type
 - Starter files `hello.asm` and a `Makefile`, seeded into your workspace folder on the first run
 

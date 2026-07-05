@@ -24,7 +24,11 @@ RUN useradd -m -s /bin/bash coder && \
 
 USER coder
 
-RUN code-server --install-extension formulahendry.code-runner
+# code-runner: Run button. language-x86-64-assembly: registers .asm as a real
+# language (syntax highlighting + VS Code's word-based autocomplete, which is
+# disabled for plaintext files).
+RUN code-server --install-extension formulahendry.code-runner \
+    && code-server --install-extension 13xforever.language-x86-64-assembly
 
 RUN mkdir -p /home/coder/workspace /home/coder/.local/share/code-server/User/
 COPY --chown=coder:coder image/settings.json /home/coder/.local/share/code-server/User/settings.json

@@ -1,6 +1,6 @@
 {
-  "code-runner.executorMap": {
-    "asm": "cd $dir && nasm -f elf64 $fileName -o $fileNameWithoutExt.o && ld $fileNameWithoutExt.o -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
+  "code-runner.executorMapByFileExtension": {
+    ".asm": "cd $dir && nasm -f elf64 \"$fileName\" -o \"$fileNameWithoutExt.o\" && ld \"$fileNameWithoutExt.o\" -o \"$fileNameWithoutExt\" && $dir\"$fileNameWithoutExt\""
   },
   "code-runner.runInTerminal": true,
   "code-runner.saveFileBeforeRun": true,
