@@ -59,7 +59,10 @@ check "x86 pull (flagless — must not hard-fail)" "docker pull seancnc/unlv-x86
 
 echo "== 4. Documented run commands (detached, temp HOME) =="
 docker rm -f unlv-cpp-ide unlv-x86-ide >/dev/null 2>&1
-TESTHOME="$(mktemp -d)"
+# Must live under a Docker-Desktop-shared path (/tmp is shared; the default
+# macOS mktemp location /var/folders is NOT — mounts there silently land
+# inside Docker's VM instead of the host).
+TESTHOME="$(mktemp -d /tmp/unlv-release-check.XXXXXX)"
 HOME="$TESTHOME" bash -c "${CPP_RUN/-it/-d}" >/dev/null 2>&1 && ok "cpp container started" || bad "cpp container started"
 HOME="$TESTHOME" bash -c "${X86_RUN/-it/-d}" >/dev/null 2>&1 && ok "x86 container started" || bad "x86 container started"
 
