@@ -55,7 +55,7 @@ The run command deliberately has no `--restart` flag, so the IDE never launches 
 Your files live in `~/UNLV/x86-workspace` on your own computer, so updating never touches them. Pull the latest image, replace the container, and rerun:
 
 ```bash
-docker pull seancnc/unlv-x86-ide
+docker pull --platform linux/amd64 seancnc/unlv-x86-ide
 docker stop unlv-x86-ide && docker rm unlv-x86-ide
 docker run -it --platform linux/amd64 --name unlv-x86-ide -p 127.0.0.1:8218:8080 -v "$HOME/UNLV/x86-workspace:/home/coder/workspace" seancnc/unlv-x86-ide
 ```
