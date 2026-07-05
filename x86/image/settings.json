@@ -5,6 +5,7 @@
   "code-runner.runInTerminal": true,
   "code-runner.saveFileBeforeRun": true,
   "files.autoSave": "afterDelay",
+  "security.workspace.trust.enabled": false,
   "workbench.startupEditor": "none",
   "workbench.colorTheme": "Default Dark Modern",
   "workbench.tips.enabled": false,

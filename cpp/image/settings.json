@@ -6,6 +6,7 @@
   "code-runner.runInTerminal": true,
   "code-runner.saveFileBeforeRun": true,
   "files.autoSave": "afterDelay",
+  "security.workspace.trust.enabled": false,
 
   "chat.disableAIFeatures": true,
   "chat.agent.enabled": false,
