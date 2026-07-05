@@ -8,10 +8,12 @@ The coursework is x86-64 Linux assembly, so the container itself must be x86-64 
 
 **On Apple Silicon Macs** this still works: Docker Desktop translates the container's x86-64 instructions to ARM on the fly (emulation), so everything behaves the same, just a little slower. Forgetting the `--platform linux/amd64` flag is the number one gotcha — always include it.
 
+**One emulation limitation:** assembling, linking, and running programs all work on Apple Silicon, but `gdb` cannot debug under emulation (the emulator does not implement `ptrace`). For assignments that require running gdb/debugger scripts, use an Intel/AMD machine (Windows PC, Intel Mac, or a campus lab computer).
+
 ## What's Inside
 
 - Ubuntu 22.04 with code-server 4.96.4 (auth disabled, served on port 8080 inside the container)
-- nasm 2.15, GNU ld (binutils), gdb 12.1, make, plus gcc/g++ (`build-essential`, `gcc-multilib`)
+- yasm and nasm assemblers (CS 218 makefiles use `yasm`), GNU ld (binutils), gdb 12.1, make, plus gcc/g++ (`build-essential`, `gcc-multilib`)
 - Extension: Code Runner — the Run button assembles with `nasm -f elf64`, links with `ld`, and runs the result
 - Autosave is on (`files.autoSave: afterDelay`), so your work is written to disk as you type
 - Starter files `hello.asm` and a `Makefile`, seeded into your workspace folder on the first run

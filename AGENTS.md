@@ -71,4 +71,6 @@ docker rm -f smoke-x86
 - Starter files ship in `/opt/starter/`; `entrypoint.sh` seeds them only into an empty workspace on first run and never overwrites existing student work.
 - Each `settings.json` pins AI kill-switch keys validated against the bundled VS Code version: cpp (code-server 4.126.0 / Code 1.126) uses `chat.disableAIFeatures` and related keys; x86 (code-server 4.96.4 / Code 1.96) uses `chat.commandCenter.enabled` and related keys. Never remove or "clean up" these keys.
 - No `--restart` policy in any documented command, and no `VOLUME` instruction in the Dockerfiles (it would strand anonymous volumes).
+- The x86 image must ship **yasm** (CS 218 course makefiles invoke `yasm`, not nasm) — never remove it.
+- gdb inside the x86 image works only on native amd64 hosts: Docker Desktop's Rosetta/QEMU emulation does not implement `ptrace`, so debugger-script assignments cannot run on Apple Silicon. Running/assembling is unaffected.
 - Legacy Docker Hub image `seancnc/unlv-cs-ide` (arm64-only) is deprecated — do not build or publish to it.
