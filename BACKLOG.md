@@ -9,12 +9,14 @@ quotes; items apply to both images unless noted.
   `Update Instructions.docx` handouts in `cpp/` and `x86/` still describe the old
   workflow (named volumes, legacy image name). Maintainer to revise them to match
   the bind-mount commands in the READMEs.
-- [ ] **"Standardize updates to allow for multiple maintainers"** — define a
-  release process that doesn't live in one person's head: version tags on Docker
-  Hub (not just `latest`), a documented build/push checklist (or CI), and
-  contributor guidance in AGENTS.md.
 
 ## Completed by the July 2026 rebuild
+
+- [x] **"Standardize updates to allow for multiple maintainers"** — dated
+  version tags on Docker Hub (`2026.07`) alongside `latest`, publish commands
+  and conventions in AGENTS.md, and `scripts/release-check.sh`: an end-to-end
+  release gate that pulls the published images and runs the documented student
+  commands verbatim (with a docs-drift guard).
 
 - [x] **"Bind the terminal name"** — both images now run with `--app-name`
   ("UNLV C++ IDE" / "UNLV x86 IDE") and ship custom favicons (scarlet **C**,

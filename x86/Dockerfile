@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
     curl build-essential gcc-multilib gdb nasm yasm binutils make sudo \
     && rm -rf /var/lib/apt/lists/*
 
-RUN curl -fsSL https://code-server.dev/install.sh | sh -s -- --version 4.96.4
+RUN curl -fsSL https://code-server.dev/install.sh | sh -s -- --version 4.126.0
 
 RUN useradd -m -s /bin/bash coder && \
     echo "coder ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers

@@ -45,6 +45,12 @@ docker buildx build --platform linux/amd64,linux/arm64 --push -t seancnc/unlv-cp
 docker buildx build --platform linux/amd64 --provenance=false --sbom=false --push -t seancnc/unlv-x86-ide:latest -t seancnc/unlv-x86-ide:2026.07 x86/
 ```
 
+After pushing, run the release check — it pulls the published images and executes the documented student commands verbatim (docs-drift guard included). A release is not done until it passes:
+
+```bash
+scripts/release-check.sh
+```
+
 **Never build/publish x86 multi-arch.** The coursework is x86-64 assembly; an arm64 variant would give students an ARM userland where NASM x86-64 sources cannot assemble or run. ARM hosts (Apple Silicon) run the amd64 image under Docker Desktop emulation via `--platform linux/amd64` — this is prescribed in the design doc.
 
 ## Smoke Test
@@ -67,12 +73,12 @@ docker rm -f smoke-x86
 
 - The `.docx` files ("Design Document", "Update Instructions") are the primary student deliverables, edited only by the maintainer. **Never modify them.**
 - `README.md` and `*.docx` are excluded from build contexts via each folder's `.dockerignore` — doc edits never change image content.
-- code-server versions are pinned in the Dockerfiles (cpp: 4.126.0, x86: 4.96.4). Bump deliberately, not incidentally.
+- code-server is pinned to 4.126.0 in both Dockerfiles. Bump deliberately, not incidentally, and keep the two images on the same version.
 - Container port is always 8080; documented host ports mirror the course numbers — 8135 (cpp, CS 135) and 8218 (x86, CS 218) — so both IDEs run side by side.
 - Auth is disabled (`--auth none`) and documented run commands bind to 127.0.0.1 only.
 - Student files live in host folders bind-mounted over `/home/coder/workspace` (documented as `~/UNLV/cpp-workspace` / `~/UNLV/x86-workspace`) — never named volumes. Update path: `docker pull`, stop/remove the container, re-run with the same `-v`; host files are untouched.
 - Starter files ship in `/opt/starter/`; `entrypoint.sh` seeds them only into an empty workspace on first run and never overwrites existing student work.
-- Each `settings.json` pins AI kill-switch keys validated against the bundled VS Code version: cpp (code-server 4.126.0 / Code 1.126) uses `chat.disableAIFeatures` and related keys; x86 (code-server 4.96.4 / Code 1.96) uses `chat.commandCenter.enabled` and related keys. Never remove or "clean up" these keys.
+- Both `settings.json` files pin the AI kill-switch keys validated against Code 1.126 (`chat.disableAIFeatures` and related). Never remove or "clean up" these keys; re-validate them against the bundled VS Code whenever the code-server pin changes.
 - No `--restart` policy in any documented command, and no `VOLUME` instruction in the Dockerfiles (it would strand anonymous volumes).
 - The x86 image must ship **yasm** (CS 218 course makefiles invoke `yasm`, not nasm) — never remove it.
 - gdb inside the x86 image works only on native amd64 hosts: Docker Desktop's Rosetta/QEMU emulation does not implement `ptrace`, so debugger-script assignments cannot run on Apple Silicon. Running/assembling is unaffected.

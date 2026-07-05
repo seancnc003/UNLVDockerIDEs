@@ -12,7 +12,7 @@ The coursework is x86-64 Linux assembly, so the container itself must be x86-64 
 
 ## What's Inside
 
-- Ubuntu 22.04 with code-server 4.96.4 (auth disabled, served on port 8080 inside the container)
+- Ubuntu 22.04 with code-server 4.126.0 (auth disabled, served on port 8080 inside the container)
 - yasm and nasm assemblers (CS 218 makefiles use `yasm`), GNU ld (binutils), gdb 12.1, make, plus gcc/g++ (`build-essential`, `gcc-multilib`)
 - Extension: Code Runner — the Run button assembles with `nasm -f elf64`, links with `ld`, and runs the result
 - Autosave is on (`files.autoSave: afterDelay`), so your work is written to disk as you type
