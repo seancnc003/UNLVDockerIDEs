@@ -48,8 +48,8 @@ The run command deliberately has no `--restart` flag, so the IDE never launches 
 Your files live in `~/UNLV/cpp-workspace` on your own computer, so updating never touches them. Pull the latest image, replace the container, and rerun:
 
 ```bash
-docker pull seancnc/unlv-cpp-ide
 docker stop unlv-cpp-ide && docker rm unlv-cpp-ide
+docker pull seancnc/unlv-cpp-ide && docker image prune -f
 docker run -it --name unlv-cpp-ide -p 127.0.0.1:8135:8080 -v "$HOME/UNLV/cpp-workspace:/home/coder/workspace" seancnc/unlv-cpp-ide
 ```
 
