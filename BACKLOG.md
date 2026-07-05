@@ -5,10 +5,6 @@ quotes; items apply to both images unless noted.
 
 ## Open
 
-- [ ] **"Bind the terminal name"** — brand the IDE title so the browser tab and
-  window say "UNLV C++ IDE" / "UNLV x86 IDE" instead of generic code-server text
-  (likely `code-server --app-name`, or `window.title` in settings.json).
-  *Interpretation unconfirmed — original item was one line.*
 - [ ] **"Update setup and update instructions"** — the `Design Document.docx` and
   `Update Instructions.docx` handouts in `cpp/` and `x86/` still describe the old
   workflow (named volumes, legacy image name). Maintainer to revise them to match
@@ -19,6 +15,10 @@ quotes; items apply to both images unless noted.
   contributor guidance in AGENTS.md.
 
 ## Completed by the July 2026 rebuild
+
+- [x] **"Bind the terminal name"** — both images now run with `--app-name`
+  ("UNLV C++ IDE" / "UNLV x86 IDE") and ship custom favicons (scarlet **C**,
+  charcoal **X**) replacing code-server's default tab icon.
 
 - [x] **"Bind the container name"** — run commands pin `--name unlv-cpp-ide` /
   `--name unlv-x86-ide`.

@@ -35,6 +35,9 @@ COPY --chown=coder:coder image/settings.json /home/coder/.local/share/code-serve
 COPY --chown=coder:coder image/starter/ /opt/starter/
 COPY --chown=coder:coder image/entrypoint.sh /usr/local/bin/entrypoint.sh
 
+# Course branding: replace code-server's default favicon set (browser tab icon).
+COPY image/branding/ /usr/lib/code-server/src/browser/media/
+
 # No VOLUME instruction on purpose: students bind-mount a host folder (see
 # Usage above). A VOLUME here would silently create stray anonymous volumes
 # whenever the container is run without -v.
@@ -42,4 +45,4 @@ COPY --chown=coder:coder image/entrypoint.sh /usr/local/bin/entrypoint.sh
 EXPOSE 8080
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-CMD ["code-server", "--bind-addr", "0.0.0.0:8080", "--auth", "none", "--disable-telemetry", "--disable-update-check", "/home/coder/workspace"]
+CMD ["code-server", "--bind-addr", "0.0.0.0:8080", "--auth", "none", "--app-name", "UNLV x86 IDE", "--disable-telemetry", "--disable-update-check", "/home/coder/workspace"]

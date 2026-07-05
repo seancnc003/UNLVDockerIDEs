@@ -38,10 +38,13 @@ COPY --chown=coder:coder image/settings.json /home/coder/.local/share/code-serve
 COPY --chown=coder:coder image/starter/ /opt/starter/
 COPY --chown=coder:coder image/entrypoint.sh /usr/local/bin/entrypoint.sh
 
+# Course branding: replace code-server's default favicon set (browser tab icon).
+COPY image/branding/ /usr/lib/code-server/src/browser/media/
+
 # No VOLUME instruction: the documented run command bind-mounts the workspace,
 # and a VOLUME here would leave stray anonymous volumes behind whenever the
 # image is run without -v.
 EXPOSE 8080
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-CMD ["code-server", "--bind-addr", "0.0.0.0:8080", "--auth", "none", "--disable-telemetry", "--disable-update-check", "/home/coder/workspace"]
+CMD ["code-server", "--bind-addr", "0.0.0.0:8080", "--auth", "none", "--app-name", "UNLV C++ IDE", "--disable-telemetry", "--disable-update-check", "/home/coder/workspace"]
