@@ -89,6 +89,13 @@ check "x86 assembles and runs"       "docker exec unlv-x86-ide bash -c 'cd ~/wor
 check "x86 ships yasm (CS 218 makefiles)" "docker exec unlv-x86-ide yasm --version"
 check "cpp extensions installed"     "[ \"\$(docker exec unlv-cpp-ide code-server --list-extensions | wc -l | tr -d ' ')\" = 3 ]"
 check "x86 extension installed"      "docker exec unlv-x86-ide code-server --list-extensions | grep -q code-runner"
+# Run-button regression guards (July 2026 audit): the x86 executor must be
+# keyed by FILE EXTENSION — an executorMap "asm" language key is dead config
+# because nothing registers an "asm" languageId; the grammar extension gives
+# .asm highlighting + word-based autocomplete; the C command must link libm.
+check "x86 Run keyed by .asm extension" "docker exec unlv-x86-ide grep -q executorMapByFileExtension /home/coder/.local/share/code-server/User/settings.json"
+check "x86 asm language extension"   "docker exec unlv-x86-ide code-server --list-extensions | grep -q language-x86-64-assembly"
+check "cpp C Run command links libm" "docker exec unlv-cpp-ide grep -q -- -lm /home/coder/.local/share/code-server/User/settings.json"
 
 echo "== Cleanup =="
 docker rm -f unlv-cpp-ide unlv-x86-ide >/dev/null 2>&1
