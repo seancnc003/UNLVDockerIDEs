@@ -82,8 +82,9 @@ jobs:
           grep -q 'Breakpoint 1' <<<"$gdb_output"
           grep -Eq '^rip[[:space:]]+' <<<"$gdb_output"
 
-          printf 'student work survives replacement\n' > \
-            "$RUNNER_TEMP/UNLV/x86-workspace/student-file.txt"
+          docker exec unlv-x86-ci sh -c \
+            "printf 'student work survives replacement\n' > \
+              /home/coder/workspace/student-file.txt"
           docker rm -f unlv-x86-ci
           docker run -d \
             --platform linux/amd64 \
