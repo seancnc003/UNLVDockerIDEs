@@ -35,6 +35,10 @@ jobs:
         shell: bash
         run: |
           mkdir -p "$RUNNER_TEMP/UNLV/x86-workspace"
+          # The image deliberately uses UID/GID 1000 to match the first user on
+          # a normal Linux installation. GitHub's hosted runner uses UID 1001,
+          # so make this temporary workspace represent the documented host.
+          sudo chown 1000:1000 "$RUNNER_TEMP/UNLV/x86-workspace"
           docker run -d \
             --platform linux/amd64 \
             --name unlv-x86-ci \
