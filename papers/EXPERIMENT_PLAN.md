@@ -41,11 +41,14 @@ Docker Desktop + WSL2, which requires nested virtualization)?
 
 ## The automated matrix (what Results will contain)
 
-**All three cloud cells run on AWS, provisioned identically by one driver**
-(`scripts/aws-matrix.sh` — parallel launch, results to S3, self-terminating,
-≈ $0.60–1.00 per full run). Single-provider uniformity is deliberate: one
-methodology sentence covers every cloud row. Cell 4 is the same published
-script on owned consumer hardware.
+**All three cloud cells run on AWS.** Provisioning follows the hands-on
+runbook ([AWS_RUNBOOK.md](./AWS_RUNBOOK.md)) — operator-provisioned per
+documented steps, console and CLI — while **measurement is always the same
+published script**, which is what makes the numbers reproducible. Single
+provider is deliberate: one methodology sentence covers every cloud row.
+`scripts/aws-matrix.sh` automates the identical procedure end-to-end and
+serves as the capstone/replication path. Cell 4 is the same script on owned
+consumer hardware.
 
 | # | Cell | Where | x86 image mode | Expected gdb | Cost |
 | --- | --- | --- | --- | --- | --- |
@@ -89,9 +92,9 @@ State these plainly in the paper; do not present partial coverage as full:
 
 ## Protocol — identical in every cell
 
-1. Provision from script (`scripts/aws-matrix.sh` launches cells 1–3 in
-   parallel from per-cell user-data). Record instance type, CPU, RAM, OS
-   build, Docker version.
+1. Provision per the runbook (cells 1–3 on AWS: console/CLI steps in
+   AWS_RUNBOOK.md; `scripts/aws-matrix.sh` is the automated equivalent).
+   Record instance type, CPU, RAM, OS build, Docker version.
 2. Run `bash scripts/ci-test.sh cpp && bash scripts/ci-test.sh x86`.
 3. Collect the JSONs (S3 → `results-aws/<cell>/` for cells 1–3; local
    `results/` for cell 4), stamped with host-spec record and image digests.
@@ -101,9 +104,9 @@ State these plainly in the paper; do not present partial coverage as full:
 
 ## Execution order (next block)
 
-1. Run `scripts/aws-matrix.sh` → cells 1–3 in one command (≈ $0.60–1.00).
-   Expect 1–2 debug iterations on the Windows user-data path; the Linux
-   cells should land on the first try.
+1. Work through AWS_RUNBOOK.md phases 0–5 → cells 1–3, hands-on (≈ $2–3,
+   five sessions). Optional capstone afterward: run `scripts/aws-matrix.sh`
+   once and diff its results against the manual runs.
 2. Cell 4: run `bash scripts/ci-test.sh cpp && bash scripts/ci-test.sh x86`
    on the 14-inch M1 Pro/16 GB MacBook Pro; keep the JSONs with a host-spec
    record (macOS version, Docker Desktop version, hardware model). If the
