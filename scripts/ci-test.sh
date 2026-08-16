@@ -58,6 +58,12 @@ fi
 elapsed() { awk -v a="$1" -v b="$2" 'BEGIN{printf "%.1f", b-a}'; }
 
 WS="$(mktemp -d /tmp/unlv-ci-ws.XXXXXX)"
+# mktemp makes the dir 700, owned by the invoking user. On native Linux the
+# bind mount exposes raw host ownership, and the container's coder user (UID
+# 1000) may not match (CI runners are 1001) — the documented student flow
+# assumes the typical desktop UID 1000. Open the harness dir so the test
+# works for any UID; Docker Desktop hosts ignore this (ownership is mapped).
+chmod 777 "$WS"
 mkdir -p results
 docker rm -f "$CONTAINER" >/dev/null 2>&1 || true
 
