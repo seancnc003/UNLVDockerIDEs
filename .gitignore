@@ -2,5 +2,9 @@
 archive/
 code/
 
+# Generated test results (scripts/ci-test.sh, scripts/aws-windows-cell.sh)
+results/
+results-aws/
+
 # macOS
 .DS_Store

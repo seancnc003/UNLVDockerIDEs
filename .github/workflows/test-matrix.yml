@@ -1,0 +1,102 @@
+name: Test matrix
+
+# Automated student-workflow tests across the platform matrix the paper
+# reports: both images × (Linux/amd64 native, Linux/arm64). The x86 image on
+# the arm64 runner runs under QEMU emulation — deliberately, to reproduce and
+# document the ARM-host experience including the gdb/ptrace limitation.
+#
+# Hosted CI cannot cover Docker Desktop on Windows/macOS (Windows runners
+# lack Linux containers; macOS runners lack Docker entirely). Those cells of
+# the paper's platform matrix are tested manually and labeled as such.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 12 * * 1'   # weekly, so drift in published images surfaces
+  workflow_run:
+    workflows: ['Publish x86 image', 'Publish cpp image']
+    types: [completed]
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/ci-test.sh'
+      - '.github/workflows/test-matrix.yml'
+
+jobs:
+  test:
+    # Skip when triggered by a publish run that itself failed.
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    name: ${{ matrix.image }} on ${{ matrix.arch }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { runner: ubuntu-24.04,     arch: amd64, image: cpp }
+          - { runner: ubuntu-24.04,     arch: amd64, image: x86 }
+          - { runner: ubuntu-24.04-arm, arch: arm64, image: cpp }
+          - { runner: ubuntu-24.04-arm, arch: arm64, image: x86 }
+    steps:
+      - uses: actions/checkout@v4
+
+      # binfmt/QEMU so the arm64 runner can execute the amd64-only x86 image —
+      # the same emulated situation an Apple Silicon student is in. (Docker
+      # Desktop uses its own emulation layer, so results are labeled
+      # "emulated (QEMU/CI)" in the paper, not presented as Desktop numbers.)
+      - name: Enable amd64 emulation (QEMU)
+        if: matrix.arch == 'arm64' && matrix.image == 'x86'
+        uses: docker/setup-qemu-action@v3
+
+      - name: Run student-workflow tests
+        run: bash scripts/ci-test.sh ${{ matrix.image }}
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: results-${{ matrix.image }}-${{ matrix.arch }}
+          path: results/
+
+  summarize:
+    name: Combined results table
+    needs: test
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: results
+          merge-multiple: true
+
+      - name: Build combined table
+        run: |
+          python3 - <<'EOF'
+          import glob, json, os
+          rows = []
+          for path in sorted(glob.glob('results/*.json')):
+              with open(path) as f:
+                  rows.append(json.load(f))
+          lines = [
+              '## Platform matrix — combined results',
+              '',
+              '| Image | Host arch | Mode | Size (MB) | Start (s) | Compile+run (s) | gdb | Idle mem | Persistence | Pass/Fail |',
+              '| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |',
+          ]
+          for r in rows:
+              compile_runs = ', '.join(str(x) for x in r['compile_run_seconds'])
+              lines.append(
+                  f"| {r['kind']} | {r['host_arch']} | {r['mode']} | {r['size_mb']} "
+                  f"| {r['start_to_healthy_seconds']} | {compile_runs} | {r['gdb']} "
+                  f"| {r['idle_memory']} | {r['persistence']} | {r['passed']}/{r['failed']} |")
+          lines += ['', 'Digests:', '']
+          for r in rows:
+              lines.append(f"- {r['kind']}/{r['host_arch']}: `{r['digest']}` (code-server {r['code_server']}; {r['tools']})")
+          out = '\n'.join(lines) + '\n'
+          print(out)
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as f:
+              f.write(out)
+          EOF
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: results-combined
+          path: results/
