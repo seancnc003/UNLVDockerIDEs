@@ -72,8 +72,8 @@ docker rm -f smoke-x86
 ## Automated Tests (research-paper platform matrix)
 
 - `scripts/ci-test.sh <cpp|x86>` — measured student-workflow test (pull, startup, seeding, compile+run timings, gdb probe, persistence). Emits `results/*.json`. Runs anywhere Docker does.
-- `.github/workflows/test-matrix.yml` — runs it on Linux amd64 + arm64 (QEMU for the x86 image), weekly and after every publish; combined results table in the run summary.
-- `scripts/aws-windows-cell.sh` — zero-touch AWS run of the Windows/Docker Desktop cell (~$0.60); results to `results-aws/`. See `papers/EXPERIMENT_PLAN.md` for the full matrix and methodology.
+- `scripts/aws-matrix.sh` — the research results source: launches all three cloud cells (Linux amd64, Linux arm64/Graviton, Windows Server + Docker Desktop) on AWS in parallel, zero-touch, self-terminating (~$0.60–1.00/run); results to `results-aws/`. The fourth cell runs `ci-test.sh` locally on a Mac. See `papers/EXPERIMENT_PLAN.md`.
+- `.github/workflows/test-matrix.yml` — manual-trigger-only Linux regression check (never runs on its own; not a results source).
 
 ## Conventions and Gotchas
 

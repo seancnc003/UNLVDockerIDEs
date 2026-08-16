@@ -1,31 +1,16 @@
 name: Test matrix
 
-# Automated student-workflow tests across the platform matrix the paper
-# reports: both images × (Linux/amd64 native, Linux/arm64). The x86 image on
-# the arm64 runner runs under QEMU emulation — deliberately, to reproduce and
-# document the ARM-host experience including the gdb/ptrace limitation.
-#
-# Hosted CI cannot cover Docker Desktop on Windows/macOS (Windows runners
-# lack Linux containers; macOS runners lack Docker entirely). Those cells of
-# the paper's platform matrix are tested manually and labeled as such.
+# On-demand regression check ONLY — runs both images' student workflows on
+# Linux amd64 + arm64 (QEMU for the x86 image). NOT a source of research
+# results: the paper's platform matrix runs on AWS via scripts/aws-matrix.sh
+# (see papers/EXPERIMENT_PLAN.md). Trigger manually from the Actions tab
+# before a release to catch image breakage; it never runs on its own.
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 12 * * 1'   # weekly, so drift in published images surfaces
-  workflow_run:
-    workflows: ['Publish x86 image', 'Publish cpp image']
-    types: [completed]
-  push:
-    branches: [main]
-    paths:
-      - 'scripts/ci-test.sh'
-      - '.github/workflows/test-matrix.yml'
 
 jobs:
   test:
-    # Skip when triggered by a publish run that itself failed.
-    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     name: ${{ matrix.image }} on ${{ matrix.arch }}
     runs-on: ${{ matrix.runner }}
     strategy:

@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------------------
-# UNLV Docker IDEs — user-data for the AWS Windows matrix cell (cell 3).
-# Rendered and launched by scripts/aws-windows-cell.sh (placeholders
+# UNLV Docker IDEs — user-data for the AWS Windows matrix cell.
+# Rendered and launched by scripts/aws-matrix.sh (placeholders
 # __BUCKET__ __PREFIX__ __REGION__ __RAW_BASE__ are substituted there; the
 # driver wraps this in <powershell>...</powershell> + <persist>true</persist>).
 #

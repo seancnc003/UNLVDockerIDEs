@@ -41,28 +41,35 @@ Docker Desktop + WSL2, which requires nested virtualization)?
 
 ## The automated matrix (what Results will contain)
 
+**All three cloud cells run on AWS, provisioned identically by one driver**
+(`scripts/aws-matrix.sh` — parallel launch, results to S3, self-terminating,
+≈ $0.60–1.00 per full run). Single-provider uniformity is deliberate: one
+methodology sentence covers every cloud row. Cell 4 is the same published
+script on owned consumer hardware.
+
 | # | Cell | Where | x86 image mode | Expected gdb | Cost |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Linux amd64, Docker Engine | GitHub Actions `ubuntu-24.04` — weekly + on every publish | native | working | $0 |
-| 2 | Linux arm64, Docker Engine (+ QEMU binfmt for x86 image) | GitHub Actions `ubuntu-24.04-arm` | emulated | broken (expected) | $0 |
-| 3 | Windows amd64, Docker Desktop + WSL2 | **AWS `m8i.xlarge`**, Windows Server 2025, nested virt enabled at launch; provisioned and executed by script (user-data → WSL2 + Docker Desktop silent install → reboot → scheduled-task continuation runs `ci-test.sh` in WSL bash → results uploaded to S3 → instance self-terminates) | native | working | ≈ $2/run |
+| 1 | Linux amd64, Docker Engine | AWS `m8i.large`, Ubuntu 24.04 | native | working | ≈ $0.05 |
+| 2 | Linux arm64, Docker Engine (+ QEMU binfmt for the x86 image) | AWS `m8g.large` (Graviton), Ubuntu 24.04 | emulated | broken (expected) | ≈ $0.05 |
+| 3 | Windows amd64, Docker Desktop + WSL2 | AWS `m8i.xlarge`, Windows Server 2025, nested virt enabled at launch (user-data → WSL2 + Docker Desktop silent install → reboot → scheduled task runs `ci-test.sh` in WSL → S3 → self-terminate) | native | working | ≈ $0.60 |
 | 4 | macOS arm64 (Apple Silicon), Docker Desktop | **Owned consumer hardware:** 14-inch MacBook Pro (2021), base configuration — M1 Pro, 16 GB. The unmodified published `ci-test.sh`, script-executed (human types one command; all measurement is scripted). Deliberately NOT the 64 GB development machine: base-spec M1 Pros dominate the 2026 used market, so this cell represents what a budget-conscious student actually buys. | emulated (Docker Desktop layer) | broken (expected) | $0 |
 
-Cell 3 is specified on AWS per project preference. If the Server-vs-11
-fidelity gap matters more than single-cloud simplicity, the identical
-automation runs on Azure with a Windows 11 Pro image — the paper then reports
-the students' actual OS. Either way, exactly one Windows cell is run.
+Cell 3 is Windows Server 2025 (AWS offers no Windows 11 client images); it
+shares its kernel with Windows 11 24H2 and verifies the WSL2/Docker Desktop
+pipeline rather than a specific consumer configuration — labeled as such.
 
-Cells 1–3 are fully autonomous; cell 4 is the same script on consumer
-hardware, labeled as such in the Results table's provenance column. Cell 4
-earns its row twice over: it is the only source of consumer-hardware timings
-(every cloud/CI cell is server-class, best-case), and it tests Docker
+Cell 4 earns its row twice over: it is the only source of consumer-hardware
+timings (every cloud cell is server-class, best-case), and it tests Docker
 Desktop's emulation layer, which cell 2's QEMU/binfmt approximates but does
 not reproduce.
 
 The emulation-boundary finding (gdb works native / breaks emulated) is
 demonstrated across cells: native 1 and 3 vs. emulated 2 and 4 — two
 independent emulation layers (QEMU and Docker Desktop).
+
+*(A GitHub Actions workflow with the same Linux coverage exists as a
+manual-trigger engineering regression check only — it is never cited as a
+results source.)*
 
 ## Excluded cells → Discussion / Future Work (accepted limitations)
 
@@ -82,27 +89,26 @@ State these plainly in the paper; do not present partial coverage as full:
 
 ## Protocol — identical in every cell
 
-1. Provision from script (workflow YAML for cells 1–2; IaC + user-data for
-   cell 3). Record instance type, CPU, RAM, OS build, Docker version.
+1. Provision from script (`scripts/aws-matrix.sh` launches cells 1–3 in
+   parallel from per-cell user-data). Record instance type, CPU, RAM, OS
+   build, Docker version.
 2. Run `bash scripts/ci-test.sh cpp && bash scripts/ci-test.sh x86`.
-3. Collect `results/*.json` (workflow artifacts for cells 1–2; S3 upload for
-   cell 3), stamped with host-spec record and image digests.
-4. Tear down automatically: CI runners are ephemeral; the cell-3 instance
-   self-terminates on completion (with a CloudWatch alarm as a
-   forgot-to-terminate backstop).
+3. Collect the JSONs (S3 → `results-aws/<cell>/` for cells 1–3; local
+   `results/` for cell 4), stamped with host-spec record and image digests.
+4. Tear down automatically: every instance self-terminates on completion,
+   with a per-instance scheduled-shutdown failsafe and a terminate-all trap
+   in the driver.
 
 ## Execution order (next block)
 
-1. Push `scripts/ci-test.sh` + `.github/workflows/test-matrix.yml`; trigger
-   the Test matrix workflow → cells 1–2 produce their first JSONs.
-2. Author the cell-3 automation (Terraform or a boto3 script + PowerShell
-   user-data; nested-virt CpuOption at launch; S3 results bucket;
-   self-termination). Dry-run once, then a clean measured run (≈ $2).
-3. Cell 4: run `bash scripts/ci-test.sh cpp && bash scripts/ci-test.sh x86`
+1. Run `scripts/aws-matrix.sh` → cells 1–3 in one command (≈ $0.60–1.00).
+   Expect 1–2 debug iterations on the Windows user-data path; the Linux
+   cells should land on the first try.
+2. Cell 4: run `bash scripts/ci-test.sh cpp && bash scripts/ci-test.sh x86`
    on the 14-inch M1 Pro/16 GB MacBook Pro; keep the JSONs with a host-spec
    record (macOS version, Docker Desktop version, hardware model). If the
    assembly workflow fails on this machine — contrary to the 64 GB machine's
    earlier smoke test — that is a finding to report and diagnose, not an
    anomaly to discard.
-4. Assemble the platform-matrix table from the JSONs → paper §Results.
-5. Write the excluded-cells text into §Discussion and §Future Work.
+3. Assemble the platform-matrix table from the JSONs → paper §Results.
+4. Write the excluded-cells text into §Discussion and §Future Work.
