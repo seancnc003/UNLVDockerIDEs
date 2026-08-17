@@ -541,3 +541,43 @@ Begin with these five readings, in order:
 5. Harvie et al., “Using Virtual Machines to Enhance the Educational Experience”
 
 Then read Malan 2013 for the historical argument, Laadan et al. for local appliances, CodeDive for the centralized browser-based alternative, and Teaching CS50 with AI for the AI-policy contrast.
+
+## Author's working notes (2026-08-16)
+
+Raw planning notes recorded after the first literature pass; see `LITERATURE_SUMMARIES.md` for the per-paper evidence backing these points.
+
+### Paper writing focuses
+
+**Advantages:**
+
+- Reducing friction and resources spent on setup so class time focuses on conceptual learning.
+- Reducing monetary spend on servers or compute resources, and bypassing potential internet issues.
+- User-host vs. cloud-solution trade-offs for privacy and for continuance after the course ends (students keep their environment; no offboarding problem).
+- Ability to work remotely instead of having to access specialized devices on campus.
+- Increased access: students can use any machine they own to run the programs.
+- Control over the student development experience, with no back-and-forth with IT during updates.
+
+**Limitations:**
+
+- Advanced topics that require more resources — Cybersecurity, Operating Systems, Machine Learning — are naturally harder for Docker container solutions to cover. *(Scope note: the Lightweight Symphony quote makes this claim about cloud-hosted Codespaces, not about local Docker — Fernalld et al. themselves ran OS and Cybersecurity courses on local Docker successfully. Frame this limitation as resource ceilings of student hardware, not of containers per se.)*
+- Lack of a working debugger on Mac ARM-based machines due to emulation limitations (the documented gdb/ptrace boundary).
+
+**Applicability:**
+
+- Mention UNLV's own historical arc and the VMs previously provided to students that have not been updated in a while (CSN/UNLV Linux servers, e.g. "sally" accessed over PuTTY — research in progress).
+- This is applied research focused on solving a problem affecting 300+ UNLV students yearly.
+
+### Experiment design
+
+**Simulation:**
+
+- Run AWS compute instances to stand in for student machines when measuring compilation and testing behavior.
+
+**Limitations:**
+
+- Turnaround time is short; a student survey and longitudinal key metrics cannot be collected this cycle.
+
+**Metrics:**
+
+- Comparison of grades.
+- Reduction of in-class setup time.
