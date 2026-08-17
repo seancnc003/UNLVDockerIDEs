@@ -1,0 +1,148 @@
+# Institutional Linux Servers and VMs at CSN and UNLV
+
+**Purpose.** This document records what the College of Southern Nevada (CSN) and the University of Nevada, Las Vegas (UNLV) have historically provided to computer science students as shared compute infrastructure — departmental Linux login servers reached over SSH, and institutionally provided virtual machines — and assesses how current and maintained each offering is. It exists to ground the "institutional status quo" / historical-arc motivation section of the applied research paper on UNLV's Docker-based course IDEs for CS 202 (C++) and CS 218 (x86-64 assembly). All sources were accessed on August 16, 2026 (some HTTP responses carry an August 17, 2026 UTC date stamp). Every claim below is labeled by evidence strength: **[verified]** means the cited page or file was fetched directly during this research; **[snippet]** means the claim comes from a search-engine cache/snippet of a page that now returns 404 and could not be re-fetched (the Internet Archive's Wayback Machine was temporarily offline — returning "Internet Archive: Temporarily Offline" — throughout the research session, so archived copies could not be pulled); **[unconfirmed]** means no supporting source was found.
+
+---
+
+## 1. CSN findings
+
+### 1.1 The server is `bellagio.csn.edu`, and it is still in service
+
+CSN's CIT department operates a student-facing Linux login server named **bellagio.csn.edu**. The server's own homepage, fetched live, describes it as "the general purpose login server for remote logins" and states that "Accounts are created automatically for students in courses utilizing the server at the beginning of the semester," with account inquiries directed to administrator Steven Romero via CSN email. **[verified]** (https://bellagio.csn.edu/, accessed 2026-08-16; the page's HTTP `Last-Modified` header read `Mon, 27 Jul 2026 23:23:20 GMT`, so the homepage was edited roughly three weeks before access.)
+
+A direct banner grab of `bellagio.csn.edu` port 22 on 2026-08-16 returned:
+
+```
+SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.16
+```
+
+OpenSSH 8.9p1 with the `3ubuntu0.16` patch suffix identifies **Ubuntu 22.04 LTS with recent security updates applied**. In other words, whatever its documentation looks like, the CSN server's operating system is a supported LTS release that is actively receiving patches. **[verified]** (TCP banner, port 22, 2026-08-16.)
+
+### 1.2 The authoritative student documentation is the 2017 "CIT Linux Lab Manual"
+
+The lab manual served from the server today is **"CIT Linux Lab Manual," Version 2017-08-05** — a nine-year-old document as of this access date. **[verified]** (https://bellagio.csn.edu/doc/labmanual.pdf, fetched and text-extracted 2026-08-16.) Verbatim quotes from the fetched PDF:
+
+- "bellagio.csn.edu (heretofore referred to as bellagio) is a Linux server maintained by the CIT department to provide remote access to computing resources for CIT students."
+- "The following manual presents basic information necessary for students utilizing the College of Southern Nevada's (CSN) Linux Server in conjunction with a variety of CIT, CS, and IS courses."
+- Windows access: "To access the Linux server using Windows, you will need to download and install MobaXterm … To connect to the server, launch MobaXterm, then select 'New Session' followed by 'SSH'. Fill in the server name (bellagio.csn.edu). Leave the port number unchanged."
+- macOS/Linux access: `$ ssh -X username@bellagio.csn.edu` (X11 forwarding via `-X`; Mac users are told to install XQuartz).
+- First-connection example reveals the server's IP: "The authenticity of host 'bellagio.csn.edu (131.216.135.130)' can't be established." (Note that 131.216.0.0/16 is the same NSHE/UNLV-managed address range in which UNLV's CS servers lived; see §2.)
+- Web password reset: "Browse to https://bellagio.csn.edu:5950/ … You must include the port number, 5950, to go to the correct Web page."
+- File transfer: SCP/SFTP on port 22, with FileZilla and MobaXterm's built-in SFTP browser as the documented clients.
+- Homework submission uses a `turnin` command (turnin-ng): "$ turnin –c cs135 –p lab03 –v filename".
+- The manual's shared-directory listing names the courses provisioned on the server: **cit131, cit176, cit231, cit251, cit252, cs135, cs202** — i.e., CSN's CIT Linux/networking sequence plus the transferable CS 135 and CS 202 programming courses.
+- Dated internals corroborate the document's age: it links to `http://www.nscee.edu/userSupport/unixRef.html` (the long-defunct National Supercomputing Center for Energy and the Environment) and ships `Introduction_to_Linux-20100512.pdf` and 2013/2015-era references in the shared directory. In 2017 the manual named **Kevin Mess** as server administrator ("contact the server administrator, Kevin Mess, for a password reset"), whereas the current homepage names Steven Romero — evidence the service has been handed over and is still administered.
+
+### 1.3 The surrounding CIT web materials are largely frozen circa 2015–2018
+
+The `https://bellagio.csn.edu/cit/` directory index (fetched live) lists content folders for academic years 2015–16 through 2017–18 with last-modified dates between May 2015 and December 2017, and carries the disclaimer "The page you are viewing is not sanctioned by CSN." A Fall 2018 CIT 151 syllabus is still hosted at a faculty path on the same server. **[verified]** (https://bellagio.csn.edu/cit/, accessed 2026-08-16; https://bellagio.csn.edu/~kpulling/DrKatePulling/Fall2018cit151Section3001.html seen in search results.)
+
+**CSN summary.** The accurate characterization for the paper is nuanced: CSN's *server* is well maintained (patched Ubuntu 22.04 LTS, homepage edited July 2026, active administrator), but the *student-facing documentation and course web materials* around it are five to nine years old, and the pedagogical model — a shared multi-user login box reached by SSH/X11 with `turnin`-style submission — is unchanged since at least 2017.
+
+### 1.4 "Sally" is not a CSN hostname
+
+No evidence was found of any CSN server named "sally." Searches for `sally.csn.edu`, "CSN sally server," and CSN CIT materials mentioning sally returned nothing; every "sally" hit resolved to **sally.cs.unlv.edu**, a UNLV Computer Science server (§2.2). If the repo owner remembers "sally," the memory almost certainly attaches to UNLV, not CSN. **[verified negative — see §2.2 for the positive identification]**
+
+---
+
+## 2. UNLV findings
+
+### 2.1 Current state (2025–2026): `cyrus` + Omnissa Horizon VMs
+
+UNLV CS's student-facing infrastructure portal is **tux.cs.unlv.edu** ("UNLV Computer Science Student Center," © 2025). The site was rebuilt recently: the entire old MediaWiki (`/wiki/index.php/*`) and a successor static-docs site (`/alt-tux-docs/*`) now return 404 from an nginx/Ubuntu server, and only a small set of new pages exists (`index.html`, `remote-access.html`, `file-storage.html`, `student-resources.html`, `contact.html`). **[verified]** (Fetched 2026-08-16.)
+
+From the live pages **[verified]**:
+
+- File storage / SSH: "SSH into `cyrus.cs.unlv.edu` using your ACE ID," with off-campus users told to "Connect to the UNLV VPN" first (https://tux.cs.unlv.edu/file-storage.html). Search snippets of the pre-rebuild docs give cyrus's address as 10.96.204.4 — a private RFC-1918 address, consistent with the VPN requirement. **[snippet]**
+- Remote VMs: students "remotely access virtual machines using Omnissa Horizon Client" with "24/7 access to virtual machines," connection server `workspaces.unlv.edu`, ACE credentials, VPN required off campus, and a stern warning that "All work must be saved in your Y: Drive. It is PERMANENTLY DELETED if you do not." The VMs "are monitored by UNLV OIT." (https://tux.cs.unlv.edu/remote-access.html.)
+- Web access to storage via `rebelfiles.unlv.edu`.
+
+So the *current* UNLV VM offering is a centrally managed VDI service (Omnissa, formerly VMware Horizon), not a distributed VM image; nothing on the live site suggests it is out of date.
+
+### 2.2 Historical state: `bobby`, `sally`, and `cardiac` — now decommissioned
+
+The strongest historical evidence comes from search-engine snippets of the now-deleted tux.cs.unlv.edu wiki and docs pages. These claims were surfaced consistently across multiple independent queries and page titles (SSH fingerprint, Remote access/Access, Linux Guide, CS Servers, Submit script), but the underlying pages 404 and the Wayback Machine was offline during research, so they are classified **[snippet]** throughout:
+
+- "Servers cardiac, sally, and bobby have been decommissioned." The snippets supply the hostnames and IPs: **bobby.cs.unlv.edu (131.216.23.6)**, **sally.cs.unlv.edu (131.216.23.103)**, **cardiac.cs.unlv.edu (131.216.23.8)**. (Source pages: https://tux.cs.unlv.edu/wiki/index.php/SSH_fingerprint and https://tux.cs.unlv.edu/alt-tux-docs/guide/servers.html, both now 404.)
+- "sally.cs.unlv.edu was upgraded on Sep 28, 2020 and has new SSH keys" — so sally was still being maintained as of late September 2020. (Same SSH-fingerprint page.)
+- The Linux Guide instructed students to `ssh username@bobby.cs.unlv.edu` and to transfer files with `sftp username@bobby.cs.unlv.edu`; assignment submission was via a `submit` script "located on bobby at /usr/bin/submit," used as `submit file.cpp 01 instructor`, and students "could not submit programs directly from lab computers, and had to SSH into bobby first." (https://tux.cs.unlv.edu/index.php?title=Linux_Guide and …?title=Submit_script, both now 404.)
+- The old wiki had a dedicated PuTTY page (search result title "UNLV | Tux Instructional Lab," URL https://tux.cs.unlv.edu/index.php?title=Putty, now 404), indicating PuTTY was the documented Windows client for the CS servers. The page content could not be retrieved.
+- No date for the decommissioning itself could be pinned; it falls somewhere between the September 2020 sally upgrade and the 2025 site rebuild that already describes the trio in the past tense. **[unconfirmed date]**
+
+An older, retrievable secondary source corroborates the bobby/cardiac era: the **UNLV CS 135 Lab Manual, "prepared by Lee Misch revised August 2012"** (mirrored on yumpu.com), states that "bobby.cs.unlv.edu is a Linux general purpose login machine that is available to provide remote access to CS computing resources for students currently enrolled in CS courses," that "cardiac.cs.unlv.edu and java.cs.unlv.edu are also available for remote login," and that the TBE lab computers were "dual boot machines" running "either Windows 7 or Linux" (CentOS 6.0). Its Windows instructions target the old ssh.com "Secure Shell Client." **[verified as a fetched mirror of a 2012 document]** (https://www.yumpu.com/en/document/view/9301261/unlv-computer-science-department-cs-135-lab-manual, accessed 2026-08-16.) A departmental "linuxmanual8_08.pdf" (August 2008) formerly at tux.cs.unlv.edu/lab_man/ appears in search indexes but now 404s. **[snippet]**
+
+### 2.3 Course-facing environment for CS 202 / CS 218
+
+- The official CS 218 syllabus template (April 2022 PDF on unlv.edu) describes the course and schedule but names no server or environment; infrastructure choices were evidently left to instructors. **[verified]** (https://www.unlv.edu/sites/default/files/media/document/2022-04/CS218-Syllabus.pdf, fetched and read in full.)
+- The de facto CS 218 environment is documented by the course's long-time textbook: Ed Jorgensen's open textbook **"x86-64 Assembly Language Programming with Ubuntu,"** hosted on his UNLV College of Engineering page, which states the examples "have only been tested under Ubuntu 16/18/22 LTS (64-bit)." Jorgensen's faculty page lists CS 218, CS 202, and eight other courses. Notably, both pages are reachable only over plain HTTP — `https://www.egr.unlv.edu/~ed/` refuses connections — a small but telling indicator of legacy hosting. **[verified]** (http://www.egr.unlv.edu/~ed/x86.html and http://www.egr.unlv.edu/~ed/, fetched 2026-08-16. Secondary sources date the last version as 1.1.24, November 2018. **[snippet]**)
+- UNLV's central IT still lists **"Oracle VirtualBox (Ubuntu)"** as student software, but only in six campus lab rooms (BEH 114/219, CHB C125/C129, TBE A311, TBE B367), with no version stated and no personal-download path. It also still lists the antique **"SSH Secure Shell"** Windows client ("supported by Rebelmail") across 16 lab locations. **[verified]** (https://www.it.unlv.edu/software/oracle-virtualbox-ubuntu and https://www.it.unlv.edu/software/ssh-secure-shell, accessed 2026-08-16.)
+- No evidence was found of an officially distributed, department-blessed VirtualBox/VMware **image** for CS 202 or CS 218 coursework, current or historical; the owner's recollection of provided VMs "that haven't been updated in a while" could not be confirmed from public sources and may refer to lab-machine images, instructor-specific images distributed through WebCampus (not publicly indexable), or the Horizon VDI pools. **[unconfirmed]**
+
+---
+
+## 3. Access tooling students were told to use
+
+| Tool | Institution | Evidence |
+|---|---|---|
+| MobaXterm (SSH + X11, Windows) | CSN | 2017 CIT Linux Lab Manual: the *only* Windows client it documents. "MobaXterm is installed on many CSN lab and classroom computers." **[verified]** |
+| `ssh -X` + XQuartz (macOS/Linux) | CSN | 2017 manual, verbatim command shown in §1.2. **[verified]** |
+| FileZilla / SFTP / SCP, port 22 | CSN | 2017 manual: "Configure your application to connect to bellagio.csn.edu. If necessary, specify port 22." **[verified]** |
+| X2Go client | CSN | The current bellagio homepage HTML links "X2GoClient Download" (wiki.x2go.org) alongside "MobaXterm Home Edition" as the offered clients; X2Go is not present in the 2017 manual. **[verified]** |
+| PuTTY | CSN | **Not found.** The 2017 CSN manual contains zero occurrences of "PuTTY" (checked against extracted text), and the current bellagio homepage links only X2Go and MobaXterm. If students used PuTTY at CSN it was informal, not the documented client. **[verified negative]** |
+| PuTTY | UNLV | The old tux wiki had a dedicated Putty page (URL `…?title=Putty`, now 404) for connecting to the CS servers. **[snippet]** |
+| ssh.com "SSH Secure Shell" client | UNLV | 2012 CS 135 manual instructions; still listed on UNLV IT's software pages in 2026. **[verified]** |
+| `submit` script on bobby | UNLV | `/usr/bin/submit`, `submit file.cpp 01 instructor`; submission required SSHing into bobby even from lab machines. **[snippet]** |
+| `turnin` (turnin-ng) on bellagio | CSN | 2017 manual: `turnin –c cs135 –p lab03 –v filename`. **[verified]** |
+| UNLV VPN | UNLV | Required today for off-campus SSH to cyrus and for Horizon VDI. **[verified]** |
+| Omnissa Horizon Client | UNLV | Current VDI path, server `workspaces.unlv.edu`, ACE login. **[verified]** |
+
+Geographic restriction worth noting: CSN's 2017 manual states of bellagio, "This server is accessible only from within the United States." **[verified]**
+
+---
+
+## 4. Timeline of datable facts
+
+| Date | Fact | Strength |
+|---|---|---|
+| Aug 2008 | UNLV departmental Linux lab manual `linuxmanual8_08.pdf` existed at tux.cs.unlv.edu | [snippet] |
+| Aug 2012 | UNLV CS 135 Lab Manual (Lee Misch): bobby/cardiac/java login servers; labs dual-boot Windows 7 + CentOS 6.0 | [verified mirror] |
+| 2015–2018 | CSN `/cit/` web materials created; directory index still frozen at those dates today | [verified] |
+| 2017-08-05 | CSN CIT Linux Lab Manual version still served as current in Aug 2026 | [verified] |
+| Nov 2018 | Last version (1.1.24) of Jorgensen's x86-64/Ubuntu textbook; examples tested on Ubuntu 16/18/22 LTS (the 22.04 note implies at least one later touch-up) | [snippet + verified page] |
+| Fall 2018 | CIT 151 syllabus hosted on bellagio faculty pages | [verified URL, seen in search] |
+| Sep 28, 2020 | sally.cs.unlv.edu upgraded, new SSH keys — last confirmed maintenance event for the old UNLV trio | [snippet] |
+| 2020–2025 | bobby, sally, cardiac decommissioned (exact date unknown); cyrus.cs.unlv.edu becomes the login server | [snippet; date unconfirmed] |
+| ≈2025 | tux.cs.unlv.edu rebuilt as static "Student Center" (© 2025); old wiki and docs deleted; Omnissa Horizon VDI documented | [verified] |
+| Jul 27, 2026 | bellagio.csn.edu homepage last modified | [verified header] |
+| Aug 16, 2026 | bellagio SSH banner: OpenSSH 8.9p1 / Ubuntu 22.04 LTS, current patch level | [verified] |
+
+---
+
+## 5. Confirmed vs. unconfirmed
+
+| Claim | Status |
+|---|---|
+| CSN provides a student Linux login server, `bellagio.csn.edu`, for CIT/CS/IS courses (incl. CS 135, CS 202) | **Confirmed** (live homepage + served lab manual) |
+| bellagio's OS is currently maintained (Ubuntu 22.04 LTS, patched) | **Confirmed** (SSH banner, 2026-08-16) |
+| CSN's student documentation dates to 2017 and its CIT web materials to 2015–2018 | **Confirmed** |
+| CSN documented client is MobaXterm / `ssh -X`, not PuTTY | **Confirmed** (PuTTY absent from the 2017 manual) |
+| A server named "sally" belonged to CSN | **Not confirmed — contradicted**; sally was UNLV's (`sally.cs.unlv.edu`) |
+| UNLV CS ran login servers bobby, sally, cardiac (131.216.23.x), later decommissioned | **Strongly supported but snippet-only** (source wiki deleted; Wayback offline during research — re-verify via web.archive.org when it is back up) |
+| sally maintained at least through Sep 2020 (SSH key upgrade) | **Snippet-only** |
+| Decommission date of bobby/sally/cardiac | **Unknown** (bounded 2020–2025) |
+| OS versions run by bobby/sally/cardiac | **Unknown** (only the 2012 lab-machine CentOS 6.0 fact is documented) |
+| UNLV currently offers `cyrus.cs.unlv.edu` (SSH, VPN off-campus) and Omnissa Horizon VDI VMs | **Confirmed** (live pages) |
+| UNLV distributed stale VirtualBox/VMware course images for CS 202/218 | **Not confirmed** (no public evidence either way; VirtualBox exists only as lab-room software) |
+| PuTTY was the documented Windows client for UNLV CS servers | **Snippet-only** (dead wiki page titled "Putty") |
+
+---
+
+## 6. Use in the paper
+
+Given the evidence strengths above, the historical-arc motivation can be phrased safely along these lines:
+
+1. **Lead with the shared-login-server model, not with decay.** Both institutions' documented model for introductory C++ and systems courses has been a shared multi-user Linux server reached over SSH — `bellagio.csn.edu` at CSN (with MobaXterm/`ssh -X` and `turnin`) and, at UNLV, the now-decommissioned `bobby`/`sally`/`cardiac` trio (with PuTTY-era SSH and a `submit` script that required logging into bobby even from lab machines). The Docker IDE replaces exactly this: remote, shared, network-dependent, account-provisioned infrastructure gives way to a local, per-student, reproducible container.
+2. **Be precise about what is stale.** The defensible claim is that the *documentation and workflow* are dated — CSN's current manual is Version 2017-08-05 and its CIT web materials are frozen at 2015–2018; UNLV's environment expectations are anchored to a textbook tested on Ubuntu 16/18/22 — while the servers themselves are not provably neglected (bellagio runs patched Ubuntu 22.04; sally received an upgrade as late as September 2020). Avoid asserting that either school ran unpatched servers.
+3. **Frame UNLV's churn as the motivation.** UNLV's student infrastructure has turned over completely and somewhat opaquely: three named servers students built muscle memory around were decommissioned, the documentation wiki that described them was deleted (as of this writing it survives only in search-engine snippets), and the current answer is a VPN-gated login host plus OIT-monitored VDI sessions whose local state is "PERMANENTLY DELETED" outside the network drive. A local Docker/code-server IDE is immune to every one of those failure modes — decommissioning, VPN dependence, documentation loss, and ephemeral VM state — which is a stronger and better-evidenced argument than "the old servers were outdated."
+4. **Correct the folklore explicitly if it appears.** If the paper mentions "sally," attribute it to UNLV CS (`sally.cs.unlv.edu`, decommissioned), not CSN; and if it mentions PuTTY at CSN, soften to "students commonly used SSH clients such as PuTTY or the officially documented MobaXterm," since CSN's manual never names PuTTY.
+5. **Flag the re-verification step.** Before submission, re-pull https://tux.cs.unlv.edu/wiki/index.php/SSH_fingerprint and https://tux.cs.unlv.edu/alt-tux-docs/guide/servers.html from the Wayback Machine (it was offline on 2026-08-16) to convert the [snippet] citations for bobby/sally/cardiac into archival citations with snapshot dates.
