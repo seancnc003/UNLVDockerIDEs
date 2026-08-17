@@ -92,13 +92,17 @@ Use research questions rather than strong causal hypotheses for the first deploy
 
 RQ10 must be interpreted cautiously. A difference between two semesters or between voluntary users and nonusers is not, by itself, evidence that the environment caused a learning improvement.
 
-## Required reading list
+## Reading list — 9 papers (curated)
+
+**Final selection: 9 papers**, verified against publisher/DOI records, August 2026. Cut from the original 12: Ngo et al. 2025 (weakest venue, hardest to obtain), Liu et al. 2025 *Improving AI in CS50* (one AI paper suffices; *Teaching CS50 with AI* is the keeper since the x86 Design Document links students to cs50.ai), and Malan 2010 *Moving CS50 into the Cloud* (Malan 2013 covers the same arc and cites it internally — make the infrastructure-cost point through 2013). The cuts remain in the bench section below in case a reviewer asks. This is the floor: each remaining paper covers a distinct related-work category, so do not cut further.
+
+The poster should cite only ~6: Malan 2024, Valstar 2020, Fernalld 2023, Cadenas 2015, Harvie 2019, and Teaching CS50 with AI.
 
 Read these sources before drafting the related-work section. For each paper, write a short note containing its problem, environment, participants or deployment context, method, findings, limitations, and relationship to this project.
 
 ### 1. Containerizing CS50
 
-David J. Malan. 2024. “Containerizing CS50: Standardizing Students' Programming Environments.” *Proceedings of ITiCSE 2024*, 7 pages. [Local PDF](./containerizingCS50.pdf). [DOI](https://doi.org/10.1145/3649217.3653567).
+David J. Malan. 2024. “Containerizing CS50: Standardizing Students' Programming Environments.” *Proceedings of ITiCSE 2024*, 7 pages. [Open Harvard copy](https://cs.harvard.edu/malan/publications/V1fp0310-malan.pdf). [DOI](https://doi.org/10.1145/3649217.3653567).
 
 **Use for:** The main inspiration, the history from clusters to cloud VMs to client appliances and Docker, standardized toolchains, instructor control, mid-semester updates, and the current GitHub Codespaces architecture.
 
@@ -120,15 +124,7 @@ Kourtnee Fernalld, TJ O'Connor, Sneha Sudhakaran, and Nasheen Nur. 2023. “Ligh
 
 **Question to answer while reading:** Which measures could be replicated at UNLV, and how could response bias and voluntary adoption be handled more carefully?
 
-### 4. Common Container-Based Infrastructure Blueprints for Multi-Course Computing Education
-
-Linh B. Ngo, Huy D. Nguyen, Bao G. Ngo, and Tejas Karusala. 2025. “Common Container-Based Infrastructure Blueprints for Multi-Course Computing Education.” *Journal of Computing Sciences in Colleges* 41, 3, 153–165. [ACM DL](https://dl.acm.org/doi/10.5555/3801163.3801225). [DBLP record](https://dblp.org/rec/journals/jcscoll/NgoNNK25.html). (The ACM `10.5555` identifier is not registered with doi.org, so link to the ACM DL page directly.)
-
-**Use for:** The newest directly relevant multi-course work. It provides context for treating the C++ and assembly images as related course infrastructure rather than isolated Docker demonstrations.
-
-**Question to answer while reading:** Which image layers, policies, documentation, and testing procedures should be shared across courses, and which must remain course-specific?
-
-### 5. Virtualization for Cost-Effective Teaching of Assembly Language Programming
+### 4. Virtualization for Cost-Effective Teaching of Assembly Language Programming
 
 José O. Cadenas, R. Simon Sherratt, Des Howlett, Chris G. Guy, and Karsten O. Lundqvist. 2015. “Virtualization for Cost-Effective Teaching of Assembly Language Programming.” *IEEE Transactions on Education* 58, 4, 282–288. [Open manuscript](https://centaur.reading.ac.uk/39692/1/qemu-Centaur.pdf). [DOI](https://doi.org/10.1109/TE.2015.2405895).
 
@@ -136,7 +132,7 @@ José O. Cadenas, R. Simon Sherratt, Des Howlett, Chris G. Guy, and Karsten O. L
 
 **Question to answer while reading:** How does virtualizing a complete assembly environment affect portability, authenticity, debugging, and student understanding of the underlying architecture?
 
-### 6. Using Virtual Machines to Enhance the Educational Experience in an Introductory Computing Course
+### 5. Using Virtual Machines to Enhance the Educational Experience in an Introductory Computing Course
 
 David P. Harvie, Christopher Morrell, Jason R. Cody, and Tanya T. Estes. 2019. “Using Virtual Machines to Enhance the Educational Experience in an Introductory Computing Course.” *Proceedings of SIGITE 2019*, 28–32. [DOI](https://doi.org/10.1145/3349266.3351401). [Institutional record](https://portfolio.erau.edu/en/publications/using-virtual-machines-to-enhance-the-educational-experience-in-a/).
 
@@ -144,7 +140,7 @@ David P. Harvie, Christopher Morrell, Jason R. Cody, and Tanya T. Estes. 2019. �
 
 **Question to answer while reading:** Which operational measurements are more convincing than a general statement that setup became easier?
 
-### 7. From Cluster to Cloud to Appliance
+### 6. From Cluster to Cloud to Appliance
 
 David J. Malan. 2013. “From Cluster to Cloud to Appliance.” *Proceedings of ITiCSE 2013*, 88–92. [Open Harvard copy](https://cs.harvard.edu/malan/publications/itc218s-malan.pdf). [DOI](https://doi.org/10.1145/2462476.2462491).
 
@@ -152,7 +148,7 @@ David J. Malan. 2013. “From Cluster to Cloud to Appliance.” *Proceedings of 
 
 **Question to answer while reading:** Which problems moved from institutional administrators to instructors or students at each architectural transition?
 
-### 8. Teaching Operating Systems Using Virtual Appliances and Distributed Version Control
+### 7. Teaching Operating Systems Using Virtual Appliances and Distributed Version Control
 
 Oren Laadan, Jason Nieh, and Nicolas Viennot. 2010. “Teaching Operating Systems Using Virtual Appliances and Distributed Version Control.” *Proceedings of SIGCSE 2010*, 480–484. [Open PDF](https://www.cs.columbia.edu/~orenl/papers/sigcse2010_os.pdf). [DOI](https://doi.org/10.1145/1734263.1734427).
 
@@ -160,35 +156,7 @@ Oren Laadan, Jason Nieh, and Nicolas Viennot. 2010. “Teaching Operating System
 
 **Question to answer while reading:** Which advantages of a complete VM remain relevant, and which costs can a container reduce?
 
-### 9. Visual Studio Code in Introductory Computer Science Course
-
-Jialiang Tan, Yu Chen, and Shuyin Jiao. 2023. “Visual Studio Code in Introductory Computer Science Course: An Experience Report.” [Full paper](https://arxiv.org/abs/2303.10174).
-
-**Use for:** The selection of a professional but approachable interface. The paper reports student evaluations of VS Code's visual design, extensions, debugging, editing, and instructional guidance. Of 42 survey respondents, 74% considered VS Code easy to install and use and 76% considered it a good IDE for programming.
-
-**Limitation:** This is a preprint and evaluates desktop VS Code with Python guidance, not code-server with C++ or assembly.
-
-**Question to answer while reading:** Which interface features help novices, and which features or commands introduce additional cognitive load?
-
-### 10. Analyzing Learners' Engagement and Behavior in MOOCs with the Codeboard IDE
-
-Jesús Manuel Gallego-Romero, Carlos Alario-Hoyos, Iria Estévez-Ayres, and Carlos Delgado Kloos. 2020. “Analyzing Learners' Engagement and Behavior in MOOCs on Programming with the Codeboard IDE.” *Educational Technology Research and Development* 68, 2505–2528. [DOI and abstract](https://researchportal.uc3m.es/display/act526102). [DOI](https://doi.org/10.1007/s11423-020-09773-6).
-
-**Use for:** Browser-based programming, learning-by-doing, persistence, and engagement measures such as compilations, executions, edits, and time spent coding.
-
-**Limitation:** Registered and anonymous users self-selected, so greater activity among registered users should not be presented as a causal effect of registration or persistence features.
-
-**Question to answer while reading:** What engagement information is useful, and can it be collected without violating this project's decentralized and privacy-conscious design?
-
-### 11. Moving CS50 into the Cloud
-
-David J. Malan. 2010. “Moving CS50 into the Cloud.” *Journal of Computing Sciences in Colleges* 25, 6, 111–120. [Open PDF](https://cs.harvard.edu/malan/publications/ccscne10-malan.pdf).
-
-**Use for:** Benefits and operational costs of instructor-controlled cloud infrastructure, including elasticity, root access, student access, and the time required to administer a course cluster.
-
-**Question to answer while reading:** Which administrative responsibilities disappear when computation moves onto student hardware, and which support responsibilities replace them?
-
-### 12. CodeDive
+### 8. CodeDive
 
 Hyunchan Park, Youngpil Kim, Kyungwoon Lee, Soonheon Jin, Jinseok Kim, Yan Heo, Gyuho Kim, and Eunhye Kim. 2025. “CodeDive: A Web-Based IDE with Real-Time Code Activity Monitoring for Programming Education.” *Applied Sciences* 15, 19, 10403. [Article and DOI](https://doi.org/10.3390/app151910403).
 
@@ -196,9 +164,33 @@ Hyunchan Park, Youngpil Kim, Kyungwoon Lee, Soonheon Jin, Jinseok Kim, Yan Heo, 
 
 **Question to answer while reading:** What pedagogical visibility is gained through centralized monitoring, and what infrastructure and privacy costs accompany it?
 
-## Supplemental reading list
+### 9. Teaching CS50 with AI
 
-These sources are useful for particular sections but do not all need equal treatment.
+Rongxin Liu et al. 2024. “Teaching CS50 with AI.” *Proceedings of SIGCSE 2024*. [DOI](https://doi.org/10.1145/3626252.3630938).
+
+**Use for:** A focused discussion of contemporary AI-enabled course environments and the need for explicit course policy. It describes cs50.ai, the very chatbot the x86 Design Document's AI Usage section links students to, which frames this project's stance precisely: editor AI disabled, course-sanctioned external AI permitted by policy. The UNLV project does not reproduce CS50's AI system; it deliberately disables built-in AI surfaces.
+
+**Question to answer while reading:** Which support roles does an in-course AI assistant fill, and how does a course that disables editor AI while permitting a sanctioned external tool draw that policy line?
+
+## Bench and supplemental sources
+
+Swap these in if a reviewer asks or for a longer version of the paper. None are required reading, and they do not all need equal treatment.
+
+### Cut from the original 12
+
+- Linh B. Ngo, Huy D. Nguyen, Bao G. Ngo, and Tejas Karusala. 2025. “Common Container-Based Infrastructure Blueprints for Multi-Course Computing Education.” *Journal of Computing Sciences in Colleges* 41, 3, 153–165. [ACM DL](https://dl.acm.org/doi/10.5555/3801163.3801225). (The ACM `10.5555` identifier is not registered with doi.org, so link to the ACM DL page directly.) Frames the C++ and assembly images as shared multi-course infrastructure rather than isolated demonstrations. Cut: weakest venue, hardest to obtain.
+- David J. Malan. 2010. “Moving CS50 into the Cloud.” *Journal of Computing Sciences in Colleges* 25, 6, 111–120. [Open PDF](https://cs.harvard.edu/malan/publications/ccscne10-malan.pdf). Benefits and operational costs of instructor-controlled cloud infrastructure. Cut: Malan 2013 covers the same arc and cites it — make the infrastructure-cost point through 2013.
+- Rongxin Liu et al. 2025. “Improving AI in CS50.” *Proceedings of SIGCSE 2025*. [DOI](https://doi.org/10.1145/3641554.3701945). Follow-up detail on cs50.ai; adds refinement, not a new argument.
+
+### Browser IDEs and engagement
+
+- Jialiang Tan, Yu Chen, and Shuyin Jiao. 2023. “Visual Studio Code in Introductory Computer Science Course: An Experience Report.” [arXiv:2303.10174](https://arxiv.org/abs/2303.10174). Student evaluations of VS Code's interface for novices (of 42 respondents, 74% considered it easy to install and use). Limitation: a preprint evaluating desktop VS Code with Python guidance, not code-server with C++ or assembly.
+- Jesús Manuel Gallego-Romero, Carlos Alario-Hoyos, Iria Estévez-Ayres, and Carlos Delgado Kloos. 2020. “Analyzing Learners' Engagement and Behavior in MOOCs on Programming with the Codeboard IDE.” *Educational Technology Research and Development* 68, 2505–2528. [DOI](https://doi.org/10.1007/s11423-020-09773-6). Browser-based engagement measures (compilations, executions, edits, time coding). Limitation: registered and anonymous users self-selected, so activity differences are not causal effects of persistence features.
+
+### Docker for low-level coursework
+
+- TJ O'Connor et al. 2024. “PWN Lessons Made Easy with Docker.” *Proceedings of SIGCSE 2024*. [DOI](https://doi.org/10.1145/3626252.3630911). Docker for low-level/binary coursework, from the same group as Lightweight Symphony.
+- “ASM Visualizer: A Learning Tool for Assembly Programming.” *Proceedings of SIGCSE 2025*. [ACM DL](https://dl.acm.org/doi/10.1145/3641554.3701793). A second assembly-education source if the paper needs one.
 
 ### Browser exercise systems and automated execution
 
@@ -214,13 +206,6 @@ These sources are useful for particular sections but do not all need equal treat
 
 - Veljko Potkonjak et al. 2016. “Virtual Laboratories for Education in Science, Technology, and Engineering: A Review.” *Computers & Education* 95, 309–327. [DOI](https://doi.org/10.1016/j.compedu.2016.02.002). Use only if the paper places the IDE within the broader virtual-laboratory literature.
 
-### AI and the instructional environment
-
-- Rongxin Liu et al. 2024. “Teaching CS50 with AI.” [Local PDF](./TeachingCS50withAI.pdf). [DOI](https://doi.org/10.1145/3626252.3630938).
-- Rongxin Liu et al. 2025. “Improving AI in CS50.” [Local PDF](./ImprovingAIinCS50.pdf). [DOI](https://doi.org/10.1145/3641554.3701945).
-
-Use these two papers only for a focused discussion of contemporary AI-enabled course environments and the need for explicit course policy. The UNLV project does not reproduce CS50's AI system; it deliberately disables built-in AI surfaces.
-
 ## Literature synthesis matrix
 
 Complete this matrix before writing prose. Add page numbers and quotations to personal notes, but paraphrase sources in the paper.
@@ -230,10 +215,8 @@ Complete this matrix before writing prose. Add page numbers and quotations to pe
 | Malan 2024 | Cloud, with historical local alternatives | Container | Browser VS Code | Cloud/GitHub | Required for primary environment | Large-scale experience report | Not a controlled learning study |
 | Valstar et al. 2020 | Student machine | Container | Desktop VS Code | Local project/container workflow | Mainly distribution/setup | Course experience report | Requires several local tools |
 | Fernalld et al. 2023 | Student machine | Container | Course-specific graphical tools | Local | Initial distribution | Student surveys across three courses | Voluntary responses and adoption |
-| Ngo et al. 2025 | Multi-course infrastructure | Container | Varies by course | Varies | Architecture-dependent | Multi-course design | Determine from full paper |
 | Cadenas et al. 2015 | Student machine | Virtualized/emulated system | GUI and console | Portable local system | Not continuously required | Multi-year survey and assessment context | ARM rather than x86-64; VM/emulator rather than Docker |
 | Harvie et al. 2019 | Student machine | VM | VM-hosted tools | VM files | Not continuously required | Two years and ten classrooms | Different courses and virtualization layer |
-| Codeboard study | Cloud | Server sandbox | Browser exercise IDE | Account-dependent | Required | Behavioral platform data | Self-selection and limited IDE scope |
 | CodeDive 2025 | Institutional cloud | Kubernetes container | Browser VS Code | Server persistent volume | Required | Course deployment and activity logs | Infrastructure, monitoring, and privacy costs |
 | UNLV project | Student machine | Container | Browser code-server | Explicit host bind mount | Initial pull only | Technical evidence now; educational evidence planned | Docker prerequisite and x86 debugging limit |
 
@@ -549,13 +532,12 @@ Revise the abstract, discussion, limitations, and conclusion based on the actual
 
 ## Recommended starting order
 
-Begin with these six readings, in order:
+Begin with these five readings, in order:
 
 1. Malan, “Containerizing CS50”
 2. Valstar et al., “Using DevContainers to Standardize Student Development Environments”
 3. Fernalld et al., “Lightweight Symphony”
 4. Cadenas et al., “Virtualization for Cost-Effective Teaching of Assembly Language Programming”
 5. Harvie et al., “Using Virtual Machines to Enhance the Educational Experience”
-6. Ngo et al., “Common Container-Based Infrastructure Blueprints”
 
-Then read Malan 2010 and 2013 for the historical argument, Laadan et al. for local appliances, Tan et al. for the VS Code interface, and the Codeboard and CodeDive papers for browser-based alternatives and evaluation methods.
+Then read Malan 2013 for the historical argument, Laadan et al. for local appliances, CodeDive for the centralized browser-based alternative, and Teaching CS50 with AI for the AI-policy contrast.

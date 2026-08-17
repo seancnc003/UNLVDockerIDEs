@@ -6,5 +6,8 @@ code/
 results/
 results-aws/
 
+# Downloaded paper PDFs (copyright — keep local only)
+papers/literature/
+
 # macOS
 .DS_Store
