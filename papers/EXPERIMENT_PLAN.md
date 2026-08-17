@@ -74,6 +74,49 @@ independent emulation layers (QEMU and Docker Desktop).
 manual-trigger engineering regression check only — it is never cited as a
 results source.)*
 
+## VM baseline comparison (container vs. full VM) — added 2026-08-16
+
+Motivation: CS 218's current officially distributed environment is a full
+desktop VM ("UNLV CS Ubuntu 24.04 LTS Image" `.ova` for VirtualBox on Intel;
+an experimental Fall-2023 Linux Mint UTM image on Apple Silicon — see
+INSTITUTIONAL_SERVERS.md §2.4). The paper's resource/stability claim
+("full VMs are more resource-intensive than containers") should rest on
+measurements, not citations alone. Since the course `.ova` links are not
+publicly reachable, a **stock Ubuntu 24.04 LTS desktop VM is the declared
+proxy** — state this substitution explicitly in Methods (it is conservative:
+the course image adds preinstalled tools, so the stock image's footprint is
+a lower bound).
+
+| # | Cell | Where | Compares against |
+| --- | --- | --- | --- |
+| 5 | VirtualBox + Ubuntu 24.04 desktop VM (amd64, the course's intended path) | AWS `m8i.xlarge` with nested virt enabled (same host class as cell 3), VBoxManage-driven headless-then-GUI boot | Cell 1 (native container, same host class) |
+| 6 | UTM/QEMU full-system x86_64 emulation (the course's Apple Silicon path) | Owned M1 Pro MacBook (same machine as cell 4), stock Ubuntu 24.04 amd64 guest in UTM | Cell 4 (Docker Desktop emulated container, same machine) |
+
+Metrics per cell, VM vs container on identical hardware:
+
+- Disk footprint: `.ova`/expanded `.vdi`/`.qcow2` size vs `docker image ls` size.
+- Memory: the VM's fixed allocation (the course image reserves 4 GB per its
+  UTM panel) **and** measured host RSS at idle, vs the container's idle usage
+  (`docker stats`) — report both, since fixed reservation vs dynamic
+  allocation is itself the finding.
+- Cold start: VM power-on → usable desktop/login, vs `docker run` → code-server
+  reachable on localhost.
+- Compile benchmark: the same C++/assembly compile loads `ci-test.sh` uses,
+  run inside the guest vs inside the container.
+- Cell 6 only: does `gdb`/`ddd` work inside the UTM guest? Expected **yes**
+  (full-system emulation preserves ptrace) — measured alongside its speed
+  cost, this demonstrates the paper's three-corner trade-off (full-system:
+  debugger works, slow; user-mode translation: fast, no ptrace; native: both)
+  with numbers from a single machine.
+
+Methodology note: these cells cannot run the unmodified `ci-test.sh` end to
+end (it drives Docker). To preserve the published-script principle, the VM
+measurements go in a small versioned companion script
+(`scripts/vm-baseline.sh`) that reuses `ci-test.sh`'s compile workloads and
+emits the same JSON row shape; nothing ad hoc is reported. Cells 5–6 are
+secondary/optional: if time runs short, cell 6 alone (owned hardware, $0,
+and it carries the gdb demonstration) delivers most of the argument.
+
 ## Excluded cells → Discussion / Future Work (accepted limitations)
 
 State these plainly in the paper; do not present partial coverage as full:
