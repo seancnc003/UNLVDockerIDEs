@@ -1,11 +1,14 @@
-# Experiment Plan — Fully Automated Platform-Matrix Evaluation
+# Experiment Plan — Platform-Matrix Evaluation (Docker coverage)
 
-Pre-deployment technical evaluation for the paper (RQ1–RQ5). **Methodology
+Pre-deployment technical evaluation for the paper (RQ1–RQ5). **Scope: the
+experiment measures Docker container coverage only** — the course's
+VirtualBox/UTM VMs are historical/motivational context (documented in
+INSTITUTIONAL_SERVERS.md §2.4), never measured cells. **Methodology
 principle: every reported result comes from the same unmodified, published
 script** (`scripts/ci-test.sh`) — no ad-hoc or unversioned measurements.
-Cells 1–3 are fully autonomous (CI and scripted cloud provisioning); cell 4
-runs the identical script on owned consumer hardware and is labeled by
-provenance. Each run emits a JSON results file that becomes one row of the
+Cells 1–3 are operator-provisioned on AWS per the hands-on runbook
+(AWS_RUNBOOK.md); cell 4 runs the identical script on owned consumer
+hardware and is labeled by provenance. Each run emits a JSON results file that becomes one row of the
 paper's platform-matrix table. Cells that cannot be scripted at all are
 excluded from Results and handled in Discussion / Future Work. (Earlier
 ad-hoc local results were discarded on 2026-08-15; the consumer-hardware
@@ -74,48 +77,24 @@ independent emulation layers (QEMU and Docker Desktop).
 manual-trigger engineering regression check only — it is never cited as a
 results source.)*
 
-## VM baseline comparison (container vs. full VM) — added 2026-08-16
+## The course VMs are context, not cells (decided 2026-08-16)
 
-Motivation: CS 218's current officially distributed environment is a full
-desktop VM ("UNLV CS Ubuntu 24.04 LTS Image" `.ova` for VirtualBox on Intel;
-an experimental Fall-2023 Linux Mint UTM image on Apple Silicon — see
-INSTITUTIONAL_SERVERS.md §2.4). The paper's resource/stability claim
-("full VMs are more resource-intensive than containers") should rest on
-measurements, not citations alone. Since the course `.ova` links are not
-publicly reachable, a **stock Ubuntu 24.04 LTS desktop VM is the declared
-proxy** — state this substitution explicitly in Methods (it is conservative:
-the course image adds preinstalled tools, so the stock image's footprint is
-a lower bound).
-
-| # | Cell | Where | Compares against |
-| --- | --- | --- | --- |
-| 5 | VirtualBox + Ubuntu 24.04 desktop VM (amd64, the course's intended path) | AWS `m8i.xlarge` with nested virt enabled (same host class as cell 3), VBoxManage-driven headless-then-GUI boot | Cell 1 (native container, same host class) |
-| 6 | UTM/QEMU full-system x86_64 emulation (the course's Apple Silicon path) | Owned M1 Pro MacBook (same machine as cell 4), stock Ubuntu 24.04 amd64 guest in UTM | Cell 4 (Docker Desktop emulated container, same machine) |
-
-Metrics per cell, VM vs container on identical hardware:
-
-- Disk footprint: `.ova`/expanded `.vdi`/`.qcow2` size vs `docker image ls` size.
-- Memory: the VM's fixed allocation (the course image reserves 4 GB per its
-  UTM panel) **and** measured host RSS at idle, vs the container's idle usage
-  (`docker stats`) — report both, since fixed reservation vs dynamic
-  allocation is itself the finding.
-- Cold start: VM power-on → usable desktop/login, vs `docker run` → code-server
-  reachable on localhost.
-- Compile benchmark: the same C++/assembly compile loads `ci-test.sh` uses,
-  run inside the guest vs inside the container.
-- Cell 6 only: does `gdb`/`ddd` work inside the UTM guest? Expected **yes**
-  (full-system emulation preserves ptrace) — measured alongside its speed
-  cost, this demonstrates the paper's three-corner trade-off (full-system:
-  debugger works, slow; user-mode translation: fast, no ptrace; native: both)
-  with numbers from a single machine.
-
-Methodology note: these cells cannot run the unmodified `ci-test.sh` end to
-end (it drives Docker). To preserve the published-script principle, the VM
-measurements go in a small versioned companion script
-(`scripts/vm-baseline.sh`) that reuses `ci-test.sh`'s compile workloads and
-emits the same JSON row shape; nothing ad hoc is reported. Cells 5–6 are
-secondary/optional: if time runs short, cell 6 alone (owned hardware, $0,
-and it carries the gdb demonstration) delivers most of the argument.
+CS 218's officially distributed environments — the "UNLV CS Ubuntu 24.04 LTS
+Image" `.ova` for VirtualBox on Intel and the experimental Fall-2023 Linux
+Mint UTM image for Apple Silicon (INSTITUTIONAL_SERVERS.md §2.4) — appear in
+the paper as **historical/motivational context only**. The experiment
+measures Docker container coverage exclusively; no VM cells are run. The
+resource/stability claim ("a full desktop VM is heavier and more fragile
+than a shared, headless container runtime") rests on the course's own
+documented numbers and instructions (fixed 4 GB RAM reservation, 19.12 GB
+disk image, no-unclean-shutdown and `xrandr` warnings, "no guarantee" on the
+Apple Silicon image) plus the literature (Malan 2013: ~20% of students found
+the CS50 VM slow, lid-close disk corruption; Fernalld et al. 2023: Type-2
+hypervisors rejected over fixed 8 GB/25 GB reservations and no amd64 guests
+on ARM). Likewise the three-corner emulation argument (full-system keeps the
+debugger but is slow; user-mode translation is fast but loses ptrace; native
+gets both) is made from the course's own UTM-page warnings for the slow
+corner and from cells 1–4 for the other two — no UTM measurements needed.
 
 ## Excluded cells → Discussion / Future Work (accepted limitations)
 

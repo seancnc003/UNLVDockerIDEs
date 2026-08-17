@@ -19,7 +19,7 @@ This repo builds two browser-based (code-server) Docker IDE images for UNLV CS s
 ## Layout
 
 - `cpp/`, `x86/` — the two Docker build contexts. Each contains: `Dockerfile`, an `image/` folder with everything copied into the image (`entrypoint.sh`, `settings.json`, `starter/` files seeded into student workspaces), `.dockerignore`, `README.md`, and two `.docx` student handouts.
-- `papers/` — open-access research papers on containerized CS education, published for educators. Reference material only; not part of any build.
+- `papers/` — research-paper planning docs (experiment plan, AWS runbook, literature summaries, institutional-server research). Source PDFs live in gitignored `papers/literature/` (copyright — local only). Not part of any build.
 - `archive/`, `code/` — gitignored, maintainer-local. `archive/` is the previous generation of this project: read-only historical reference, never modify it. `code/` is personal coursework.
 
 ## Build

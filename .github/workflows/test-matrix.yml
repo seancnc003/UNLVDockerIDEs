@@ -2,8 +2,9 @@ name: Test matrix
 
 # On-demand regression check ONLY — runs both images' student workflows on
 # Linux amd64 + arm64 (QEMU for the x86 image). NOT a source of research
-# results: the paper's platform matrix runs on AWS via scripts/aws-matrix.sh
-# (see papers/EXPERIMENT_PLAN.md). Trigger manually from the Actions tab
+# results: the paper's platform matrix runs on AWS per papers/AWS_RUNBOOK.md
+# (automated equivalent: scripts/aws-matrix.sh; see papers/EXPERIMENT_PLAN.md).
+# Trigger manually from the Actions tab
 # before a release to catch image breakage; it never runs on its own.
 
 on:

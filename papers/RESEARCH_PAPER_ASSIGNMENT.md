@@ -134,7 +134,7 @@ José O. Cadenas, R. Simon Sherratt, Des Howlett, Chris G. Guy, and Karsten O. L
 
 ### 5. Using Virtual Machines to Enhance the Educational Experience in an Introductory Computing Course
 
-David P. Harvie, Christopher Morrell, Jason R. Cody, and Tanya T. Estes. 2019. “Using Virtual Machines to Enhance the Educational Experience in an Introductory Computing Course.” *Proceedings of SIGITE 2019*, 28–32. [DOI](https://doi.org/10.1145/3349266.3351401). [Institutional record](https://portfolio.erau.edu/en/publications/using-virtual-machines-to-enhance-the-educational-experience-in-a/).
+David P. Harvie, Jason R. Cody, Christopher Morrell, and Tanya T. Estes. 2019. “Using Virtual Machines to Enhance the Educational Experience in an Introductory Computing Course.” *Proceedings of SIGITE 2019*, 28–32. [DOI](https://doi.org/10.1145/3349266.3351401). [Institutional record](https://portfolio.erau.edu/en/publications/using-virtual-machines-to-enhance-the-educational-experience-in-a/).
 
 **Use for:** An empirical model for tracking installation time, troubleshooting, classroom efficiency, and student performance across multiple classrooms and academic years.
 
@@ -562,11 +562,11 @@ Raw planning notes recorded after the first literature pass; see `LITERATURE_SUM
 - Advanced topics that require more resources — Cybersecurity, Operating Systems, Machine Learning — are naturally harder for Docker container solutions to cover. *(Scope note: the Lightweight Symphony quote makes this claim about cloud-hosted Codespaces, not about local Docker — Fernalld et al. themselves ran OS and Cybersecurity courses on local Docker successfully. Frame this limitation as resource ceilings of student hardware, not of containers per se.)*
 - Lack of a working debugger on Mac ARM-based machines due to emulation limitations (the documented gdb/ptrace boundary).
 
-**Resource/stability claim vs. the course VM (added after the Canvas evidence):** "Outdated" is the weaker claim (the Intel course image is Ubuntu 24.04, current); the stronger, fully evidenced claim is that **full desktop VMs are more resource-intensive and fragile than containers**. Evidence anchors: the course's own UTM panel shows a fixed 4 GB RAM reservation and a 19.12 GB disk image, and its own instructions document the fragility (no unclean shutdowns, image breaks if moved after first open, manual `xrandr` workaround); Lightweight Symphony chose Docker over Type-2 hypervisors for exactly this reason (Ubuntu's recommended 8 GB/25 GB reservations; no amd64 guests on ARM); Malan 2013 reports ~20% of students finding the CS50 VM slow plus lid-close corruption at scale. Phrase it carefully: Docker Desktop on macOS/Windows also runs a Linux VM under the hood — the claim is **one shared, headless, dynamically allocated lightweight VM versus a per-course full desktop VM with fixed reservations**, not "containers avoid virtualization." Empirical support comes from EXPERIMENT_PLAN.md cells 5–6 (stock Ubuntu 24.04 VM as the declared proxy for the unreachable course `.ova`): disk, idle RAM, cold start, compile time, VM vs container on identical hardware.
+**Resource/stability claim vs. the course VM (added after the Canvas evidence):** "Outdated" is the weaker claim (the Intel course image is Ubuntu 24.04, current); the stronger, fully evidenced claim is that **full desktop VMs are more resource-intensive and fragile than containers**. Evidence anchors: the course's own UTM panel shows a fixed 4 GB RAM reservation and a 19.12 GB disk image, and its own instructions document the fragility (no unclean shutdowns, image breaks if moved after first open, manual `xrandr` workaround); Lightweight Symphony chose Docker over Type-2 hypervisors for exactly this reason (Ubuntu's recommended 8 GB/25 GB reservations; no amd64 guests on ARM); Malan 2013 reports ~20% of students finding the CS50 VM slow plus lid-close corruption at scale. Phrase it carefully: Docker Desktop on macOS/Windows also runs a Linux VM under the hood — the claim is **one shared, headless, dynamically allocated lightweight VM versus a per-course full desktop VM with fixed reservations**, not "containers avoid virtualization." Scope decision (2026-08-16): the claim rests on the course's own documented specs and the literature — the experiment measures Docker containers only, so no VM cells are run (see EXPERIMENT_PLAN.md, "The course VMs are context, not cells").
 
 **Applicability:**
 
-- Mention UNLV's own historical arc and the VMs previously provided to students that have not been updated in a while (CSN/UNLV Linux servers, e.g. "sally" accessed over PuTTY — research in progress).
+- Mention UNLV's own historical arc: shared SSH login servers and course-distributed VMs (research complete — see INSTITUTIONAL_SERVERS.md). Folklore corrections from that research: "sally" was UNLV's server (`sally.cs.unlv.edu`), not CSN's; PuTTY was the UNLV-documented Windows client, while CSN documented MobaXterm. And per §2.4, do not claim the Intel course VM is outdated (it is Ubuntu 24.04) — the staleness case attaches to the Apple Silicon UTM image and the Canvas-only distribution channel.
 - This is applied research focused on solving a problem affecting 300+ UNLV students yearly.
 
 ### Experiment design
@@ -579,7 +579,7 @@ Raw planning notes recorded after the first literature pass; see `LITERATURE_SUM
 
 - Turnaround time is short; a student survey and longitudinal key metrics cannot be collected this cycle.
 
-**Metrics:**
+**Metrics (future course study only — this cycle's paper reports the technical platform matrix, no student data):**
 
 - Comparison of grades.
 - Reduction of in-class setup time.
