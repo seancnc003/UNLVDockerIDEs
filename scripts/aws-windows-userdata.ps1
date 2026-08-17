@@ -55,6 +55,14 @@ foreach ($i in 1..90) {           # up to 15 min for first engine start
 "docker engine up: $Up" | Write-Output
 
 if ($Up) {
+  # Coursework workload (private, optional): fetch from S3 if the driver
+  # uploaded it; ci-test.sh skips the stage cleanly when /root/code is absent.
+  Import-Module AWSPowerShell
+  try {
+    Read-S3Object -BucketName '__BUCKET__' -Key 'workload/code.zip' -File C:\code.zip -Region '__REGION__' | Out-Null
+    wsl -d Ubuntu -u root -- bash -lc 'apt-get update -qq && apt-get install -y -qq unzip && cp /mnt/c/code.zip /root/ && unzip -o /root/code.zip -d /root' 2>&1 | Write-Output
+  } catch { 'no coursework workload in bucket' | Write-Output }
+
   # Docker Desktop exposes its CLI in the default WSL distro (Ubuntu).
   # ci-test.sh cds to its script-dir's parent, so placing it in /root/scripts
   # makes results land in /root/results.

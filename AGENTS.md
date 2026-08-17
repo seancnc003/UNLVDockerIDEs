@@ -71,7 +71,7 @@ docker rm -f smoke-x86
 
 ## Automated Tests (research-paper platform matrix)
 
-- `scripts/ci-test.sh <cpp|x86>` — measured student-workflow test (pull, startup, seeding, compile+run timings, gdb probe, persistence). Emits `results/*.json`. Runs anywhere Docker does.
+- `scripts/ci-test.sh <cpp|x86>` — measured student-workflow test (pull, cold/warm startup, seeding, compile+run timings, gdb probe, coursework workload with peak memory, persistence, host record). Emits `results/*.json`. Runs anywhere Docker does. The x86 coursework workload is driven by gitignored `code/workloads.tsv` (real CS 218 assignments; distributed to cloud cells privately via S3, skipped cleanly when absent).
 - `papers/AWS_RUNBOOK.md` — the primary path: hands-on, phase-by-phase AWS provisioning of the three cloud cells (maintainer is learning AWS with this project); measurement always via `ci-test.sh`. The fourth cell runs `ci-test.sh` locally on a Mac.
 - `scripts/aws-matrix.sh` — automated equivalent of the runbook (all three cloud cells in parallel, zero-touch, self-terminating, ~$0.60–1.00/run; results to `results-aws/`). Capstone/replication path. See `papers/EXPERIMENT_PLAN.md`.
 - `.github/workflows/test-matrix.yml` — manual-trigger-only Linux regression check (never runs on its own; not a results source).

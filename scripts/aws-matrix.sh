@@ -44,7 +44,16 @@ echo "== Results bucket (idempotent) =="
 aws s3api head-bucket --bucket "$BUCKET" 2>/dev/null || \
   aws s3 mb "s3://$BUCKET" --region "$REGION"
 
-echo "== IAM role + instance profile (idempotent, write-only to this bucket) =="
+# Coursework workload (gitignored course material — travels via S3, not git).
+# Uploaded fresh when present locally; cells fetch it and ci-test.sh skips
+# the workload stage cleanly if this upload never happened.
+if [ -d code ]; then
+  echo "== Uploading coursework workload =="
+  (cd "$(mktemp -d)" && cp -R "$OLDPWD/code" code && zip -qr code.zip code && \
+   aws s3 cp code.zip "s3://$BUCKET/workload/code.zip" --region "$REGION")
+fi
+
+echo "== IAM role + instance profile (idempotent, object read/write on this bucket only) =="
 if ! aws iam get-role --role-name "$ROLE" >/dev/null 2>&1; then
   aws iam create-role --role-name "$ROLE" --assume-role-policy-document '{
     "Version": "2012-10-17",
@@ -53,7 +62,7 @@ if ! aws iam get-role --role-name "$ROLE" >/dev/null 2>&1; then
   aws iam put-role-policy --role-name "$ROLE" --policy-name s3-results-write \
     --policy-document "{
       \"Version\": \"2012-10-17\",
-      \"Statement\": [{\"Effect\": \"Allow\", \"Action\": \"s3:PutObject\", \"Resource\": \"arn:aws:s3:::$BUCKET/*\"}]
+      \"Statement\": [{\"Effect\": \"Allow\", \"Action\": [\"s3:PutObject\", \"s3:GetObject\"], \"Resource\": \"arn:aws:s3:::$BUCKET/*\"}]
     }"
   aws iam create-instance-profile --instance-profile-name "$ROLE" >/dev/null
   aws iam add-role-to-instance-profile --instance-profile-name "$ROLE" --role-name "$ROLE"
@@ -78,6 +87,11 @@ systemctl start docker
 mkdir -p /root/scripts
 curl -fsSL $RAW_BASE/scripts/ci-test.sh -o /root/scripts/ci-test.sh
 cd /root
+# Coursework workload (private, optional): fetch if the runbook's Phase-1
+# upload exists; ci-test.sh skips the stage cleanly when code/ is absent.
+if aws s3 cp "s3://$BUCKET/workload/code.zip" /root/code.zip --region $REGION 2>/dev/null; then
+  apt-get install -y -qq unzip && unzip -o /root/code.zip -d /root
+fi
 bash scripts/ci-test.sh cpp
 bash scripts/ci-test.sh x86
 aws s3 cp /root/results/ "s3://$BUCKET/$PREFIX/$1/" --recursive --region $REGION

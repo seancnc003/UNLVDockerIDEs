@@ -39,10 +39,14 @@ instance profiles.**
    (block all public access — the default — stays ON).
 2. Console → IAM → Roles → Create role → trusted entity **EC2**. Attach no
    managed policy; instead add this inline policy (name it
-   `s3-results-write`) — note it can *only* write, *only* to your bucket:
+   `s3-results-write`) — note it can *only* read and write objects, *only*
+   in your bucket (GetObject is there so instances can download the private
+   coursework workload uploaded in step 5 — a deliberate, named extension of
+   the minimal policy, which is itself the least-privilege lesson):
    ```json
    {"Version": "2012-10-17",
-    "Statement": [{"Effect": "Allow", "Action": "s3:PutObject",
+    "Statement": [{"Effect": "Allow",
+                   "Action": ["s3:PutObject", "s3:GetObject"],
                    "Resource": "arn:aws:s3:::unlv-ide-results-<ACCOUNT>/*"}]}
    ```
    Name the role `unlv-ide-writer`. Understand what you built: a **role** is
@@ -54,9 +58,16 @@ instance profiles.**
 4. Console → EC2 → Security Groups → create `unlv-ssh-rdp`: inbound SSH
    (22) and RDP (3389) **from My IP only**; outbound all. Never 0.0.0.0/0
    on these ports.
+5. Upload the coursework workload once, from your Mac at the repo root
+   (`code/` is gitignored course material, so it travels privately via S3,
+   never via GitHub):
+   ```bash
+   zip -r code.zip code
+   aws s3 cp code.zip s3://unlv-ide-results-<ACCOUNT>/workload/code.zip
+   ```
 
 **Checkpoint:** role exists with the single-statement policy; SG rules show
-your /32 address.
+your /32 address; `workload/code.zip` is in the bucket.
 
 ---
 
@@ -72,10 +83,12 @@ metadata/roles in action.**
 2. SSH in: `ssh -i ~/Downloads/unlv-key.pem ubuntu@<public-ip>`
 3. Do the cell by hand, watching each step:
    ```bash
-   sudo apt-get update && sudo apt-get install -y docker.io awscli
+   sudo apt-get update && sudo apt-get install -y docker.io awscli unzip
    sudo usermod -aG docker ubuntu && exit   # re-SSH so group applies
    curl -fsSL https://raw.githubusercontent.com/seancnc003/UNLVDockerIDEs/main/scripts/ci-test.sh -o ci-test.sh
-   mkdir -p scripts && mv ci-test.sh scripts/ && bash scripts/ci-test.sh cpp && bash scripts/ci-test.sh x86
+   mkdir -p scripts && mv ci-test.sh scripts/
+   aws s3 cp s3://unlv-ide-results-<ACCOUNT>/workload/code.zip . && unzip -o code.zip   # coursework workload → ./code/
+   bash scripts/ci-test.sh cpp && bash scripts/ci-test.sh x86
    cat results/*.json          # your first two matrix rows
    aws s3 cp results/ s3://unlv-ide-results-<ACCOUNT>/manual/linux-amd64/ --recursive
    ```
@@ -85,7 +98,9 @@ metadata/roles in action.**
    `docker --version`, Ubuntu version.
 5. Console → terminate the instance. Verify state becomes `terminated`.
 
-**Expected result:** all PASS; gdb `working` (this is a native-amd64 cell).
+**Expected result:** all PASS; gdb `working` (native-amd64 cell); all four
+coursework workloads (ast3/ast04/ast06/ast12) build and run with timings in
+the JSON.
 
 ---
 
@@ -123,7 +138,10 @@ aws ec2 terminate-instances --instance-ids <id>
 
 **Expected result:** cpp all PASS natively; x86 assembles and runs under
 emulation but **gdb reports `broken`** — you just reproduced the paper's
-emulation-boundary finding on hardware you provisioned yourself.
+emulation-boundary finding on hardware you provisioned yourself. The
+coursework workloads run under QEMU and are recorded rather than failed;
+ast12 (multithreaded pthread + assembly) is the sharpest emulation-fidelity
+probe, so compare its timings and status against cell 1's.
 
 ---
 
@@ -155,15 +173,23 @@ emulation-boundary finding on hardware you provisioned yourself.
    ```
    Download and install Docker Desktop (WSL2 backend) from docker.com,
    launch it, wait for the engine ("Docker Desktop is running").
-5. Open the Ubuntu (WSL) terminal and run the same commands as Phase 2
-   (install nothing — Docker Desktop provides `docker` inside WSL; just
-   curl `ci-test.sh`, run both images, `cat` the JSONs).
-6. Upload from PowerShell using the preinstalled AWS tools:
-   ```powershell
-   Write-S3Object -BucketName unlv-ide-results-<ACCOUNT> -KeyPrefix manual/windows -Folder \\wsl$\Ubuntu\root\results
+5. Fetch the coursework workload: in PowerShell,
+   `Read-S3Object -BucketName unlv-ide-results-<ACCOUNT> -Key workload/code.zip -File C:\code.zip`
+   (AWS Tools are preinstalled; the instance role authorizes the read).
+6. Open the Ubuntu (WSL) terminal and run the same commands as Phase 2
+   (Docker Desktop provides `docker` inside WSL; curl `ci-test.sh` into
+   `~/scripts/`, then unpack the workload beside it before running):
+   ```bash
+   sudo apt-get update && sudo apt-get install -y unzip
+   cp /mnt/c/code.zip ~ && cd ~ && unzip -o code.zip
+   bash scripts/ci-test.sh cpp && bash scripts/ci-test.sh x86
    ```
-7. Record: Windows build (`winver`), Docker Desktop version, instance type.
-8. **Terminate via CLI and confirm.** This is the expensive instance
+7. Upload from PowerShell using the preinstalled AWS tools:
+   ```powershell
+   Write-S3Object -BucketName unlv-ide-results-<ACCOUNT> -KeyPrefix manual/windows -Folder \\wsl$\Ubuntu\home\<your-wsl-user>\results
+   ```
+8. Record: Windows build (`winver`), Docker Desktop version, instance type.
+9. **Terminate via CLI and confirm.** This is the expensive instance
    (~$0.40/h): `aws ec2 terminate-instances --instance-ids <id>`
 
 **Expected result:** all PASS; gdb `working` — your second native-amd64

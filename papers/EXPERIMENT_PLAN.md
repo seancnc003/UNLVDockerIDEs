@@ -112,6 +112,33 @@ State these plainly in the paper; do not present partial coverage as full:
   student hardware; cloud/CI timings are server-class best-case. Broader
   consumer-hardware measurement folds into the planned course study.
 
+## Measured metrics (per cell, per image) — compensating for no classroom data
+
+Because this cycle collects no student data, the technical metrics carry the
+paper's evidentiary weight; the suite therefore measures more than a smoke
+test (decided 2026-08-17). Per JSON row, `ci-test.sh` captures:
+
+- **Fidelity:** starter compile+run (3 timed cycles), the gdb probe
+  (working/broken — the headline native-vs-emulated finding), starter
+  seeding, and persistence across container replacement.
+- **Coursework workload (x86):** timed build + execution of four real CS 218
+  assignments (ast3, ast04, ast06, ast12), manifest-driven
+  (`code/workloads.tsv`). ast12 — multithreaded pthread + assembly computing
+  a checkable answer — is the strongest emulation-fidelity probe. Native
+  failures are hard failures; under emulation status is recorded, not
+  failed (same policy as gdb). The `code/` folder is gitignored course
+  material: cells fetch it privately from S3 ("available on request" in the
+  paper), and when absent the stage records null — the published script
+  stays complete without it.
+- **Performance:** pull time, image size, cold start → healthy, **warm
+  start** (the daily-experience number, from the persistence restart), idle
+  memory, and **peak container memory during the workload** (backs the
+  base-spec-student-machine claim). Native-vs-emulated ratios on identical
+  workloads fall out across cells with no extra measurement.
+- **Reproducibility:** image digest, tool versions, code-server version,
+  and an automated host record (CPU model, cores, RAM, OS, Docker version)
+  embedded in every JSON.
+
 ## Protocol — identical in every cell
 
 1. Provision per the runbook (cells 1–3 on AWS: console/CLI steps in
