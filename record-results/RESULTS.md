@@ -1,12 +1,16 @@
 # Results — Platform Matrix (x86 image only)
 
-Cells 1–2 are filled from the AWS record run (2026-08-18); cell 3 is
+Cell 1 is filled from the AWS record run (2026-08-18); cell 2 is filled
+from the AWS QEMU follow-up run (2026-08-18, run `20260818-195946`,
+`arm64-binfmt` variant — it supersedes the record run's stock-QEMU
+result after the crash was traced to Ubuntu 24.04's QEMU 8.2.2 itself;
+see Notes); cell 3 is
 filled from the Azure record run on real Windows 11 Pro (2026-08-18,
 after the AWS Windows Server proxy attempt failed as rig infrastructure
 — see Notes); cell 4 is the local MacBook run (2026-08-17).
 Every number below is transcribed from the
 JSONs emitted by the unmodified published `scripts/ci-test.sh` — no other
-source. Cells 1–2 come from the AWS **record run** (pass 2 of
+source. Cell 1 comes from the AWS **record run** (pass 2 of
 [`papers/AWS_RUNBOOK.md`](../papers/AWS_RUNBOOK.md); the familiarization pass under `manual-practice/` is never
 reported). All raw record-run outputs
 (JSONs, transcripts, diagnostics) are archived verbatim in
@@ -26,10 +30,11 @@ true by design).
 
 | Field | Value |
 | --- | --- |
-| Record-run date (cells 1–2, AWS) | 2026-08-18, matrix run `20260818-053827` (the same run's Windows Server launch was an infrastructure failure — no JSON, suite never ran; see Notes) |
+| Record-run date (cell 1, AWS) | 2026-08-18, matrix run `20260818-053827` (the same run's Windows Server launch was an infrastructure failure — no JSON, suite never ran; see Notes) |
+| Cell 2 source run (QEMU follow-up, AWS) | 2026-08-18, run `20260818-195946`, `scripts/aws-qemu-followup.sh` `arm64-binfmt` variant — same m8g.large / Ubuntu 24.04 as the superseded record cell; the only change is the QEMU handler source: `tonistiigi/binfmt@sha256:400a4873b838d1b89194d982c45e5fb3cda4593fbfd7e08a02e76b03b21166f0` (Docker's handler build, digest logged in the run log) instead of Ubuntu's `qemu-user-static` 8.2.2. `ci-test.sh` fetched from published main at run time, byte-identical to the record run's copy (file unchanged since commit `775fb5b`). Coursework workload deliberately not shipped — see Notes |
 | Record-run date (cell 3, Azure) | 2026-08-18, run `20260818-093352` — complete, pass 13/13 (evidence files carry the run's `azure-cellA3-` label) |
 | Familiarization-run date (not reported) | |
-| Cell 2 confirmation re-run (diagnostic only, not a tables source) | 2026-08-18 ~07:01 UTC, separate launch, S3 prefix `20260818-053827-arm64-rerun` |
+| Superseded cell 2 record run + confirmation re-run (stock QEMU 8.2.2; not a tables source) | 2026-08-18: matrix run `20260818-053827` (suite fail 3/5) and confirmation launch ~07:01 UTC, S3 prefix `20260818-053827-arm64-rerun` (n=2 reproduction + SIGSEGV diagnostics) — see Notes |
 | Cell 4 run date | 2026-08-17 |
 | Cell 3 platform | Azure Standard_D4s_v5, westcentralus, Windows 11 Pro 24H2 (`MicrosoftWindowsDesktop:windows-11:win11-24h2-pro:latest`, version 26100.9168.260809), `--security-type Standard`, no public IP, no inbound NSG rules |
 | Cell 3 subscription / licensing | Pay-As-You-Go (upgraded from Azure for Students 2026-08-18); launched with `--license-type Windows_Client` — see the licensing note in Notes |
@@ -42,18 +47,18 @@ true by design).
 
 | Metric | Cell 1: Linux amd64 (AWS m8i.large) | Cell 2: Linux arm64 (AWS m8g.large) | Cell 3: Windows amd64 (Azure D4s_v5, Windows 11 Pro 24H2 — cross-cloud caveat above) | Cell 4: macOS arm64 (M1 Pro, 16 GB) |
 | --- | --- | --- | --- | --- |
-| x86 image mode | native | emulated (QEMU binfmt) | native (Docker Desktop/WSL2) | emulated (Docker Desktop) |
-| gdb probe (working/broken) | working | broken (not a clean probe; see Notes) | working | broken |
-| Pull time (s) | 16.3 | 12.8 | 53.1 (network-dominated; engine warm — see Notes) | 44.7 |
+| x86 image mode | native | emulated (QEMU binfmt, Docker's `tonistiigi/binfmt` handler build — stock Ubuntu QEMU 8.2.2 crashes; see Notes) | native (Docker Desktop/WSL2) | emulated (Docker Desktop) |
+| gdb probe (working/broken) | working | broken | working | broken |
+| Pull time (s) | 16.3 | 13.1 | 53.1 (network-dominated; engine warm — see Notes) | 44.7 |
 | Image size (MB) | 552 | 552 | 552 | 552 |
-| Cold start → healthy (s) | 0.5 | null (never healthy in 300 s; see Notes) | 0.6 | 4.8 |
-| Warm start (s) | 0.5 | null (never healthy in 300 s; see Notes) | 0.5 | 4.3 |
-| Starter compile+run, median of 3 (s) | 0.0 | null (all 3 runs failed; see Notes) | 0.2 (0.2 / 0.2 / 0.2) | 0.4 |
-| Idle memory (MiB) | 54.29 | 0 (container had exited; see Notes) | 56.36 | 263.1 |
-| Workload peak memory (MiB) | null (see Notes) | null (see Notes) | 90 | 358 |
+| Cold start → healthy (s) | 0.5 | 7.3 | 0.6 | 4.8 |
+| Warm start (s) | 0.5 | 7.2 | 0.5 | 4.3 |
+| Starter compile+run, median of 3 (s) | 0.0 | 0.3 (0.3 / 0.3 / 0.3) | 0.2 (0.2 / 0.2 / 0.2) | 0.4 |
+| Idle memory (MiB) | 54.29 | 262.8 | 56.36 | 263.1 |
+| Workload peak memory (MiB) | null (see Notes) | null (workload not shipped; see Notes) | 90 | 358 |
 | Starter seeding | pass | pass | pass | pass |
 | Persistence across replacement | pass | pass | pass | pass |
-| Overall (pass / recorded) | pass (13 checks passed, 0 failed; gdb working as expected) | fail (3 checks passed, 5 failed; container never reached healthy under QEMU binfmt — see Notes) | pass (13 checks passed, 0 failed; gdb working; Azure record run — the AWS Server-proxy attempt was a rig failure, see Notes) | recorded (12 checks passed, 0 failed; gdb broken as expected) |
+| Overall (pass / recorded) | pass (13 checks passed, 0 failed; gdb working as expected) | recorded (8 checks passed, 0 failed; gdb broken as expected — clean probe; workload not shipped, see Notes) | pass (13 checks passed, 0 failed; gdb working; Azure record run — the AWS Server-proxy attempt was a rig failure, see Notes) | recorded (12 checks passed, 0 failed; gdb broken as expected) |
 
 ## Table 2 — Coursework workload (CS 218 assignments)
 
@@ -62,10 +67,10 @@ run-fail (recorded, not failed, under emulation — same policy as gdb).
 
 | Assignment | Cell 1 build / run / status | Cell 2 build / run / status | Cell 3 build / run / status | Cell 4 build / run / status |
 | --- | --- | --- | --- | --- |
-| ast3 (pure assembly) | 0.0 / 0.0 / pass | 0.0 / null / build-fail (exec against dead container; see Notes) | 0.2 / 0.2 / pass | 0.4 / 0.2 / pass |
-| ast04 (pure assembly) | 0.0 / 0.0 / pass | 0.0 / null / build-fail (exec against dead container; see Notes) | 0.2 / 0.2 / pass | 0.4 / 0.1 / pass |
-| ast06 (C++ driver + assembly, file I/O) | 0.2 / 0.0 / pass | 0.0 / null / build-fail (exec against dead container; see Notes) | 0.5 / 0.2 / pass | 2.5 / 0.2 / pass |
-| ast12 (multithreaded pthread + assembly, checkable answer) | 0.3 / 0.0 / pass | 0.0 / null / build-fail (exec against dead container; see Notes) | 0.6 / 0.2 / pass | 3.1 / 0.2 / pass |
+| ast3 (pure assembly) | 0.0 / 0.0 / pass | — / — / not run (workload not shipped; see Notes) | 0.2 / 0.2 / pass | 0.4 / 0.2 / pass |
+| ast04 (pure assembly) | 0.0 / 0.0 / pass | — / — / not run (workload not shipped; see Notes) | 0.2 / 0.2 / pass | 0.4 / 0.1 / pass |
+| ast06 (C++ driver + assembly, file I/O) | 0.2 / 0.0 / pass | — / — / not run (workload not shipped; see Notes) | 0.5 / 0.2 / pass | 2.5 / 0.2 / pass |
+| ast12 (multithreaded pthread + assembly, checkable answer) | 0.3 / 0.0 / pass | — / — / not run (workload not shipped; see Notes) | 0.6 / 0.2 / pass | 3.1 / 0.2 / pass |
 
 ## Emulation overhead (derived)
 
@@ -73,10 +78,11 @@ On the two workloads with usable native denominators, Docker Desktop
 emulation (cell 4 ÷ cell 1) costs **≈12.5×** (ast06 build, 2.5 / 0.2 s)
 and **≈10.3×** (ast12 build, 3.1 / 0.3 s) — order-of-magnitude figures,
 since the 0.2–0.3 s denominators are coarsely quantized. All other
-ratios are undefined: the QEMU binfmt ratio (cell 2 ÷ cell 1) has no
-numerator — cell 2's container crashed before any workload ran — and
+ratios are undefined: the QEMU binfmt ratios (cell 2 ÷ cell 1) have no
+workload numerators — the run that fills cell 2 deliberately shipped no
+coursework (see Notes) — and
 the remaining rows have a 0.0 s denominator (cell 1 at the timer
-floor). Cell 1 is the denominator by design: cells 1 and 2 are
+floor), including cell 2's 0.3 s starter compile. Cell 1 is the denominator by design: cells 1 and 2 are
 same-size, same-generation Intel/Graviton siblings running identical
 Ubuntu + Docker Engine, so the ratio isolates the emulation layer as
 the only changed variable (see
@@ -127,48 +133,67 @@ itself a result.)
   linux-arm64 launch hit the identical user-data bug before any test ran;
   the recorded cell is the retry launch at ~06:19 UTC on 2026-08-18 with
   the fixed user-data. No measurements come from the failed launch.
-- **Cell 2 suite failure — container never reached healthy under QEMU
-  binfmt.** The environment itself set up correctly: `run.log` shows
-  qemu-user-static 8.2.2 + binfmt-support installed, the coursework zip
-  fetched from S3 and all four assignments unpacked, and the image pulled
-  by the correct digest in 12.8 s. The container's entrypoint even ran far
-  enough under emulation to seed `hello.asm` to the host mount (stage 3
-  passed) and the persistence file checks passed. But code-server never
-  answered `/healthz` within the 300 s ceiling on either the cold or the
-  replacement start, and by stage 4 the container had exited — every
-  subsequent `docker exec` returned "container … is not running". Suite
-  verdict: 3 passed (pull, starter seeding, persistence), 5 failed (cold
-  start, all 3 compile+run attempts, replacement healthy).
-- **Cell 2 in-container values are artifacts, not measurements.** Because
-  the container was down, the JSON's remaining fields record the failure
-  mode, not the image: the four workload rows are instant exec errors
-  (`build-fail` at 0.0 s — no compiler ever ran, so they are not the
-  "recorded, not failed" emulation slowness the policy anticipates), the
-  gdb "broken" is an exec against a dead container rather than a clean
-  ptrace probe (it coincides with the expected finding but does not
-  evidence it), the tool-version strings are empty, and idle memory reads
-  0B (an exited container). Ratio consequence for the derived ratios: the entire QEMU
-  binfmt column is undefined — there are no cell 2 timings to divide.
-- **Cell 2 crash cause — confirmed by a dedicated re-run (n=2, not a
-  flake).** A separate confirmation launch at ~07:01 UTC on 2026-08-18
-  (S3 prefix `20260818-053827-arm64-rerun`; JSON and diag captures
-  archived in [EVIDENCE.md](EVIDENCE.md) as `cell2-linux-arm64-rerun.json` and
-  `cell2-linux-arm64-rerun-diag-*`) first reproduced the full suite
-  outcome exactly — 3 passed, 5 failed, same stages failing — then ran a
-  diagnostics stage: a fresh container from the same digest
-  (`--platform linux/amd64`, 90 s wait) died with
-  `status=exited exit=139 oom=false` per `docker inspect` (SIGSEGV; OOM
-  ruled out — the host had >7 GB available at capture time and dmesg shows
-  no OOM kills), and the container's complete `docker logs` output is one
-  line: `x86_64-binfmt-P: QEMU internal SIGSEGV {code=MAPERR, addr=0x20}`.
-  That is qemu-user-static 8.2.2 itself segfaulting internally while
-  emulating the code-server (Node.js/V8) runtime. The mechanism previously
-  recorded here as inference is now demonstrated: the failure is a
-  property of this QEMU binfmt emulation layer, not of the image — the
-  same digest passes natively (cell 1) and under Docker Desktop's
-  emulation (cell 4). The re-run is confirmation evidence only; every
-  table number for cell 2 remains transcribed from the first record-run
-  JSON.
+- **Cell 2 supersession — the tables' source changed on 2026-08-18.**
+  Cell 2's column is now transcribed from the QEMU follow-up run
+  `20260818-195946` (`scripts/aws-qemu-followup.sh`, `arm64-binfmt`
+  variant; JSON and diagnostics archived in [EVIDENCE.md](EVIDENCE.md) as
+  `cell2-qemu-followup-binfmt.json` and companions). Same m8g.large
+  Graviton, same Ubuntu 24.04, same image digest, same unmodified
+  published `ci-test.sh` as the superseded record run — the only changed
+  variable is the QEMU binfmt handler source: Docker's
+  `tonistiigi/binfmt` build (digest in Provenance) instead of Ubuntu
+  24.04's `qemu-user-static` 8.2.2. Outcome: **8/8 checks passed** —
+  container healthy in 7.3 s cold / 7.2 s warm, starter compiles at
+  0.3 s, seeding and persistence pass, and the gdb probe is now a
+  **clean** probe against a live container reporting "broken", which is
+  the first real Linux-arm64 evidence for the emulation-boundary finding
+  (the superseded run's "broken" was an exec against a dead container).
+  The diagnostic probe recorded `status=running exit=0 oom=false` with
+  code-server serving.
+- **The superseded stock-QEMU result (kept as a finding, not a tables
+  source).** The original record run (`20260818-053827`) under Ubuntu
+  24.04's `qemu-user-static` 8.2.2 failed 3 passed / 5 failed: setup was
+  correct (handlers installed, coursework unpacked, image pulled by
+  digest in 12.8 s) and the entrypoint seeded `hello.asm` under
+  emulation, but code-server never answered `/healthz` within 300 s and
+  the container exited before stage 4. A dedicated confirmation launch
+  (~07:01 UTC, S3 prefix `20260818-053827-arm64-rerun`; archived as
+  `cell2-linux-arm64-rerun.json` and `cell2-linux-arm64-rerun-diag-*`)
+  reproduced the suite outcome exactly (n=2), then captured the cause on
+  a fresh container: `status=exited exit=139 oom=false` (OOM ruled out —
+  >7 GB free, no dmesg OOM kills) with the complete container log being
+  one line — `x86_64-binfmt-P: QEMU internal SIGSEGV {code=MAPERR,
+  addr=0x20}`. That is QEMU 8.2.2 itself segfaulting while emulating
+  code-server's Node.js/V8 runtime. Combined with the follow-up run's
+  pass under a newer handler build on otherwise identical hardware/OS,
+  the crash is demonstrated to be **version-bound to the QEMU build**,
+  not a property of the image, of ARM Linux, or of binfmt emulation in
+  general. Both runs' raw outputs remain archived verbatim.
+- **Cell 2 workload was deliberately not shipped in the follow-up run.**
+  The follow-up driver is a reaches-healthy diagnostic and does not
+  upload the private coursework zip, so `ci-test.sh` skipped the
+  workload stage cleanly (its designed behavior when `code/` is absent):
+  Table 2's cell 2 column is *not run*, `workload` and
+  `workload_peak_mem_mib` are null, and the overall verdict counts 8
+  checks rather than 13. The QEMU-binfmt emulation-overhead ratios
+  therefore remain unpopulated — a re-run with the workload shipped
+  under the working handler build would fill them; until then the only
+  measured emulation-overhead figures stay cell 4's.
+- **Companion variant `arm64-distro-new` — rig failure, not a QEMU
+  result.** The same follow-up run launched a second variant (Ubuntu
+  26.04 LTS, m8g.large) meant to test that release's newer distro
+  `qemu-user-static`. It never tested QEMU at all: `apt-get install
+  qemu-user-static binfmt-support` failed with `E: Package
+  'qemu-user-static' has no installation candidate` on the 26.04 AMI
+  (the package exists for 26.04 "resolute" in the Ubuntu archive per
+  packages.ubuntu.com, so this is an image/sources configuration issue
+  on the AMI, not a removal — not diagnosed further), no binfmt handler
+  was registered, and every amd64 exec failed with `exec format error`
+  (diagnostic probe: `status=exited exit=255`, log line
+  `exec /usr/bin/tini: exec format error`). Its JSON is failure-mode
+  artifacts in the cell 2 record-run sense and enters no table; run.log
+  archived in [EVIDENCE.md](EVIDENCE.md) as
+  `cell2-qemu-followup-distro-runlog.txt`.
 - **Cell 3 re-launch (provenance):** the recorded evidence comes from the
   second launch of the windows cell. The first launch was healthy but was
   accidentally terminated ~40 minutes in by a driver exit trap (the
