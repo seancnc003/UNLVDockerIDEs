@@ -92,8 +92,15 @@ Facts gathered before the operator decided (2026-08-18):
   [Multitenant Hosting Rights](https://learn.microsoft.com/en-us/azure/virtual-machines/windows/windows-desktop-multitenant-hosting-deployment)
   (Windows 11 E3/E5, M365 E3/E5/A3/A5/Business Premium). The PAYG upgrade
   does not grant them; deploy with `--license-type Windows_Client` (BYOL
-  attestation). UNLV students may hold M365 A3/A5 via the university.
-  RESULTS.md records the run's licensing posture.
+  attestation). UNLV students may hold M365 A3/A5 via the university —
+  public UNLV docs confirm more than A1 (desktop Office rights) but never
+  name the tier, and UNLV's separate Azure-Dev-Tools Windows Education
+  keys are device licenses that do NOT confer hosting rights; only the
+  student's own account page settles it. Materially, the same Microsoft
+  doc also carves out: "Student & Free Trial accounts are enabled to
+  deploy Windows 11 images for development or testing purposes" — dev/test
+  needs no MTH on student accounts (unstated whether that survives a PAYG
+  conversion). RESULTS.md records the run's licensing posture.
 - **Windows-on-ARM is out regardless**: the ARM64 Windows 11 images are
   Preview-only and effectively require Dpsv5-class sizes, and Docker
   Desktop for Windows-on-ARM is still Early Access (Linux containers
