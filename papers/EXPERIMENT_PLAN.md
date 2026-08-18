@@ -71,6 +71,21 @@ Cell 3 is Windows Server 2025 (AWS offers no Windows 11 client images); it
 shares its kernel with Windows 11 24H2 and verifies the WSL2/Docker Desktop
 pipeline rather than a specific consumer configuration — labeled as such.
 
+**Ratio baseline: cell 1, by design.** The emulation-overhead ratios
+(emulated ÷ native) always use cell 1 as the denominator, never cell 3,
+because a baseline should differ from the numerator in as few ways as
+possible. Cells 1 and 2 are matched siblings — same Ubuntu 24.04, same
+Docker Engine, same cloud, same instance generation and size (`m8i.large`
+vs `m8g.large`, both 2 vCPU / 8 GB) — so their only difference is the CPU
+architecture and hence the emulation layer, which is the thing being
+measured. Cell 3 would confound that single variable with four others
+(Windows, Docker Desktop, the WSL2/Hyper-V stack, and a larger instance),
+and its "native" path is itself the least direct in the matrix: on EC2 the
+containers run inside the WSL2 utility VM under nested virtualization,
+whereas cell 1 is container → host kernel → hardware. Cell 3's job is to
+be the second native data point (and the Windows-pipeline verification),
+not the yardstick.
+
 Cell 4 earns its row twice over: it is the only source of consumer-hardware
 timings (every cloud cell is server-class, best-case), and it tests Docker
 Desktop's emulation layer, which cell 2's QEMU/binfmt approximates but does

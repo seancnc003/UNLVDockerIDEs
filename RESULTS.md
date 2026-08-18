@@ -50,7 +50,13 @@ run-fail (recorded, not failed, under emulation — same policy as gdb).
 ## Table 3 — Emulation overhead ratios (derived)
 
 Emulated time ÷ native time on the identical workload (cell 2 ÷ cell 1 for
-QEMU binfmt; cell 4 ÷ cell 1 for Docker Desktop).
+QEMU binfmt; cell 4 ÷ cell 1 for Docker Desktop). Cell 1 is the
+denominator by design: cells 1 and 2 are same-size, same-generation
+Intel/Graviton siblings running identical Ubuntu + Docker Engine, so the
+ratio isolates the emulation layer as the only changed variable. Cell 3
+appears in no ratio — it is native (no emulation to price), and dividing
+by it would mix in Windows, WSL2, and a larger instance size (see
+papers/EXPERIMENT_PLAN.md, "Ratio baseline").
 
 | Workload | QEMU binfmt (cell 2 / cell 1) | Docker Desktop (cell 4 / cell 1) |
 | --- | --- | --- |
