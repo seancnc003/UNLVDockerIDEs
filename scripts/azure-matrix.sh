@@ -227,9 +227,9 @@ echo "== Deleting resource group $RG (all VMs, disks, NICs) =="
 az group delete --name "$RG" --yes --no-wait
 
 echo "== Download results =="
-mkdir -p results-azure
-aws s3 cp "s3://$BUCKET/$PREFIX/" results-azure/ --recursive || true
-find results-azure -type f | sort
-J="$(find results-azure -name '*.json' | wc -l | tr -d ' ')"
+mkdir -p results/azure
+aws s3 cp "s3://$BUCKET/$PREFIX/" results/azure/ --recursive || true
+find results/azure -type f | sort
+J="$(find results/azure -name '*.json' | wc -l | tr -d ' ')"
 [ "$J" -ge "$EXPECT" ] && echo "RESULT: all $EXPECT Azure cells complete" \
   || { echo "RESULT: incomplete ($J/$EXPECT JSONs) — see run.log/live.log per cell"; exit 1; }

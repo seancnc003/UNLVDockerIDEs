@@ -17,7 +17,9 @@ exists, so the transcript is the only evidence (see RESULTS.md Notes). The
 cell 2 re-run JSON is confirmation evidence only — RESULTS.md tables are
 transcribed from the first record-run JSON.
 
-Generated working directories (`results/` and `results-aws/`) remain ignored.
+The generated working directory (`results/`, holding local ci-test.sh
+output plus the `aws/`, `azure/`, and `s3-final-backup/` caches) remains
+ignored.
 Practice, familiarization, and ad-hoc runs do not belong here.
 
 The Azure record run (RESULTS.md's separate "Azure record run" section —

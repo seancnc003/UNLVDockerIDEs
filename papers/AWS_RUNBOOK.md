@@ -274,7 +274,7 @@ data point, this time under Docker Desktop/WSL2.
    everything `terminated`. Check EBS volumes list is empty (all were
    DeleteOnTermination).
 2. Download all results locally:
-   `aws s3 cp s3://unlv-ide-results-<ACCOUNT>/manual/ results-aws/ --recursive`
+   `aws s3 cp s3://unlv-ide-results-<ACCOUNT>/manual/ results/aws/ --recursive`
 3. Next day: Billing → Cost Explorer. Find the run's actual cost by
    service. Screenshot it — a real cost breakdown you can discuss is
    itself resume material.

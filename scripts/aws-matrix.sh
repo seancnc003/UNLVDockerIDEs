@@ -12,7 +12,7 @@
 # multi-arch/native everywhere and out of scope), uploads the results JSON +
 # a log to S3, and shuts down
 # (shutdown behavior = terminate). This driver polls S3, downloads everything
-# to results-aws/<cell>/, and terminates any stragglers. The fourth matrix
+# to results/aws/<cell>/, and terminates any stragglers. The fourth matrix
 # cell (Apple Silicon consumer hardware) is run locally — see
 # papers/EXPERIMENT_PLAN.md.
 #
@@ -163,9 +163,9 @@ while [ $SECONDS -lt $DEADLINE ]; do
 done
 
 echo "== Download results =="
-mkdir -p results-aws
-aws s3 cp "s3://$BUCKET/$PREFIX/" results-aws/ --recursive || true
-find results-aws -type f | sort
-J="$(find results-aws -name '*.json' | wc -l | tr -d ' ')"
+mkdir -p results/aws
+aws s3 cp "s3://$BUCKET/$PREFIX/" results/aws/ --recursive || true
+find results/aws -type f | sort
+J="$(find results/aws -name '*.json' | wc -l | tr -d ' ')"
 [ "$J" -ge 3 ] && echo "RESULT: all three AWS cells complete" \
   || { echo "RESULT: incomplete ($J/3 JSONs) — see the per-cell run.log files"; exit 1; }

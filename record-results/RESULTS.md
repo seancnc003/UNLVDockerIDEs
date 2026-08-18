@@ -268,7 +268,7 @@ Dsv5 family, and cell A3 launched on a Standard_D4s_v5 (run
 | --- | --- |
 | Record-run date / run id | 2026-08-18, run `20260818-093352` — complete, pass 13/13 |
 | Region | westcentralus (westus3 was SKU-restricted on the prior subscription) |
-| S3 prefix | `azure-matrix/20260818-093352/` (bucket deleted post-run per teardown order; evidence archived in this directory, full bucket snapshot in local `s3-final-backup/`) |
+| S3 prefix | `azure-matrix/20260818-093352/` (bucket deleted post-run per teardown order; evidence archived in this directory, full bucket snapshot in local `results/s3-final-backup/`) |
 | VM size / security | Standard_D4s_v5, `--security-type Standard`, no public IP, no inbound NSG rules |
 | Windows image | `MicrosoftWindowsDesktop:windows-11:win11-24h2-pro:latest` (version 26100.9168.260809 at launch) |
 | Subscription / licensing | Pay-As-You-Go (upgraded from Azure for Students 2026-08-18); launched with `--license-type Windows_Client` — see licensing note below |

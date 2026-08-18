@@ -167,7 +167,7 @@ test (decided 2026-08-17). Per JSON row, `ci-test.sh` captures:
    AWS_RUNBOOK.md; `scripts/aws-matrix.sh` is the automated equivalent).
    Record instance type, CPU, RAM, OS build, Docker version.
 2. Run `bash scripts/ci-test.sh x86`.
-3. Collect the JSONs (S3 → `results-aws/<cell>/` for cells 1–3; local
+3. Collect the JSONs (S3 → `results/aws/<cell>/` for cells 1–3; local
    `results/` for cell 4), stamped with host-spec record and image digests.
 4. Tear down automatically: every instance self-terminates on completion,
    with a per-instance scheduled-shutdown failsafe and a terminate-all trap
