@@ -23,10 +23,9 @@ Practice, familiarization, and ad-hoc runs do not belong here.
 The Azure record run (RESULTS.md's separate "Azure record run" section —
 never merged into the AWS + local tables) archives its evidence here
 under `azure-`-prefixed filenames, following the same verbatim-copy
-rules. One encoding exception: `azure-cellA3-windows-runlog.txt` is a
-UTF-8 conversion of the VM's UTF-16 PowerShell transcript (content
-unmodified; the byte-original also survives in the local
-`s3-final-backup/` bucket snapshot). `azure-cellA3-windows-run1-no-wsl-integration.json`
+rules. `azure-cellA3-windows-runlog.txt` is the verbatim PowerShell
+transcript (`run.log`, UTF-8 with BOM as PowerShell wrote it), covering
+all four attempts of the run. `azure-cellA3-windows-run1-no-wsl-integration.json`
 is anomaly evidence from a failed automation attempt, not a result —
 see the Azure run-anomalies note in RESULTS.md. The S3 transport bucket
 was deleted after the run (full teardown); this directory is the sole
