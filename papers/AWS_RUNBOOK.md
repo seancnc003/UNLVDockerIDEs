@@ -35,13 +35,66 @@ Each phase names the AWS skills it teaches — these become resume bullets
    (console → IAM → Users → Create) with `AdministratorAccess`, enable MFA
    on both root and the IAM user, and use the IAM user from now on. Root is
    for break-glass only — this is the first thing any AWS reviewer checks.
-2. Billing console → Budgets → create a **$10 monthly budget** with email
-   alerts at 50/80/100%. This is your safety net for the whole project.
+2. Budget guardrail (decided 2026-08-19: **$20/month, alert-heavy, with an
+   automatic brake**). Do this signed in as the IAM user, *before* any
+   instance ever launches. Two parts:
+
+   **2a. The alert budget.** Console search → "Budgets" (Billing and Cost
+   Management → Budgets) → Create budget → **Customize (advanced)** →
+   **Cost budget**:
+   - Name `unlv-ide-monthly` · Period **Monthly** · Renewal **Recurring** ·
+     Amount **$20.00** · Scope: all services (default).
+   - Add **four alert thresholds**, all on **Actual** spend, all emailing
+     you: **$5 (25%) · $10 (50%) · $16 (80%) · $20 (100%)**. The $5 email
+     is the real tripwire: expected total for the whole experiment is
+     under $5, so "25% of budget" actually means "something is running
+     that shouldn't be — go look," days before $20 is in danger.
+
+   **2b. The brake (budget action).** A plain budget only emails; an
+   *action* enforces. First make the thing the action will attach — a
+   deliberately narrow deny policy: IAM → Policies → Create policy →
+   JSON:
+   ```json
+   {"Version": "2012-10-17",
+    "Statement": [{"Effect": "Deny",
+                   "Action": "ec2:RunInstances",
+                   "Resource": "*"}]}
+   ```
+   Name it `unlv-budget-brake`. It denies **only new instance launches**
+   — never `TerminateInstances` — so even with the brake engaged you can
+   always still clean up. (Denying all of EC2 would be the classic
+   mistake: a cap that locks you out of stopping the spend.)
+
+   Then in the budget: **Attach actions** → Add action:
+   - **IAM role for Budgets:** let the console create the service role
+     (it attaches the managed policy
+     `AWSBudgetsActionsWithAWSResourceControlAccess`) — this is the role
+     *Budgets itself* assumes to act on your behalf, another role-vs-user
+     lesson.
+   - Threshold **80% of budgeted amount ($16), Actual** · Action type
+     **Apply IAM policy** → `unlv-budget-brake` → attach to **your IAM
+     user** · Approval: **automatic** (execute without asking).
+   - After creation the action sits in state **Standby**; if it ever
+     fires, it auto-resets at the start of the next month (or reset it
+     manually in the Budgets console once you've verified nothing is
+     running).
+
+   **Honest limits of this fence (also a paper-worthy fact):** billing
+   data lags ~8–24 h, so no AWS budget is a real-time hard cap, and the
+   brake stops *new* launches, not already-running instances. That is
+   acceptable here because every scripted instance carries its own kill
+   mechanisms (100-min self-shutdown, terminate-on-shutdown, exit-trap)
+   and the realistic worst case per run is ~$1. The budget's true job is
+   catching the human failure mode — a *manually* launched instance you
+   forgot (a lost `m8i.xlarge` burns ~$9.60/day; the $5 email arrives
+   long before real damage). Cost: first two action-enabled budgets are
+   free.
 3. Install/verify the AWS CLI: `aws --version` (want v2), then
    `aws configure` with an access key for your IAM user, default region
    `us-east-1`. Verify: `aws sts get-caller-identity`.
 
-**Checkpoint:** `get-caller-identity` shows your IAM user, not root.
+**Checkpoint:** `get-caller-identity` shows your IAM user, not root; the
+budget lists four alert thresholds and its action shows state **Standby**.
 
 ---
 
