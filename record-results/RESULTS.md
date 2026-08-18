@@ -6,8 +6,10 @@ blank — its AWS launch was an infrastructure failure of the test rig
 Windows 11, where it **passed 13/13** (recorded as cell A3 in the Azure
 section, never merged into the tables below); cell 4 is filled
 (2026-08-17). Azure results get their own section at the
-end of this file (see "Azure record run") and are never merged into the
-tables below — different cloud, different CPUs and VM sizes.
+end of this file (see "Azure record run"); their **timings** are never
+merged into the tables below — different cloud, different CPUs and VM
+sizes. The one all-cell view is Table 0, which unifies **behavioral
+verdicts only**.
 Every number below is transcribed from the
 JSONs emitted by the unmodified published `scripts/ci-test.sh` — no other
 source. Cells 1–2 come from the AWS **record run** (pass 2 of
@@ -16,6 +18,21 @@ reported). Cell 4 is the local MacBook run. Official raw record-run JSONs are
 archived without modification alongside this file; generated working
 directories remain ignored. Image under test:
 `seancnc/unlv-x86-ide` (amd64-only by design).
+
+## Table 0 — Unified behavioral verdicts (all cells, both clouds + local)
+
+Behavioral properties only — platform verdicts, not hardware
+measurements. All timings remain in their per-cloud tables (Tables 1–4
+for AWS + local, the A-tables for Azure) and are never cross-compared;
+see "Azure comparability and provenance notes".
+
+| Cell | Environment | x86 image mode | gdb probe | Starter seeding | Persistence | Verdict |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Linux amd64 — AWS m8i.large | native | working | pass | pass | pass (13 checks passed, 0 failed) |
+| 2 | Linux arm64 — AWS m8g.large | emulated (QEMU binfmt) | broken (not a clean probe; see Notes) | pass | pass | fail (3 passed, 5 failed; container never reached healthy — see Notes) |
+| 3 | Windows amd64 — AWS m8i.xlarge, Windows Server 2025 proxy | — | — | — | — | no result — rig infrastructure failure, suite never ran; superseded by cell A3 |
+| A3 | Windows amd64 — Azure Standard_D4s_v5, Windows 11 Pro 24H2 | native (Docker Desktop/WSL2) | working | pass | pass | pass (13 checks passed, 0 failed) |
+| 4 | macOS arm64 — Apple M1 Pro, 16 GB (local) | emulated (Docker Desktop) | broken (as expected) | pass | pass | recorded (12 checks passed, 0 failed; gdb broken recorded, not failed) |
 
 ## Provenance
 
