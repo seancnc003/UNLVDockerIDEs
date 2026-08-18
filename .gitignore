@@ -5,6 +5,11 @@ code/
 # Generated test results (scripts/ci-test.sh, scripts/aws-windows-cell.sh)
 results/
 results-aws/
+results-azure/
+
+# Local snapshot of the deleted S3 results bucket (evidence is archived in
+# record-results/; this is the belt-and-suspenders raw copy)
+s3-final-backup/
 
 # Downloaded paper PDFs (copyright — keep local only)
 papers/literature/

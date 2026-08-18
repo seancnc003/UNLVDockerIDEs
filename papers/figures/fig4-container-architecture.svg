@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 750" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="aMut" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#716E66"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1120" height="750" fill="#FFFFFF"/>
+
+  <!-- ====================== student's machine boundary ====================== -->
+  <rect x="30" y="55" width="760" height="670" rx="12" fill="#FDFCFA" stroke="#8A867E" stroke-width="1.3"/>
+  <text x="46" y="82" font-size="11" font-weight="700" letter-spacing="1.5" fill="#22252B">STUDENT'S MACHINE</text>
+  <text x="196" y="82" font-size="10" fill="#716E66">— everything runs locally; offline after the first pull</text>
+
+  <!-- browser -->
+  <rect x="70" y="105" width="300" height="90" rx="8" fill="#FFFFFF" stroke="#8A867E"/>
+  <text x="86" y="131" font-size="13" font-weight="600" fill="#22252B">Web browser</text>
+  <text x="86" y="153" font-size="10" fill="#716E66">any installed browser — the only UI the student sees</text>
+  <text x="86" y="175" font-size="9.5" font-family="Menlo, Consolas, monospace" fill="#716E66">http://127.0.0.1:8135 (C++) · :8218 (x86)</text>
+
+  <!-- ====================== docker engine band ====================== -->
+  <rect x="60" y="230" width="700" height="340" rx="10" fill="#F5F4F0"/>
+  <text x="400" y="250" font-size="9.5" font-weight="600" letter-spacing="1.2" fill="#716E66">DOCKER ENGINE</text>
+  <text x="497" y="250" font-size="9.5" fill="#716E66">— shared host kernel; Desktop (macOS/Win) · CE (Linux)</text>
+
+  <!-- container -->
+  <rect x="90" y="265" width="640" height="280" rx="10" fill="#FFFFFF" stroke="#B5121B" stroke-width="1.5"/>
+
+  <!-- browser -> container arrow + port chip -->
+  <line x1="220" y1="195" x2="220" y2="248" stroke="#716E66" stroke-width="1.5" marker-end="url(#aMut)"/>
+  <text x="240" y="215" font-size="10" fill="#716E66">HTTP over loopback only —</text>
+  <text x="240" y="229" font-size="10" fill="#716E66">nothing listens on the LAN</text>
+  <rect x="125" y="253" width="190" height="24" rx="12" fill="#ECF1F9" stroke="#3D5DA7" stroke-opacity="0.5"/>
+  <text x="220" y="269" text-anchor="middle" font-size="9.5" font-family="Menlo, Consolas, monospace" fill="#22252B">-p 127.0.0.1:&lt;port&gt;:8080</text>
+  <text x="110" y="292" font-size="13" font-weight="700" fill="#22252B">Docker container</text>
+  <text x="234" y="292" font-size="10" fill="#716E66">— one per course; disposable (docker rm never touches coursework)</text>
+  <text x="110" y="310" font-size="10" fill="#716E66">runs as user coder (UID 1000) · passwordless sudo inside the sandbox</text>
+
+  <!-- left column: process tree (bottom-up) -->
+  <rect x="110" y="330" width="280" height="60" rx="6" fill="#FFFFFF" stroke="#B0ACA4"/>
+  <text x="124" y="350" font-size="12" font-weight="600" fill="#22252B">code-server 4.126.0</text>
+  <text x="124" y="368" font-size="10" fill="#716E66">serves the VS Code UI · --auth none</text>
+  <text x="124" y="382" font-size="10" fill="#716E66">telemetry &amp; update checks disabled</text>
+
+  <line x1="250" y1="410" x2="250" y2="394" stroke="#716E66" stroke-width="1.3" marker-end="url(#aMut)"/>
+  <text x="262" y="406" font-size="9" font-style="italic" fill="#716E66">launches</text>
+
+  <rect x="110" y="414" width="280" height="48" rx="6" fill="#FFFFFF" stroke="#B0ACA4"/>
+  <text x="124" y="433" font-size="11.5" font-weight="600" fill="#22252B">entrypoint.sh</text>
+  <text x="124" y="450" font-size="10" fill="#716E66">first run: seeds starter files into workspace</text>
+
+  <line x1="250" y1="482" x2="250" y2="466" stroke="#716E66" stroke-width="1.3" marker-end="url(#aMut)"/>
+  <text x="262" y="478" font-size="9" font-style="italic" fill="#716E66">execs</text>
+
+  <rect x="110" y="486" width="280" height="44" rx="6" fill="#FFFFFF" stroke="#B0ACA4"/>
+  <text x="124" y="504" font-size="11.5" font-weight="600" fill="#22252B">tini — PID 1</text>
+  <text x="124" y="521" font-size="10" fill="#716E66">reaps zombies · forwards SIGTERM for fast stop</text>
+
+  <!-- right column: image layers -->
+  <text x="430" y="322" font-size="9.5" font-weight="600" letter-spacing="1.2" fill="#716E66">IMAGE LAYERS (READ-ONLY)</text>
+
+  <rect x="430" y="332" width="270" height="44" rx="6" fill="#FFFFFF" stroke="#B0ACA4"/>
+  <text x="444" y="350" font-size="11" font-weight="600" fill="#22252B">settings &amp; branding</text>
+  <text x="444" y="366" font-size="10" fill="#716E66">pinned settings.json · course favicon</text>
+
+  <rect x="430" y="384" width="270" height="44" rx="6" fill="#FFFFFF" stroke="#B0ACA4"/>
+  <text x="444" y="402" font-size="11" font-weight="600" fill="#22252B">code-server + extensions</text>
+  <text x="444" y="418" font-size="10" fill="#716E66">code-runner · clangd / asm language</text>
+
+  <rect x="430" y="436" width="270" height="44" rx="6" fill="#FFFFFF" stroke="#B0ACA4"/>
+  <text x="444" y="454" font-size="11" font-weight="600" fill="#22252B">course toolchain</text>
+  <text x="444" y="470" font-size="10" fill="#716E66">compilers &amp; debugger — differs per image →</text>
+
+  <rect x="430" y="488" width="270" height="44" rx="6" fill="#F5F4F0" stroke="#B0ACA4"/>
+  <text x="444" y="506" font-size="11" font-weight="600" fill="#22252B">ubuntu:22.04 base</text>
+  <text x="444" y="522" font-size="10" fill="#716E66">no guest OS — kernel comes from the host</text>
+
+  <!-- bind mount chip + arrow -->
+  <rect x="340" y="533" width="240" height="24" rx="12" fill="#E9F4EE" stroke="#2E7D62" stroke-opacity="0.5"/>
+  <text x="460" y="549" text-anchor="middle" font-size="9.5" font-family="Menlo, Consolas, monospace" fill="#22252B">-v &lt;folder&gt;:/home/coder/workspace</text>
+  <line x1="460" y1="557" x2="460" y2="606" stroke="#716E66" stroke-width="1.5" marker-start="url(#aMut)" marker-end="url(#aMut)"/>
+  <text x="478" y="578" font-size="10" fill="#716E66">bind mount — two-way;</text>
+  <text x="478" y="592" font-size="10" fill="#716E66">files live outside the container</text>
+
+  <!-- host workspace folder -->
+  <rect x="90" y="610" width="640" height="90" rx="8" fill="#FFFFFF" stroke="#8A867E"/>
+  <text x="110" y="636" font-size="13" font-weight="600" fill="#22252B">Host workspace folder</text>
+  <text x="292" y="636" font-size="9.5" font-family="Menlo, Consolas, monospace" fill="#716E66">~/UNLV/cpp-workspace · ~/UNLV/x86-workspace</text>
+  <text x="110" y="660" font-size="10" fill="#716E66">student-owned coursework, editable with any host tool;</text>
+  <text x="110" y="676" font-size="10" fill="#716E66">survives docker rm and image updates</text>
+
+  <!-- ====================== registry (outside the machine) ====================== -->
+  <rect x="850" y="70" width="240" height="100" rx="8" fill="#FFFFFF" stroke="#8A867E" stroke-dasharray="4,3"/>
+  <text x="866" y="96" font-size="13" font-weight="600" fill="#22252B">Docker Hub registry</text>
+  <text x="866" y="118" font-size="9.5" font-family="Menlo, Consolas, monospace" fill="#716E66">seancnc/unlv-cpp-ide</text>
+  <text x="866" y="132" font-size="9.5" font-family="Menlo, Consolas, monospace" fill="#716E66">seancnc/unlv-x86-ide</text>
+  <text x="866" y="154" font-size="10" fill="#716E66">prebuilt &amp; pushed by the instructor</text>
+
+  <path d="M850,120 C785,120 800,330 736,345" fill="none" stroke="#716E66" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#aMut)"/>
+  <text x="872" y="192" font-size="10" fill="#716E66">docker pull — one-time;</text>
+  <text x="872" y="206" font-size="10" fill="#716E66">offline afterwards</text>
+
+  <!-- ====================== the two course images ====================== -->
+  <line x1="970" y1="175" x2="970" y2="258" stroke="#716E66" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#aMut)"/>
+  <text x="850" y="248" font-size="9.5" font-weight="600" letter-spacing="1.2" fill="#716E66">THE TWO COURSE IMAGES</text>
+
+  <rect x="850" y="268" width="240" height="155" rx="8" fill="#FFFFFF" stroke="#B0ACA4"/>
+  <text x="866" y="294" font-size="12" font-weight="600" fill="#22252B">C++ image</text>
+  <text x="866" y="312" font-size="9.5" font-family="Menlo, Consolas, monospace" fill="#716E66">seancnc/unlv-cpp-ide</text>
+  <text x="866" y="334" font-size="10" fill="#22252B">g++ · gdb · cmake · valgrind ·</text>
+  <text x="866" y="348" font-size="10" fill="#22252B">clangd · clang-format</text>
+  <text x="866" y="370" font-size="10" font-weight="600" fill="#2E7D62">multi-arch: amd64 + arm64</text>
+  <text x="866" y="384" font-size="10" fill="#2E7D62">→ native on Apple Silicon</text>
+  <text x="866" y="408" font-size="9.5" font-family="Menlo, Consolas, monospace" fill="#716E66">browser port 8135</text>
+
+  <rect x="850" y="443" width="240" height="195" rx="8" fill="#FFFFFF" stroke="#B0ACA4"/>
+  <text x="866" y="469" font-size="12" font-weight="600" fill="#22252B">x86 assembly image</text>
+  <text x="866" y="487" font-size="9.5" font-family="Menlo, Consolas, monospace" fill="#716E66">seancnc/unlv-x86-ide</text>
+  <text x="866" y="509" font-size="10" fill="#22252B">nasm · yasm · gdb · gcc-multilib ·</text>
+  <text x="866" y="523" font-size="10" fill="#22252B">binutils · make</text>
+  <text x="866" y="545" font-size="10" font-weight="600" fill="#B5121B">amd64 only — preserves the real</text>
+  <text x="866" y="559" font-size="10" font-weight="600" fill="#B5121B">x86-64 ISA &amp; Linux ABI</text>
+  <text x="866" y="581" font-size="10" fill="#22252B">Apple Silicon: QEMU emulation</text>
+  <text x="866" y="595" font-size="10" fill="#716E66">(gdb/ptrace limited — documented)</text>
+  <text x="866" y="619" font-size="9.5" font-family="Menlo, Consolas, monospace" fill="#716E66">browser port 8218</text>
+</svg>

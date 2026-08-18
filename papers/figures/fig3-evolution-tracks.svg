@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 545" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="aCen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3D5DA7"/>
+    </marker>
+    <marker id="aDec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2E7D62"/>
+    </marker>
+    <marker id="aMut" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#716E66"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1100" height="545" fill="#FFFFFF"/>
+
+  <!-- generation axis -->
+  <text x="180" y="20" text-anchor="middle" font-size="10" font-weight="600" letter-spacing="1.5" fill="#716E66">ORIGINAL FORM</text>
+  <text x="540" y="20" text-anchor="middle" font-size="10" font-weight="600" letter-spacing="1.5" fill="#716E66">EVOLVED FORM</text>
+  <text x="925" y="20" text-anchor="middle" font-size="10" font-weight="600" letter-spacing="1.5" fill="#716E66">CONVERGENCE</text>
+  <line x1="70" y1="32" x2="1044" y2="32" stroke="#DDD9D0" stroke-width="1" marker-end="url(#aMut)"/>
+
+  <!-- centralized band -->
+  <rect x="50" y="50" width="660" height="190" rx="10" fill="#F3F6FB"/>
+  <text x="66" y="73" font-size="10" font-weight="600" letter-spacing="1.2" fill="#3D5DA7">CENTRALIZED TRACK</text>
+  <text x="66" y="87" font-size="10" fill="#716E66">compute on the institution's servers</text>
+
+  <!-- decentralized band -->
+  <rect x="50" y="335" width="660" height="190" rx="10" fill="#F1F8F4"/>
+  <text x="66" y="358" font-size="10" font-weight="600" letter-spacing="1.2" fill="#2E7D62">DECENTRALIZED TRACK</text>
+  <text x="66" y="372" font-size="10" fill="#716E66">compute on the student's laptop</text>
+
+  <!-- node: SSH servers -->
+  <rect x="70" y="100" width="220" height="120" rx="8" fill="#FFFFFF" stroke="#3D5DA7" stroke-opacity="0.55"/>
+  <text x="86" y="126" font-size="13" font-weight="600" fill="#22252B">SSH servers</text>
+  <text x="86" y="148" font-size="11" fill="#22252B">Students compile over ssh on a</text>
+  <text x="86" y="164" font-size="11" fill="#22252B">shared Linux cluster (gcc, gdb).</text>
+  <text x="86" y="192" font-size="9.5" font-family="Menlo, Consolas, monospace" fill="#716E66">Malan 2013 · Harvie 2019</text>
+  <text x="86" y="206" font-size="9.5" font-family="Menlo, Consolas, monospace" fill="#716E66">Valstar 2020 (server arm)</text>
+
+  <!-- node: web IDE -->
+  <rect x="430" y="100" width="220" height="120" rx="8" fill="#FFFFFF" stroke="#3D5DA7" stroke-opacity="0.55"/>
+  <text x="446" y="126" font-size="13" font-weight="600" fill="#22252B">Full web IDE</text>
+  <text x="446" y="148" font-size="11" fill="#22252B">Per-student cloud containers</text>
+  <text x="446" y="164" font-size="11" fill="#22252B">serve VS Code to the browser.</text>
+  <text x="446" y="192" font-size="9.5" font-family="Menlo, Consolas, monospace" fill="#716E66">Malan 2024 (Codespaces)</text>
+  <text x="446" y="206" font-size="9.5" font-family="Menlo, Consolas, monospace" fill="#716E66">Park 2025 (CodeDive)</text>
+
+  <!-- node: VM images -->
+  <rect x="70" y="385" width="220" height="120" rx="8" fill="#FFFFFF" stroke="#2E7D62" stroke-opacity="0.55"/>
+  <text x="86" y="411" font-size="13" font-weight="600" fill="#22252B">Full VM images</text>
+  <text x="86" y="433" font-size="11" fill="#22252B">A whole guest OS + hypervisor</text>
+  <text x="86" y="449" font-size="11" fill="#22252B">shipped to every laptop.</text>
+  <text x="86" y="477" font-size="9.5" font-family="Menlo, Consolas, monospace" fill="#716E66">Laadan 2010 · Malan 2013</text>
+  <text x="86" y="491" font-size="9.5" font-family="Menlo, Consolas, monospace" fill="#716E66">Cadenas 2015 (QEMU ARM)</text>
+
+  <!-- node: Docker containers -->
+  <rect x="430" y="385" width="220" height="120" rx="8" fill="#FFFFFF" stroke="#2E7D62" stroke-opacity="0.55"/>
+  <text x="446" y="411" font-size="13" font-weight="600" fill="#22252B">Docker containers</text>
+  <text x="446" y="433" font-size="11" fill="#22252B">Shared-kernel images pulled from</text>
+  <text x="446" y="449" font-size="11" fill="#22252B">a registry; start in seconds.</text>
+  <text x="446" y="477" font-size="9.5" font-family="Menlo, Consolas, monospace" fill="#716E66">Valstar 2020 (DevContainers)</text>
+  <text x="446" y="491" font-size="9.5" font-family="Menlo, Consolas, monospace" fill="#716E66">Fernalld 2023 (Symphony)</text>
+
+  <!-- evolution arrows -->
+  <line x1="296" y1="160" x2="424" y2="160" stroke="#3D5DA7" stroke-width="1.5" marker-end="url(#aCen)"/>
+  <text x="360" y="138" text-anchor="middle" font-size="10" font-weight="600" fill="#22252B">interface evolves</text>
+  <text x="360" y="152" text-anchor="middle" font-size="10" fill="#716E66">terminal → browser</text>
+
+  <line x1="296" y1="445" x2="424" y2="445" stroke="#2E7D62" stroke-width="1.5" marker-end="url(#aDec)"/>
+  <text x="360" y="423" text-anchor="middle" font-size="10" font-weight="600" fill="#22252B">payload shrinks</text>
+  <text x="360" y="437" text-anchor="middle" font-size="10" fill="#716E66">full OS → container</text>
+
+  <!-- convergence arrows -->
+  <path d="M656,160 C740,160 722,270 785,270" fill="none" stroke="#3D5DA7" stroke-width="1.5" marker-end="url(#aCen)"/>
+  <text x="728" y="226" text-anchor="middle" font-size="10" font-style="italic" fill="#716E66">keeps its interface</text>
+
+  <path d="M656,445 C740,445 722,335 785,335" fill="none" stroke="#2E7D62" stroke-width="1.5" marker-end="url(#aDec)"/>
+  <text x="728" y="382" text-anchor="middle" font-size="10" font-style="italic" fill="#716E66">keeps its placement</text>
+
+  <!-- convergence node -->
+  <rect x="790" y="195" width="270" height="215" rx="10" fill="#FCF1F0" stroke="#B5121B" stroke-width="1.5"/>
+  <text x="925" y="221" text-anchor="middle" font-size="9" font-weight="700" letter-spacing="2" fill="#B5121B">THIS WORK</text>
+  <text x="925" y="243" text-anchor="middle" font-size="15" font-weight="700" fill="#22252B">UNLV Docker IDEs</text>
+
+  <rect x="808" y="258" width="234" height="48" rx="6" fill="#ECF1F9" stroke="#3D5DA7" stroke-opacity="0.5"/>
+  <text x="822" y="277" font-size="11.5" font-weight="600" fill="#22252B">VS Code in the browser</text>
+  <text x="822" y="293" font-size="10" fill="#716E66">code-server on localhost</text>
+
+  <rect x="808" y="318" width="234" height="48" rx="6" fill="#E9F4EE" stroke="#2E7D62" stroke-opacity="0.5"/>
+  <text x="822" y="337" font-size="11.5" font-weight="600" fill="#22252B">Runs on the student's laptop</text>
+  <text x="822" y="353" font-size="10" fill="#716E66">docker run — no servers to host</text>
+
+  <text x="925" y="392" text-anchor="middle" font-size="9.5" font-family="Menlo, Consolas, monospace" fill="#716E66">offline · zero hosting · no telemetry</text>
+</svg>

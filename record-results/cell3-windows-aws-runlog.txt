@@ -1,0 +1,1689 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260818062127
+Username: EC2AMAZ-5RAVRV5\Administrator
+RunAs User: EC2AMAZ-5RAVRV5\Administrator
+Configuration Name: 
+Machine: EC2AMAZ-5RAVRV5 (Microsoft Windows NT 10.0.26100.0)
+Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Unrestricted $env:EC2Launch_Execution_Mode = 'attached'; . 'C:\Windows\system32\config\systemprofile\AppData\Local\Temp\EC2Launch286478629\UserScript.ps1'; exit $LASTEXITCODE
+Process ID: 4080
+PSVersion: 5.1.26100.33296
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.33296
+BuildVersion: 10.0.26100.33296
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is C:\unlv-run.log
+
+
+
+
+**********************
+Windows PowerShell transcript end
+End time: 20260818063358
+**********************
+**********************
+Windows PowerShell transcript start
+Start time: 20260818083438
+Username: EC2AMAZ-5RAVRV5\Administrator
+RunAs User: EC2AMAZ-5RAVRV5\Administrator
+Configuration Name: 
+Machine: EC2AMAZ-5RAVRV5 (Microsoft Windows NT 10.0.26100.0)
+Host Application: powershell.exe -ExecutionPolicy Bypass -File C:\unlv-phase2.ps1
+Process ID: 5436
+PSVersion: 5.1.26100.33296
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.33296
+BuildVersion: 10.0.26100.33296
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is C:\unlv-run.log
+& : The term 'ubuntu.exe' is not recognized as the name of a cmdlet, function, script file, or operable program. Check 
+the spelling of the name, or if a path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:5 char:3
++ & ubuntu.exe install --root
++   ~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (ubuntu.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'ubuntu.exe' is not recognized as the name of a cmdlet, function, script file, or
+operable program. Check the spelling of the name, or if a path was included, verify that the path
+is correct and try again.
+At C:\unlv-phase2.ps1:5 char:3
++ & ubuntu.exe install --root
++   ~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (ubuntu.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+There is no distribution with the supplied name.
+Error code: Wsl/Service/WSL_E_DISTRO_NOT_FOUND
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of a cmdlet, function, 
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is 
+correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+& : The term 'C:\Program Files\Docker\resources\bin\docker.exe' is not recognized as the name of
+a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At C:\unlv-phase2.ps1:13 char:5
++   & $Docker info *> $null
++     ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Program File...\bin\docker.exe:String) [], Comm
+   andNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+docker engine up: False
+**********************
+Windows PowerShell transcript end
+End time: 20260818084954
+**********************

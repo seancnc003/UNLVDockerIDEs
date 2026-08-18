@@ -81,7 +81,10 @@ exec > /var/log/unlv-run.log 2>&1
 set -x
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -qq
-apt-get install -y -qq docker.io awscli curl
+apt-get install -y -qq docker.io curl unzip
+# Ubuntu 24.04 dropped the awscli apt package — use the official AWS CLI v2 installer
+curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-\$(uname -m).zip" -o /tmp/awscliv2.zip
+unzip -q /tmp/awscliv2.zip -d /tmp && /tmp/aws/install
 # arm64 cell: register QEMU binfmt handlers so the amd64-only x86 image runs
 # under emulation — the same situation an ARM-host student is in.
 [ "\$(uname -m)" = aarch64 ] && apt-get install -y -qq qemu-user-static binfmt-support
@@ -92,7 +95,7 @@ cd /root
 # Coursework workload (private, optional): fetch if the runbook's Phase-1
 # upload exists; ci-test.sh skips the stage cleanly when code/ is absent.
 if aws s3 cp "s3://$BUCKET/workload/code.zip" /root/code.zip --region $REGION 2>/dev/null; then
-  apt-get install -y -qq unzip && unzip -o /root/code.zip -d /root
+  unzip -o /root/code.zip -d /root
 fi
 bash scripts/ci-test.sh x86
 aws s3 cp /root/results/ "s3://$BUCKET/$PREFIX/$1/" --recursive --region $REGION

@@ -1,0 +1,1 @@
+x86_64-binfmt-P: QEMU internal SIGSEGV {code=MAPERR, addr=0x20}
