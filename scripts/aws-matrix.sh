@@ -8,7 +8,9 @@
 #   windows        m8i.xlarge   Windows Server 2025       native (Docker Desktop/WSL2)
 #
 # All three launch in parallel; each installs Docker, runs scripts/ci-test.sh
-# for both images, uploads results JSONs + a log to S3, and shuts down
+# for the x86 image (the experiment's only measured image — the cpp image is
+# multi-arch/native everywhere and out of scope), uploads the results JSON +
+# a log to S3, and shuts down
 # (shutdown behavior = terminate). This driver polls S3, downloads everything
 # to results-aws/<cell>/, and terminates any stragglers. The fourth matrix
 # cell (Apple Silicon consumer hardware) is run locally — see
@@ -92,7 +94,6 @@ cd /root
 if aws s3 cp "s3://$BUCKET/workload/code.zip" /root/code.zip --region $REGION 2>/dev/null; then
   apt-get install -y -qq unzip && unzip -o /root/code.zip -d /root
 fi
-bash scripts/ci-test.sh cpp
 bash scripts/ci-test.sh x86
 aws s3 cp /root/results/ "s3://$BUCKET/$PREFIX/$1/" --recursive --region $REGION
 aws s3 cp /var/log/unlv-run.log "s3://$BUCKET/$PREFIX/$1/run.log" --region $REGION
@@ -143,15 +144,15 @@ cleanup() {
 }
 trap cleanup EXIT
 
-echo "== Waiting for 6 result JSONs (Linux ~15 min, Windows 60–90 min; 3h cap) =="
+echo "== Waiting for 3 result JSONs (Linux ~10 min, Windows 60–90 min; 3h cap) =="
 DEADLINE=$((SECONDS + 10800))
 while [ $SECONDS -lt $DEADLINE ]; do
   N="$(aws s3 ls "s3://$BUCKET/$PREFIX/" --recursive 2>/dev/null | grep -c '\.json' || true)"
   STATES="$(aws ec2 describe-instances --region "$REGION" --instance-ids "${ALL_IDS[@]}" \
     --query 'Reservations[].Instances[].State.Name' --output text 2>/dev/null | tr '\t' ' ' || echo unknown)"
-  echo "  $(date -u +%H:%M:%SZ)  jsons: ${N:-0}/6  instances: $STATES"
-  [ "${N:-0}" -ge 6 ] && break
-  if ! echo "$STATES" | grep -qE 'pending|running' && [ "${N:-0}" -lt 6 ]; then
+  echo "  $(date -u +%H:%M:%SZ)  jsons: ${N:-0}/3  instances: $STATES"
+  [ "${N:-0}" -ge 3 ] && break
+  if ! echo "$STATES" | grep -qE 'pending|running' && [ "${N:-0}" -lt 3 ]; then
     echo "All instances stopped without full results — check the run.log files below."
     break
   fi
@@ -163,5 +164,5 @@ mkdir -p results-aws
 aws s3 cp "s3://$BUCKET/$PREFIX/" results-aws/ --recursive || true
 find results-aws -type f | sort
 J="$(find results-aws -name '*.json' | wc -l | tr -d ' ')"
-[ "$J" -ge 6 ] && echo "RESULT: all three AWS cells complete" \
-  || { echo "RESULT: incomplete ($J/6 JSONs) — see the per-cell run.log files"; exit 1; }
+[ "$J" -ge 3 ] && echo "RESULT: all three AWS cells complete" \
+  || { echo "RESULT: incomplete ($J/3 JSONs) — see the per-cell run.log files"; exit 1; }

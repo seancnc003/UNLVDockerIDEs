@@ -3,7 +3,14 @@
 Pre-deployment technical evaluation for the paper (RQ1–RQ5). **Scope: the
 experiment measures Docker container coverage only** — the course's
 VirtualBox/UTM VMs are historical/motivational context (documented in
-INSTITUTIONAL_SERVERS.md §2.4), never measured cells. **Methodology
+INSTITUTIONAL_SERVERS.md §2.4), never measured cells. **Image scope
+(decided 2026-08-17): only the x86 image (`seancnc/unlv-x86-ide`) is
+measured.** It is the image with the architecture story — amd64-only by
+design, native on Intel hosts, emulated on ARM hosts, with the gdb/ptrace
+boundary as the headline finding. The C++ image is multi-arch and runs
+natively everywhere, so a matrix row for it answers no research question;
+it remains covered by `scripts/release-check.sh` and the CI regression
+workflow. **Methodology
 principle: every reported result comes from the same unmodified, published
 script** (`scripts/ci-test.sh`) — no ad-hoc or unversioned measurements.
 Cells 1–3 are operator-provisioned on AWS per the hands-on runbook
@@ -112,7 +119,7 @@ State these plainly in the paper; do not present partial coverage as full:
   student hardware; cloud/CI timings are server-class best-case. Broader
   consumer-hardware measurement folds into the planned course study.
 
-## Measured metrics (per cell, per image) — compensating for no classroom data
+## Measured metrics (per cell, x86 image) — compensating for no classroom data
 
 Because this cycle collects no student data, the technical metrics carry the
 paper's evidentiary weight; the suite therefore measures more than a smoke
@@ -144,7 +151,7 @@ test (decided 2026-08-17). Per JSON row, `ci-test.sh` captures:
 1. Provision per the runbook (cells 1–3 on AWS: console/CLI steps in
    AWS_RUNBOOK.md; `scripts/aws-matrix.sh` is the automated equivalent).
    Record instance type, CPU, RAM, OS build, Docker version.
-2. Run `bash scripts/ci-test.sh cpp && bash scripts/ci-test.sh x86`.
+2. Run `bash scripts/ci-test.sh x86`.
 3. Collect the JSONs (S3 → `results-aws/<cell>/` for cells 1–3; local
    `results/` for cell 4), stamped with host-spec record and image digests.
 4. Tear down automatically: every instance self-terminates on completion,
@@ -153,11 +160,13 @@ test (decided 2026-08-17). Per JSON row, `ci-test.sh` captures:
 
 ## Execution order (next block)
 
-1. Work through AWS_RUNBOOK.md phases 0–5 → cells 1–3, hands-on (≈ $2–3,
-   five sessions). Optional capstone afterward: run `scripts/aws-matrix.sh`
-   once and diff its results against the manual runs.
-2. Cell 4: run `bash scripts/ci-test.sh cpp && bash scripts/ci-test.sh x86`
-   on the 14-inch M1 Pro/16 GB MacBook Pro; keep the JSONs with a host-spec
+1. Work through AWS_RUNBOOK.md phases 0–5 → cells 1–3, hands-on, **twice**:
+   pass 1 is a familiarization run (results to `manual-practice/`), pass 2
+   is the record run whose JSONs are reported (≈ $3–4 for both passes).
+   Optional capstone afterward: run `scripts/aws-matrix.sh` once and diff
+   its results against the record run.
+2. Cell 4: run `bash scripts/ci-test.sh x86`
+   on the 14-inch M1 Pro/16 GB MacBook Pro; keep the JSON with a host-spec
    record (macOS version, Docker Desktop version, hardware model). If the
    assembly workflow fails on this machine — contrary to the 64 GB machine's
    earlier smoke test — that is a finding to report and diagnose, not an

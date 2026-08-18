@@ -8,7 +8,7 @@
 #   Desktop needs an interactive session), WSL2 + Ubuntu, Docker Desktop
 #   silent install, a logon task for phase 2, reboot.
 # Phase 2 (auto-logon after reboot): start Docker Desktop, wait for the
-#   engine, run ci-test.sh for both images inside WSL, upload JSONs + log to
+#   engine, run ci-test.sh for the x86 image inside WSL, upload JSON + log to
 #   S3 (instance profile, AWS Tools for PowerShell are preinstalled on
 #   Windows AMIs), then shut down → instance terminates.
 # ------------------------------------------------------------------------------
@@ -68,11 +68,11 @@ if ($Up) {
   # makes results land in /root/results.
   $Test = 'if ! command -v curl >/dev/null; then apt-get update -qq && apt-get install -y -qq curl; fi && ' +
           'mkdir -p /root/scripts && curl -fsSL __RAW_BASE__/scripts/ci-test.sh -o /root/scripts/ci-test.sh && ' +
-          'bash /root/scripts/ci-test.sh cpp; bash /root/scripts/ci-test.sh x86; ls -la /root/results/'
+          'bash /root/scripts/ci-test.sh x86; ls -la /root/results/'
   wsl -d Ubuntu -u root -- bash -lc "$Test" 2>&1 | Write-Output
 
   New-Item -ItemType Directory -Path C:\unlv-results -Force | Out-Null
-  foreach ($f in @('cpp-x86_64.json','x86-x86_64.json')) {
+  foreach ($f in @('x86-x86_64.json')) {
     wsl -d Ubuntu -u root -- cat "/root/results/$f" | Out-File -Encoding utf8 "C:\unlv-results\$f"
   }
   Import-Module AWSPowerShell

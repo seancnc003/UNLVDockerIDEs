@@ -7,6 +7,21 @@ project doubles as AWS training. The **measurement** stays scripted
 **provisioning** is yours. Total cost target: **under $5**; total hands-on
 time: **≈ 5–6 hours across five sessions**.
 
+**Scope:** the experiment measures only the x86 image
+(`seancnc/unlv-x86-ide`) — it carries the architecture story (native vs.
+emulated, the gdb boundary). The C++ image is multi-arch and runs natively
+everywhere, so it is out of experimental scope (it stays covered by the
+release check and the CI regression workflow).
+
+**Two passes (decided 2026-08-17):** run the AWS phases twice. Pass 1 is
+the **familiarization run** — go slowly, explore the console, break things,
+re-launch; upload results under `manual-practice/` instead of `manual/`.
+Pass 2 is the **record run** — the same steps executed cleanly end-to-end;
+its JSONs are the paper's numbers. Both passes together stay within the
+cost target because instances bill per second and each cell is minutes of
+runtime (the Windows cell is the only one where a slow practice pass
+meaningfully costs money — ~$0.40/hour).
+
 Each phase names the AWS skills it teaches — these become resume bullets
 (see the end).
 
@@ -88,8 +103,8 @@ metadata/roles in action.**
    curl -fsSL https://raw.githubusercontent.com/seancnc003/UNLVDockerIDEs/main/scripts/ci-test.sh -o ci-test.sh
    mkdir -p scripts && mv ci-test.sh scripts/
    aws s3 cp s3://unlv-ide-results-<ACCOUNT>/workload/code.zip . && unzip -o code.zip   # coursework workload → ./code/
-   bash scripts/ci-test.sh cpp && bash scripts/ci-test.sh x86
-   cat results/*.json          # your first two matrix rows
+   bash scripts/ci-test.sh x86
+   cat results/*.json          # your first matrix row
    aws s3 cp results/ s3://unlv-ide-results-<ACCOUNT>/manual/linux-amd64/ --recursive
    ```
    Note the upload needed **no credentials** — the instance assumed your
@@ -136,7 +151,7 @@ Upload to `.../manual/linux-arm64/`, terminate via CLI:
 aws ec2 terminate-instances --instance-ids <id>
 ```
 
-**Expected result:** cpp all PASS natively; x86 assembles and runs under
+**Expected result:** x86 assembles and runs under
 emulation but **gdb reports `broken`** — you just reproduced the paper's
 emulation-boundary finding on hardware you provisioned yourself. The
 coursework workloads run under QEMU and are recorded rather than failed;
@@ -182,7 +197,7 @@ probe, so compare its timings and status against cell 1's.
    ```bash
    sudo apt-get update && sudo apt-get install -y unzip
    cp /mnt/c/code.zip ~ && cd ~ && unzip -o code.zip
-   bash scripts/ci-test.sh cpp && bash scripts/ci-test.sh x86
+   bash scripts/ci-test.sh x86
    ```
 7. Upload from PowerShell using the preinstalled AWS tools:
    ```powershell
@@ -210,8 +225,8 @@ data point, this time under Docker Desktop/WSL2.
 3. Next day: Billing → Cost Explorer. Find the run's actual cost by
    service. Screenshot it — a real cost breakdown you can discuss is
    itself resume material.
-4. Local cell (cell 4): run `bash scripts/ci-test.sh cpp && bash
-   scripts/ci-test.sh x86` on the 14" M1 Pro/16 GB MacBook, keep the JSONs.
+4. Local cell (cell 4): run `bash scripts/ci-test.sh x86` on the
+   14" M1 Pro/16 GB MacBook, keep the JSON.
 
 ---
 
