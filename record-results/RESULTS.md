@@ -1,6 +1,7 @@
 # Results — Platform Matrix (x86 image only)
 
-Blank until the record run. Every number below is transcribed from the
+Cells 1–3 are blank until the AWS record run; cell 4 is filled
+(2026-08-17). Every number below is transcribed from the
 JSONs emitted by the unmodified published `scripts/ci-test.sh` — no other
 source. Cells 1–3 come from the AWS **record run** (pass 2 of
 [`papers/AWS_RUNBOOK.md`](../papers/AWS_RUNBOOK.md); the familiarization pass under `manual-practice/` is never
@@ -35,7 +36,7 @@ directories remain ignored. Image under test:
 | Workload peak memory (MiB) | | | | 358 |
 | Starter seeding | | | | pass |
 | Persistence across replacement | | | | pass |
-| Overall (pass / recorded) | | | | pass (12 passed, 0 failed) |
+| Overall (pass / recorded) | | | | recorded (12 checks passed, 0 failed; gdb broken as expected) |
 
 ## Table 2 — Coursework workload (CS 218 assignments)
 
