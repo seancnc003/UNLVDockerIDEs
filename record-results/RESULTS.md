@@ -130,223 +130,95 @@ is the check for.
 deviations, re-runs, surprises. An empty section after the record run is
 itself a result.)
 
-- **Cell 1 re-launch (provenance):** the first launch of the linux-amd64
-  instance failed before any test ran — a user-data bug (Ubuntu 24.04
-  dropped the `awscli` apt package). The recorded cell is the retry launch
-  at 06:19 UTC on 2026-08-18 with the fixed user-data (AWS CLI v2 from the
-  official installer); no measurements come from the failed launch.
-- **Cell 2 re-launch (provenance):** same story as cell 1 — the first
-  linux-arm64 launch hit the identical user-data bug before any test ran;
-  the recorded cell is the retry launch at ~06:19 UTC on 2026-08-18 with
-  the fixed user-data. No measurements come from the failed launch.
-- **Cell 2 supersession — the tables' source changed on 2026-08-18.**
-  Cell 2's column is now transcribed from the QEMU follow-up **full
-  run** `20260818-202601` (`scripts/aws-qemu-followup.sh`,
-  `arm64-binfmt` variant with the coursework workload shipped; JSON and
-  diagnostics archived in [EVIDENCE.md](EVIDENCE.md) as
-  `cell2-qemu-followup-full.json` and companions). Same m8g.large
-  Graviton, same Ubuntu 24.04, same image digest, same unmodified
-  published `ci-test.sh` as the superseded record run — the only changed
-  variable is the QEMU binfmt handler source: Docker's
-  `tonistiigi/binfmt` build (digest in Provenance) instead of Ubuntu
-  24.04's `qemu-user-static` 8.2.2. Outcome: **12 checks passed, 0
-  failed** — full parity with cell 4's emulated-cell scope: container
-  healthy in 6.7 s cold / 6.2 s warm, starter compiles at 0.3 s, all
-  four coursework assignments pass (populating the QEMU-binfmt
-  emulation-overhead ratios for the first time), workload peak memory
-  334 MiB, seeding and persistence pass, and the gdb probe is a
-  **clean** probe against a live container reporting "broken" — the
-  first real Linux-arm64 evidence for the emulation-boundary finding
-  (the superseded run's "broken" was an exec against a dead container).
-  The diagnostic probe recorded `status=running exit=0 oom=false` with
-  code-server serving.
-- **The superseded stock-QEMU result (kept as a finding, not a tables
-  source).** The original record run (`20260818-053827`) under Ubuntu
-  24.04's `qemu-user-static` 8.2.2 failed 3 passed / 5 failed: setup was
-  correct (handlers installed, coursework unpacked, image pulled by
-  digest in 12.8 s) and the entrypoint seeded `hello.asm` under
-  emulation, but code-server never answered `/healthz` within 300 s and
-  the container exited before stage 4. A dedicated confirmation launch
-  (~07:01 UTC, S3 prefix `20260818-053827-arm64-rerun`; archived as
-  `cell2-linux-arm64-rerun.json` and `cell2-linux-arm64-rerun-diag-*`)
-  reproduced the suite outcome exactly (n=2), then captured the cause on
-  a fresh container: `status=exited exit=139 oom=false` (OOM ruled out —
-  >7 GB free, no dmesg OOM kills) with the complete container log being
-  one line — `x86_64-binfmt-P: QEMU internal SIGSEGV {code=MAPERR,
-  addr=0x20}`. That is QEMU 8.2.2 itself segfaulting while emulating
-  code-server's Node.js/V8 runtime. Combined with the follow-up run's
-  pass under a newer handler build on otherwise identical hardware/OS,
-  the crash is demonstrated to be **version-bound to the QEMU build**,
-  not a property of the image, of ARM Linux, or of binfmt emulation in
-  general. Both runs' raw outputs remain archived verbatim.
-- **The follow-up ran twice on 2026-08-18: diagnostic scope, then full
-  scope.** The first pass (run `20260818-195946`, archived as
-  `cell2-qemu-followup-binfmt.*`) deliberately shipped no coursework —
-  it existed to answer one question, does code-server survive under a
-  newer handler build, and passed 8/8 with `ci-test.sh` skipping the
-  absent workload stage by design. The full run (`20260818-202601`,
-  archived as `cell2-qemu-followup-full.*`) repeated the identical
-  configuration with the coursework zip uploaded and is the tables
-  source; the two passes' shared metrics agree closely (pull 13.1 →
-  12.9 s, cold 7.3 → 6.7 s, warm 7.2 → 6.2 s, starter 0.3 s both,
-  idle 262.8 → 254.8 MiB), an incidental repeatability check on the
-  working configuration.
-- **Companion variant `arm64-distro-new` — rig failure, not a QEMU
-  result.** The same follow-up run launched a second variant (Ubuntu
-  26.04 LTS, m8g.large) meant to test that release's newer distro
-  `qemu-user-static`. It never tested QEMU at all: `apt-get install
-  qemu-user-static binfmt-support` failed with `E: Package
-  'qemu-user-static' has no installation candidate` on the 26.04 AMI
-  (the package exists for 26.04 "resolute" in the Ubuntu archive per
-  packages.ubuntu.com, so this is an image/sources configuration issue
-  on the AMI, not a removal — not diagnosed further), no binfmt handler
-  was registered, and every amd64 exec failed with `exec format error`
-  (diagnostic probe: `status=exited exit=255`, log line
-  `exec /usr/bin/tini: exec format error`). Its JSON is failure-mode
-  artifacts in the cell 2 record-run sense and enters no table; run.log
-  archived in [EVIDENCE.md](EVIDENCE.md) as
-  `cell2-qemu-followup-distro-runlog.txt`.
-- **Cell 3 re-launch (provenance):** the recorded evidence comes from the
-  second launch of the windows cell. The first launch was healthy but was
-  accidentally terminated ~40 minutes in by a driver exit trap (the
-  matrix driver's cleanup trap fired on exit and took the instance with
-  it) — an operator-side accident, not a result. No measurements exist
-  from either launch; the archived log below is from the second.
-- **Cell 3 (AWS) — infrastructure failure of the test rig; the suite
-  never ran.** `ci-test.sh` never executed and no JSON was produced, so
-  cell 3's table column holds no numbers and no fails — this is a rig
-  failure, a different category from cell 2's hard suite fail and from
-  the recorded-not-failed emulation results. The only evidence is the
-  instance's PowerShell transcript (`run.log`, also in S3 under
-  `matrix/20260818-053827/windows/`), archived verbatim alongside this
-  file in [EVIDENCE.md](EVIDENCE.md) as `cell3-windows-aws-runlog.txt`. It documents three failures,
-  all in the Windows Server 2025 host setup, before any test could run:
-  (1) Docker Desktop's silent installer ran ~8–10 minutes inside phase
-  1's transcript window (06:21:27–06:33:58 UTC — the transcript body is
-  empty; the installer logged nothing) and installed nothing: phase 2
-  found no `docker.exe` at the install path, only repeated
-  `CommandNotFoundException`. (2) `wsl --install --no-launch -d Ubuntu`
-  produced no distro: phase 2's `ubuntu.exe` hit
-  `CommandNotFoundException` and WSL reported
-  `Wsl/Service/WSL_E_DISTRO_NOT_FOUND`. (3) phase 1's final
-  `Restart-Computer -Force` at 06:33:58 UTC silently never rebooted the
-  machine, leaving it wedged for ~2 hours until an external API reboot
-  at 08:33 UTC unstuck it; phase 2 then ran (transcript restart
-  08:34:38), waited out its full 15-minute engine grace period polling
-  a `docker.exe` that did not exist, recorded `docker engine up: False`
-  (08:49), uploaded the log, and shut down cleanly.
-- **Cell 3 verdict scope — the proxy is indicted, not Windows 11.**
-  These failures are specific to Windows Server 2025, which was standing
-  in as a Windows 11 proxy only because AWS cannot rent Windows 11
-  (Microsoft licensing restricts client Windows on AWS/GCP). Docker
-  Desktop officially supports Windows 10/11 only — Server 2025 is
-  outside its support matrix, and the silent installer's no-op is a
-  known consequence of that, so this outcome says nothing about the
-  platform students actually use. The cell was re-run on Azure, which
-  offers real Windows 11 Pro x86 VMs with nested virtualization
-  (`scripts/azure-matrix.sh`), and **passed 13/13 with gdb working** —
-  that Azure run is what fills cell 3's column in the tables above
-  (cross-cloud caveat in the intro; evidence files carry the run's
-  `azure-cellA3-` label in EVIDENCE.md).
-- **Cell 1 workload peak memory is null:** the whole four-assignment
-  workload finished in ≈0.5 s of container time on native hardware, faster
-  than the `docker stats` sampler could return a single sample, so the JSON
-  records `null`. A real gap in cell 1's row, not a suite failure; the
-  metric exists for the emulated cells, where the workload runs long enough
-  to sample (cell 4: 358 MiB).
-- **Cell 1 native times sit at the timer floor:** starter compile+run and
-  the ast3/ast04 builds all recorded 0.0 s (sub-tenth-of-a-second), and
-  every workload run recorded 0.0 s. These are real builds, not skips — the
-  suite runs `make clean` before every timed `make`, and the run log shows
-  the coursework zip fetched from S3 and all 13 checks executing. Ratio
-  consequence for the derived ratios: rows with a 0.0 s cell-1 denominator (starter,
-  ast3, ast04, and all run-time ratios) are undefined at this timer
-  resolution; only the ast06 and ast12 build times give usable
-  denominators, and even those carry coarse quantization (a 0.2–0.3 s
-  denominator makes the ratios order-of-magnitude figures, hence the ≈).
-- **Cell 3 run anomalies (Azure run `20260818-093352`).** The recorded
-  result is attempt 4 on the same VM; attempts 1–3 were failures of the
-  scripted automation, not of the platform, all diagnosed and fixed live
-  via `az vm run-command` with the full trail in the archived run log:
-  (1) the initial CustomScriptExtension hit the encoded-command size
-  limit; (2) phase 1 left WSL not installed, and a wrong `docker.exe`
-  path made the phase-2 engine probe report a false "engine up"
-  (that attempt's JSON is archived as
-  `azure-cellA3-windows-run1-no-wsl-integration.json` in
-  [EVIDENCE.md](EVIDENCE.md) — anomaly evidence, not a result); (3)
-  Docker Desktop's WSL integration was off for the distro. The suite
-  itself (`ci-test.sh`) ran unmodified in all attempts. Two further
-  caveats: the suite ran via an interactive scheduled task in the
-  autologon session rather than the original phase-2 task mechanism,
-  and the Docker engine was already warm (Docker Desktop autostart)
-  when the recorded attempt began — pull time is network-dominated and
-  unaffected, and cold start → healthy measures container start, not
-  engine start, in this cell exactly as in the others. Separately,
-  result uploads via pre-signed URLs initially failed with HTTP 400:
-  new AWS CLI/boto3 defaults attach checksum parameters that
-  pre-signed PUTs reject — fixed with
-  `AWS_REQUEST_CHECKSUM_CALCULATION=when_required` (see
-  `papers/AZURE_RUNBOOK.md`).
-- **Cell 3 subscription constraints (why the run needed a Pay-As-You-Go
-  upgrade).** On the Azure for Students offer, `az vm list-skus`
-  reported every fixed-performance family tried (D/E/F) as
-  `NotAvailableForSubscription` in every region checked; only burstable
-  Bsv2/Basv2/Bpsv2 sizes were launchable (6-vCPU regional cap), and per
-  their Microsoft size documentation none of those support the nested
-  virtualization WSL2 needs — so the cell was unlaunchable on the
-  student offer. The subscription was upgraded to Pay-As-You-Go on
-  2026-08-18 to unlock the Dsv5 family. One resource group from an
-  aborted launch (`unlv-ide-matrix-20260818-091659`, westcentralus,
-  zero VMs created) was deleted; no Azure compute ran before the
-  recorded run. Sources: the official size pages state "Nested
-  Virtualization: Not Supported" for
-  [Bsv2](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/general-purpose/bsv2-series),
-  [Basv2](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/general-purpose/basv2-series), and
-  [Bpsv2](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/general-purpose/bpsv2-series)
-  (corroborated by [Microsoft Q&A](https://learn.microsoft.com/en-us/answers/questions/4372831/create-azure-burstable-vm-with-nested-virtualizati):
-  burstable series cannot nest regardless of settings);
-  [`SkuNotAvailable` semantics](https://learn.microsoft.com/en-us/azure/azure-resource-manager/troubleshooting/error-sku-not-available);
-  free/student subscriptions are
-  [ineligible for quota/family increases](https://learn.microsoft.com/en-us/azure/quotas/per-vm-quota-requests)
-  (upgrade to Pay-As-You-Go is the documented path), and Microsoft staff
-  [confirm](https://techcommunity.microsoft.com/discussions/microsoft-learn-for-educators/sku-quota-and-policy-restrictions-on-azure-for-students-and-free-subscriptions/4525160)
-  student offers carry undocumented SKU restrictions beyond visible
-  policy.
-- **Cell 3 licensing.** Windows 11 client images on Azure formally
-  require
-  [Multitenant Hosting Rights](https://learn.microsoft.com/en-us/azure/virtual-machines/windows/windows-desktop-multitenant-hosting-deployment)
-  (eligible licenses: Windows 11 E3/E5, Microsoft 365 E3/E5/A3/A5/
-  Business Premium; deployment includes an attestation checkbox). The
-  caveat was surfaced to the operator before launch; the run proceeded
-  with `--license-type Windows_Client` (the bring-your-own-license
-  attestation) by explicit operator decision. The same Microsoft doc
-  also carries a dev/test carve-out: "Student & Free Trial accounts are
-  enabled to deploy Windows 11 images for development or testing
-  purposes" — i.e. Multitenant Hosting Rights are a production-workload
-  requirement, and this run was development/testing research on a
-  subscription that was Azure for Students the same morning (upgraded
-  to Pay-As-You-Go hours before launch; the doc does not address
-  whether the carve-out survives that conversion, so this is noted as
-  supportive, not conclusive). Whether the operator's institutional
-  Microsoft 365 tier independently confers MTH is unverified: public
-  UNLV documentation confirms desktop-Office-grade licensing
-  ([UNLV IT: Microsoft 365](https://www.it.unlv.edu/software/microsoft-365),
-  [UNLV KB 1960](https://help.unlv.edu/TDClient/33/IT-Support-Portal/KB/Article/1960/Microsoft-365))
-  but does not name an A3/A5 tier, and UNLV's separate Azure Dev Tools
-  Windows Education keys are device licenses that do not confer MTH
-  ([UNLV KB 190](https://help.unlv.edu/TDClient/33/IT-Support-Portal/KB/ArticleDet?ID=190)).
-  Recorded here so the run's licensing posture is explicit. Related: the
-  [Windows 11 on Azure support matrix](https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/windows/windows-11-support-azure-virtual-machines)
-  lists ARM64 families as Preview-only (and notes the portal may offer
-  unsupported combinations) — the basis for treating a Windows-on-ARM
-  cloud cell as untestable.
-- **Cancelled Azure Linux cells (labels A1/A2, retired).** Two Azure
-  Linux companion cells were planned alongside the Windows re-run and
-  cancelled before any VM launched — no Azure Linux results exist.
-  Reasons, recorded for the run history: they were redundant (cells 1–2
-  above already hold the native and emulated Linux records), and the
-  student-offer SKU restrictions left only burstable B-series sizes,
-  whose
-  [CPU credit model](https://learn.microsoft.com/en-us/azure/virtual-machines/b-series-cpu-credit-model/b-series-cpu-credit-model)
-  would have added a throttling confound.
+- **Launch provenance (retries and accidents, no measurements lost).**
+  Cells 1–2's first launches died on a user-data bug (Ubuntu 24.04
+  dropped the `awscli` apt package); the recorded cells are the ~06:19
+  UTC retries with AWS CLI v2 from the official installer. The AWS
+  windows cell's first launch was healthy but accidentally terminated
+  ~40 min in by the matrix driver's exit trap — an operator-side
+  accident. No numbers come from any failed launch.
+- **Cell 2 supersession (2026-08-18).** The tables are transcribed from
+  the QEMU follow-up **full run** `20260818-202601`
+  (`scripts/aws-qemu-followup.sh`, `arm64-binfmt` variant, coursework
+  shipped; archived as `cell2-qemu-followup-full.*` in
+  [EVIDENCE.md](EVIDENCE.md)). Same m8g.large, Ubuntu 24.04, image
+  digest, and unmodified `ci-test.sh` as the superseded record cell —
+  the only changed variable is the handler source: Docker's
+  `tonistiigi/binfmt` build (digest in Provenance) instead of Ubuntu's
+  `qemu-user-static` 8.2.2. Outcome: **12 checks passed, 0 failed**,
+  full parity with cell 4's emulated-cell scope, and the gdb "broken"
+  is now a clean probe against a live container (the superseded run's
+  was an exec against a dead one). A diagnostic-scope pass of the same
+  configuration ran first (`20260818-195946`, no coursework, 8/8,
+  archived as `cell2-qemu-followup-binfmt.*`); the two passes' shared
+  metrics agree closely (e.g. cold 7.3 → 6.7 s, pull 13.1 → 12.9 s) —
+  an incidental repeatability check.
+- **The superseded stock-QEMU result (kept as a finding).** Under
+  Ubuntu 24.04's `qemu-user-static` 8.2.2 the record run failed 3
+  passed / 5 failed: setup was correct and seeding/persistence passed,
+  but code-server never answered `/healthz` in 300 s and the container
+  exited. A dedicated confirmation launch reproduced it exactly (n=2;
+  archived as `cell2-linux-arm64-rerun.*`) and captured the cause:
+  `exited exit=139`, container log
+  `x86_64-binfmt-P: QEMU internal SIGSEGV {code=MAPERR, addr=0x20}`
+  (OOM ruled out) — QEMU 8.2.2 itself segfaulting while emulating
+  code-server's Node.js runtime. With the follow-up's pass on otherwise
+  identical hardware/OS, the crash is **version-bound to the QEMU
+  build**, not a property of the image, ARM Linux, or binfmt emulation
+  in general.
+- **Follow-up companion variant `arm64-distro-new` — rig failure.** The
+  Ubuntu 26.04 variant meant to test newer *distro* QEMU never tested
+  it: `qemu-user-static` had no apt installation candidate on that AMI
+  (the package exists in the 26.04 archive — an image/sources issue,
+  not diagnosed further), so no handler was registered and every amd64
+  exec failed with `exec format error`. Enters no table; run.log
+  archived as `cell2-qemu-followup-distro-runlog.txt`.
+- **Cell 3 AWS attempt — rig failure; the suite never ran.** On the
+  Windows Server 2025 proxy, Docker Desktop's silent installer
+  installed nothing, `wsl --install` produced no distro, and a forced
+  reboot silently never happened (transcript archived as
+  `cell3-windows-aws-runlog.txt`). Server 2025 is outside Docker
+  Desktop's Windows 10/11 support matrix, so this indicts the proxy,
+  not the platform students use. The cell was re-run on Azure's real
+  Windows 11 Pro (`scripts/azure-matrix.sh`) and **passed 13/13 with
+  gdb working** — that run fills cell 3's column.
+- **Cell 3 Azure run anomalies (run `20260818-093352`).** The recorded
+  result is attempt 4 on the same VM; attempts 1–3 were automation
+  failures (extension size limit, missing WSL plus a wrong-path false
+  "engine up" — that JSON archived as
+  `azure-cellA3-windows-run1-no-wsl-integration.json`, anomaly evidence
+  only — and disabled WSL integration), all fixed live with the trail
+  in the archived run log. `ci-test.sh` ran unmodified in every
+  attempt. Caveats: the suite ran via an interactive scheduled task,
+  and the Docker engine was already warm — which affects nothing
+  reported, since cold start measures container start in every cell.
+  The presigned-URL HTTP 400 checksum trap and its fix live in
+  [`papers/AZURE_RUNBOOK.md`](../papers/AZURE_RUNBOOK.md) (Phase 5).
+- **Cell 3 subscription and licensing posture.** The cell was
+  unlaunchable on Azure for Students (fixed-performance families
+  `NotAvailableForSubscription`; the launchable burstables cannot
+  nest), so the subscription was upgraded to Pay-As-You-Go on
+  2026-08-18. The run proceeded with `--license-type Windows_Client`
+  (BYOL attestation) by explicit operator decision after the caveat was
+  surfaced: Multitenant Hosting Rights are formally a
+  production-workload requirement, Microsoft's own doc carries a
+  student/free-trial dev-test carve-out (supportive, not conclusive
+  after the same-day upgrade), and whether UNLV's institutional
+  Microsoft 365 tier confers MTH is unverified. Full research and
+  sources: [`papers/AZURE_RUNBOOK.md`](../papers/AZURE_RUNBOOK.md).
+  Related basis for the untestable Windows-on-ARM cell: Azure's
+  [Windows 11 support matrix](https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/windows/windows-11-support-azure-virtual-machines)
+  lists ARM64 families as Preview-only.
+- **Cell 1 measurement-floor artifacts.** Workload peak memory is null
+  (the whole workload finished in ≈0.5 s, faster than one
+  `docker stats` sample) and several times record 0.0 s — real builds
+  at the timer floor (`make clean` precedes every timed `make`). Ratio
+  consequence: only the ast06/ast12 builds give usable denominators,
+  and their 0.2–0.3 s quantization makes the derived ratios
+  order-of-magnitude figures (hence the ≈).
+- **Cancelled Azure Linux cells (labels A1/A2, retired).** Planned
+  alongside the Windows re-run, cancelled before any VM launched:
+  redundant with cells 1–2, and the student-offer-only burstable sizes
+  would have added a CPU-credit throttling confound. No Azure Linux
+  results exist.
 
