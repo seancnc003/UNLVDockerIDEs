@@ -282,8 +282,23 @@ itself a result.)
   Business Premium; deployment includes an attestation checkbox). The
   caveat was surfaced to the operator before launch; the run proceeded
   with `--license-type Windows_Client` (the bring-your-own-license
-  attestation) by explicit operator decision. Recorded here so the
-  run's licensing posture is explicit. Related: the
+  attestation) by explicit operator decision. The same Microsoft doc
+  also carries a dev/test carve-out: "Student & Free Trial accounts are
+  enabled to deploy Windows 11 images for development or testing
+  purposes" — i.e. Multitenant Hosting Rights are a production-workload
+  requirement, and this run was development/testing research on a
+  subscription that was Azure for Students the same morning (upgraded
+  to Pay-As-You-Go hours before launch; the doc does not address
+  whether the carve-out survives that conversion, so this is noted as
+  supportive, not conclusive). Whether the operator's institutional
+  Microsoft 365 tier independently confers MTH is unverified: public
+  UNLV documentation confirms desktop-Office-grade licensing
+  ([UNLV IT: Microsoft 365](https://www.it.unlv.edu/software/microsoft-365),
+  [UNLV KB 1960](https://help.unlv.edu/TDClient/33/IT-Support-Portal/KB/Article/1960/Microsoft-365))
+  but does not name an A3/A5 tier, and UNLV's separate Azure Dev Tools
+  Windows Education keys are device licenses that do not confer MTH
+  ([UNLV KB 190](https://help.unlv.edu/TDClient/33/IT-Support-Portal/KB/ArticleDet?ID=190)).
+  Recorded here so the run's licensing posture is explicit. Related: the
   [Windows 11 on Azure support matrix](https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/windows/windows-11-support-azure-virtual-machines)
   lists ARM64 families as Preview-only (and notes the portal may offer
   unsupported combinations) — the basis for treating a Windows-on-ARM
