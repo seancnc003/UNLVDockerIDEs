@@ -1,11 +1,12 @@
 # Local-only directories
 archive/
+# (now tests/code/ — these patterns are unanchored, so they match at any depth)
 code/
 
-# All generated/downloaded results live under results/ — local ci-test.sh
-# output at its root, cloud downloads in results/aws/ and results/azure/,
-# and the raw snapshot of the deleted S3 bucket in results/s3-final-backup/
-# (evidence is archived in record-results/; these are working copies).
+# All generated/downloaded results live under tests/results/ — local ci-test.sh
+# output at its root, cloud downloads in tests/results/aws/ and tests/results/azure/,
+# and the raw snapshot of the deleted S3 bucket in tests/results/s3-final-backup/
+# (evidence is archived in tests/record-results/; these are working copies).
 results/
 
 # Downloaded paper PDFs (copyright — keep local only)

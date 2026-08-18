@@ -3,7 +3,7 @@
 Companion to [EXPERIMENT_PLAN.md](./EXPERIMENT_PLAN.md). You provision and
 operate every AWS resource yourself — console first, then CLI — so the
 project doubles as AWS training. The **measurement** stays scripted
-(`scripts/ci-test.sh`) so the paper's numbers are reproducible; the
+(`tests/scripts/ci-test.sh`) so the paper's numbers are reproducible; the
 **provisioning** is yours. Total cost target: **under $5**; total hands-on
 time: **≈ 5–6 hours across five sessions**.
 
@@ -127,7 +127,7 @@ instance profiles.**
    (22) and RDP (3389) **from My IP only**; outbound all. Never 0.0.0.0/0
    on these ports.
 5. Upload the coursework workload once, from your Mac at the repo root
-   (`code/` is gitignored course material, so it travels privately via S3,
+   (`tests/code/` is gitignored course material, so it travels privately via S3,
    never via GitHub):
    ```bash
    zip -r code.zip code
@@ -153,7 +153,7 @@ metadata/roles in action.**
    ```bash
    sudo apt-get update && sudo apt-get install -y docker.io awscli unzip
    sudo usermod -aG docker ubuntu && exit   # re-SSH so group applies
-   curl -fsSL https://raw.githubusercontent.com/seancnc003/UNLVDockerIDEs/main/scripts/ci-test.sh -o ci-test.sh
+   curl -fsSL https://raw.githubusercontent.com/seancnc003/UNLVDockerIDEs/main/tests/scripts/ci-test.sh -o ci-test.sh
    mkdir -p scripts && mv ci-test.sh scripts/
    aws s3 cp s3://unlv-ide-results-<ACCOUNT>/workload/code.zip . && unzip -o code.zip   # coursework workload → ./code/
    bash scripts/ci-test.sh x86
@@ -274,18 +274,18 @@ data point, this time under Docker Desktop/WSL2.
    everything `terminated`. Check EBS volumes list is empty (all were
    DeleteOnTermination).
 2. Download all results locally:
-   `aws s3 cp s3://unlv-ide-results-<ACCOUNT>/manual/ results/aws/ --recursive`
+   `aws s3 cp s3://unlv-ide-results-<ACCOUNT>/manual/ tests/results/aws/ --recursive`
 3. Next day: Billing → Cost Explorer. Find the run's actual cost by
    service. Screenshot it — a real cost breakdown you can discuss is
    itself resume material.
-4. Local cell (cell 4): run `bash scripts/ci-test.sh x86` on the
+4. Local cell (cell 4): run `bash tests/scripts/ci-test.sh x86` on the
    14" M1 Pro/16 GB MacBook, keep the JSON.
 
 ---
 
 ## Capstone (optional but recommended) — automate what you just did
 
-`scripts/aws-matrix.sh` performs Phases 2–4 unattended (user-data instead
+`tests/scripts/aws-matrix.sh` performs Phases 2–4 unattended (user-data instead
 of SSH/RDP, S3 polling, self-termination). Read it top to bottom — you now
 know what every line does because you did each step manually — run it once,
 and diff its results against yours. "Did it by hand, then automated it" is

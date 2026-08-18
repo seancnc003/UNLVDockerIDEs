@@ -123,7 +123,7 @@ if ($Up) {
   } catch { 'no coursework workload available' | Write-Output }
 
   $Test = 'if ! command -v curl >/dev/null; then apt-get update -qq && apt-get install -y -qq curl; fi && ' +
-          'mkdir -p /root/scripts && curl -fsSL __RAW_BASE__/scripts/ci-test.sh -o /root/scripts/ci-test.sh && ' +
+          'mkdir -p /root/scripts && curl -fsSL __RAW_BASE__/tests/scripts/ci-test.sh -o /root/scripts/ci-test.sh && ' +
           'cd /root && bash scripts/ci-test.sh x86; ls -la /root/results/'
   wsl -d Ubuntu -u root -- bash -lc "$Test" 2>&1 | Write-Output
 

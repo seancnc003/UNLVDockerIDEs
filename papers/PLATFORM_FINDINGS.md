@@ -1,7 +1,7 @@
 # Platform findings — what the matrix taught us (2026-08-18)
 
 Conceptual conclusions distilled from the completed platform matrix
-(record data: `record-results/RESULTS.md`; operational how-to:
+(record data: `tests/record-results/RESULTS.md`; operational how-to:
 `AWS_RUNBOOK.md`, `AZURE_RUNBOOK.md`). This file is the bridge between
 the raw results and the paper's discussion sections: each finding below
 is backed by archived evidence or a cited primary source, and none of it

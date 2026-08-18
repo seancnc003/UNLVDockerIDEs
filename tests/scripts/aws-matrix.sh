@@ -90,7 +90,7 @@ unzip -q /tmp/awscliv2.zip -d /tmp && /tmp/aws/install
 [ "\$(uname -m)" = aarch64 ] && apt-get install -y -qq qemu-user-static binfmt-support
 systemctl start docker
 mkdir -p /root/scripts
-curl -fsSL $RAW_BASE/scripts/ci-test.sh -o /root/scripts/ci-test.sh
+curl -fsSL $RAW_BASE/tests/scripts/ci-test.sh -o /root/scripts/ci-test.sh
 cd /root
 # Coursework workload (private, optional): fetch if the runbook's Phase-1
 # upload exists; ci-test.sh skips the stage cleanly when code/ is absent.

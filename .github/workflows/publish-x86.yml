@@ -35,7 +35,7 @@ jobs:
 
       # provenance/sbom stay off so the manifest remains a plain single-arch
       # image — a manifest list here breaks flagless pulls on Apple Silicon
-      # (see AGENTS.md and scripts/release-check.sh)
+      # (see AGENTS.md and tests/scripts/release-check.sh)
       - name: Build and push
         uses: docker/build-push-action@v6
         with:

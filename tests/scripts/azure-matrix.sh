@@ -101,7 +101,7 @@ apt-get install -y -qq docker.io curl unzip
 [ "\$(uname -m)" = aarch64 ] && apt-get install -y -qq qemu-user-static binfmt-support
 systemctl start docker
 mkdir -p /root/scripts
-curl -fsSL $RAW_BASE/scripts/ci-test.sh -o /root/scripts/ci-test.sh
+curl -fsSL $RAW_BASE/tests/scripts/ci-test.sh -o /root/scripts/ci-test.sh
 cd /root
 if curl -fsSL '$CODE_GET' -o /root/code.zip; then
   unzip -o /root/code.zip -d /root

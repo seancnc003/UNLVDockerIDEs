@@ -19,9 +19,9 @@ This repo builds two browser-based (code-server) Docker IDE images for UNLV CS s
 ## Layout
 
 - `cpp/`, `x86/` — the two Docker build contexts. Each contains: `Dockerfile`, an `image/` folder with everything copied into the image (`entrypoint.sh`, `settings.json`, `starter/` files seeded into student workspaces), `.dockerignore`, `README.md`, and two `.docx` student handouts.
-- `record-results/RESULTS.md` — the platform-matrix results tables, filled only from archived `ci-test.sh` JSONs in the same directory.
+- `tests/record-results/RESULTS.md` — the platform-matrix results tables, filled only from archived `ci-test.sh` JSONs in the same directory.
 - `papers/` — research-paper planning docs (experiment plan, AWS runbook, literature summaries, institutional-server research). Source PDFs live in gitignored `papers/literature/` (copyright — local only). Not part of any build.
-- `archive/`, `code/` — gitignored, maintainer-local. `archive/` is the previous generation of this project: read-only historical reference, never modify it. `code/` is personal coursework.
+- `archive/`, `tests/code/` — gitignored, maintainer-local. `archive/` is the previous generation of this project: read-only historical reference, never modify it. `tests/code/` is personal coursework.
 
 ## Build
 
@@ -49,7 +49,7 @@ docker buildx build --platform linux/amd64 --provenance=false --sbom=false --pus
 After pushing, run the release check — it pulls the published images and executes the documented student commands verbatim (docs-drift guard included). A release is not done until it passes:
 
 ```bash
-scripts/release-check.sh
+tests/scripts/release-check.sh
 ```
 
 **Never build/publish x86 multi-arch.** The coursework is x86-64 assembly; an arm64 variant would give students an ARM userland where NASM x86-64 sources cannot assemble or run. ARM hosts (Apple Silicon) run the amd64 image under Docker Desktop emulation via `--platform linux/amd64` — this is prescribed in the design doc.
@@ -72,9 +72,9 @@ docker rm -f smoke-x86
 
 ## Automated Tests (research-paper platform matrix)
 
-- `scripts/ci-test.sh <cpp|x86>` — measured student-workflow test (pull, cold/warm startup, seeding, compile+run timings, gdb probe, coursework workload with peak memory, persistence, host record). Emits `results/*.json`. Runs anywhere Docker does. The x86 coursework workload is driven by gitignored `code/workloads.tsv` (real CS 218 assignments; distributed to cloud cells privately via S3, skipped cleanly when absent). **The research matrix measures the x86 image only** (it carries the native-vs-emulated story); the cpp argument exists for the release check and CI regression use.
+- `tests/scripts/ci-test.sh <cpp|x86>` — measured student-workflow test (pull, cold/warm startup, seeding, compile+run timings, gdb probe, coursework workload with peak memory, persistence, host record). Emits `tests/results/*.json`. Runs anywhere Docker does. The x86 coursework workload is driven by gitignored `tests/code/workloads.tsv` (real CS 218 assignments; distributed to cloud cells privately via S3, skipped cleanly when absent). **The research matrix measures the x86 image only** (it carries the native-vs-emulated story); the cpp argument exists for the release check and CI regression use.
 - `papers/AWS_RUNBOOK.md` — the primary path: hands-on, phase-by-phase AWS provisioning of the three cloud cells (maintainer is learning AWS with this project); measurement always via `ci-test.sh`. The fourth cell runs `ci-test.sh` locally on a Mac.
-- `scripts/aws-matrix.sh` — automated equivalent of the runbook (all three cloud cells in parallel, zero-touch, self-terminating, ~$0.60–1.00/run; results to `results/aws/`). Capstone/replication path. See `papers/EXPERIMENT_PLAN.md`.
+- `tests/scripts/aws-matrix.sh` — automated equivalent of the runbook (all three cloud cells in parallel, zero-touch, self-terminating, ~$0.60–1.00/run; results to `tests/results/aws/`). Capstone/replication path. See `papers/EXPERIMENT_PLAN.md`.
 - `.github/workflows/test-matrix.yml` — manual-trigger-only Linux regression check (never runs on its own; not a results source).
 
 ## Conventions and Gotchas

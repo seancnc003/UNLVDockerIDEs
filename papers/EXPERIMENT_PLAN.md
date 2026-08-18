@@ -9,10 +9,10 @@ measured.** It is the image with the architecture story — amd64-only by
 design, native on Intel hosts, emulated on ARM hosts, with the gdb/ptrace
 boundary as the headline finding. The C++ image is multi-arch and runs
 natively everywhere, so a matrix row for it answers no research question;
-it remains covered by `scripts/release-check.sh` and the CI regression
+it remains covered by `tests/scripts/release-check.sh` and the CI regression
 workflow. **Methodology
 principle: every reported result comes from the same unmodified, published
-script** (`scripts/ci-test.sh`) — no ad-hoc or unversioned measurements.
+script** (`tests/scripts/ci-test.sh`) — no ad-hoc or unversioned measurements.
 Cells 1–3 are operator-provisioned on AWS per the hands-on runbook
 (AWS_RUNBOOK.md); cell 4 runs the identical script on owned consumer
 hardware and is labeled by provenance. Each run emits a JSON results file that becomes one row of the
@@ -56,7 +56,7 @@ runbook ([AWS_RUNBOOK.md](./AWS_RUNBOOK.md)) — operator-provisioned per
 documented steps, console and CLI — while **measurement is always the same
 published script**, which is what makes the numbers reproducible. Single
 provider is deliberate: one methodology sentence covers every cloud row.
-`scripts/aws-matrix.sh` automates the identical procedure end-to-end and
+`tests/scripts/aws-matrix.sh` automates the identical procedure end-to-end and
 serves as the capstone/replication path. Cell 4 is the same script on owned
 consumer hardware.
 
@@ -132,7 +132,7 @@ State these plainly in the paper; do not present partial coverage as full:
   QEMU follow-up run showed the Linux-arm64 crash was version-bound to
   QEMU 8.2.2, and Docker's own handler build (`tonistiigi/binfmt` — the
   same lineage Docker Desktop bundles inside its WSL2 VM) passed 8/8 on
-  otherwise identical hardware (see `record-results/RESULTS.md`, cell 2).
+  otherwise identical hardware (see `tests/record-results/RESULTS.md`, cell 2).
   Stated as an expectation, not a result.
 - **Single consumer-hardware point:** cell 4 is one machine, not a sample of
   student hardware; cloud/CI timings are server-class best-case. Broader
@@ -141,7 +141,7 @@ State these plainly in the paper; do not present partial coverage as full:
 ### Path to completion (added 2026-08-18)
 
 Measurement is done — all four matrix cells are recorded in
-[`record-results/RESULTS.md`](../record-results/RESULTS.md)
+[`tests/record-results/RESULTS.md`](../tests/record-results/RESULTS.md)
 (execution-order steps 1–3 below are complete). What remains, in order:
 
 1. **Close out the RESULTS.md provenance blanks:** the actual AWS cost
@@ -164,16 +164,16 @@ Measurement is done — all four matrix cells are recorded in
    WSL2/Docker Desktop fine; only cloud ARM VMs lack nested
    virtualization. If no hardware materializes, the paper keeps them as
    expectations.
-4. **Optional follow-ups:** the `scripts/aws-matrix.sh` capstone run
+4. **Optional follow-ups:** the `tests/scripts/aws-matrix.sh` capstone run
    diffed against the record run. ~~A check whether a newer QEMU resolves
-   cell 2's SIGSEGV~~ — **done 2026-08-18** (`scripts/aws-qemu-followup.sh`):
+   cell 2's SIGSEGV~~ — **done 2026-08-18** (`tests/scripts/aws-qemu-followup.sh`):
    Docker's `tonistiigi/binfmt` handler build passed on the same
    Ubuntu 24.04/m8g.large that crashed under QEMU 8.2.2 — first at
    diagnostic scope (run `20260818-195946`, 8/8), then at full suite
    scope with the coursework shipped (run `20260818-202601`, 12 checks
    passed, 0 failed), which now fills cell 2's tables and populates the
    QEMU-binfmt emulation-overhead ratios (≈14× / ≈12× vs cell 1; see
-   `record-results/RESULTS.md`). Still open: the Ubuntu 26.04
+   `tests/record-results/RESULTS.md`). Still open: the Ubuntu 26.04
    distro-QEMU variant was a rig failure (package uninstallable on that
    AMI) and remains untested.
 5. **Student docs for Linux-ARM hosts:** fold the working one-liner
@@ -195,10 +195,10 @@ test (decided 2026-08-17). Per JSON row, `ci-test.sh` captures:
   seeding, and persistence across container replacement.
 - **Coursework workload (x86):** timed build + execution of four real CS 218
   assignments (ast3, ast04, ast06, ast12), manifest-driven
-  (`code/workloads.tsv`). ast12 — multithreaded pthread + assembly computing
+  (`tests/code/workloads.tsv`). ast12 — multithreaded pthread + assembly computing
   a checkable answer — is the strongest emulation-fidelity probe. Native
   failures are hard failures; under emulation status is recorded, not
-  failed (same policy as gdb). The `code/` folder is gitignored course
+  failed (same policy as gdb). The `tests/code/` folder is gitignored course
   material: cells fetch it privately from S3 ("available on request" in the
   paper), and when absent the stage records null — the published script
   stays complete without it.
@@ -214,11 +214,11 @@ test (decided 2026-08-17). Per JSON row, `ci-test.sh` captures:
 ## Protocol — identical in every cell
 
 1. Provision per the runbook (cells 1–3 on AWS: console/CLI steps in
-   AWS_RUNBOOK.md; `scripts/aws-matrix.sh` is the automated equivalent).
+   AWS_RUNBOOK.md; `tests/scripts/aws-matrix.sh` is the automated equivalent).
    Record instance type, CPU, RAM, OS build, Docker version.
-2. Run `bash scripts/ci-test.sh x86`.
-3. Collect the JSONs (S3 → `results/aws/<cell>/` for cells 1–3; local
-   `results/` for cell 4), stamped with host-spec record and image digests.
+2. Run `bash tests/scripts/ci-test.sh x86`.
+3. Collect the JSONs (S3 → `tests/results/aws/<cell>/` for cells 1–3; local
+   `tests/results/` for cell 4), stamped with host-spec record and image digests.
 4. Tear down automatically: every instance self-terminates on completion,
    with a per-instance scheduled-shutdown failsafe and a terminate-all trap
    in the driver.
@@ -228,9 +228,9 @@ test (decided 2026-08-17). Per JSON row, `ci-test.sh` captures:
 1. Work through AWS_RUNBOOK.md phases 0–5 → cells 1–3, hands-on, **twice**:
    pass 1 is a familiarization run (results to `manual-practice/`), pass 2
    is the record run whose JSONs are reported (≈ $3–4 for both passes).
-   Optional capstone afterward: run `scripts/aws-matrix.sh` once and diff
+   Optional capstone afterward: run `tests/scripts/aws-matrix.sh` once and diff
    its results against the record run.
-2. Cell 4: run `bash scripts/ci-test.sh x86`
+2. Cell 4: run `bash tests/scripts/ci-test.sh x86`
    on the 14-inch M1 Pro/16 GB MacBook Pro; keep the JSON with a host-spec
    record (macOS version, Docker Desktop version, hardware model). If the
    assembly workflow fails on this machine — contrary to the 64 GB machine's

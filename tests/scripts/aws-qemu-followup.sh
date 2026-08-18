@@ -111,7 +111,7 @@ if [ "$2" = binfmt ]; then
 fi
 ls /proc/sys/fs/binfmt_misc/
 mkdir -p /root/scripts /root/results
-curl -fsSL $RAW_BASE/scripts/ci-test.sh -o /root/scripts/ci-test.sh
+curl -fsSL $RAW_BASE/tests/scripts/ci-test.sh -o /root/scripts/ci-test.sh
 cd /root
 # Coursework workload (private, optional): fetch if this run's upload exists;
 # ci-test.sh skips the stage cleanly when code/ is absent.
