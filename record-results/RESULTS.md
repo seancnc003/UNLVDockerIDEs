@@ -19,7 +19,7 @@ directories remain ignored. Image under test:
 same-size siblings) — a different cloud, CPU model, and VM size. Its
 behavioral results (pass/fail, gdb, seeding, persistence) are directly
 comparable; its seconds are indicative and are never cross-divided with
-the other cells' (cell 3 appears in no Table 3 ratio, which was already
+the other cells' (cell 3 appears in no derived ratio, which was already
 true by design).
 
 ## Provenance
@@ -67,27 +67,25 @@ run-fail (recorded, not failed, under emulation — same policy as gdb).
 | ast06 (C++ driver + assembly, file I/O) | 0.2 / 0.0 / pass | 0.0 / null / build-fail (exec against dead container; see Notes) | 0.5 / 0.2 / pass | 2.5 / 0.2 / pass |
 | ast12 (multithreaded pthread + assembly, checkable answer) | 0.3 / 0.0 / pass | 0.0 / null / build-fail (exec against dead container; see Notes) | 0.6 / 0.2 / pass | 3.1 / 0.2 / pass |
 
-## Table 3 — Emulation overhead ratios (derived)
+## Emulation overhead (derived)
 
-Emulated time ÷ native time on the identical workload (cell 2 ÷ cell 1 for
-QEMU binfmt; cell 4 ÷ cell 1 for Docker Desktop). Cell 1 is the
-denominator by design: cells 1 and 2 are same-size, same-generation
-Intel/Graviton siblings running identical Ubuntu + Docker Engine, so the
-ratio isolates the emulation layer as the only changed variable. Cell 3
-appears in no ratio — it is native (no emulation to price), and dividing
-by it would mix in Windows, WSL2, a different cloud, and a different
-instance size (see
-[`papers/EXPERIMENT_PLAN.md`](../papers/EXPERIMENT_PLAN.md), "Ratio baseline").
+On the two workloads with usable native denominators, Docker Desktop
+emulation (cell 4 ÷ cell 1) costs **≈12.5×** (ast06 build, 2.5 / 0.2 s)
+and **≈10.3×** (ast12 build, 3.1 / 0.3 s) — order-of-magnitude figures,
+since the 0.2–0.3 s denominators are coarsely quantized. All other
+ratios are undefined: the QEMU binfmt ratio (cell 2 ÷ cell 1) has no
+numerator — cell 2's container crashed before any workload ran — and
+the remaining rows have a 0.0 s denominator (cell 1 at the timer
+floor). Cell 1 is the denominator by design: cells 1 and 2 are
+same-size, same-generation Intel/Graviton siblings running identical
+Ubuntu + Docker Engine, so the ratio isolates the emulation layer as
+the only changed variable (see
+[`papers/EXPERIMENT_PLAN.md`](../papers/EXPERIMENT_PLAN.md), "Ratio
+baseline"). Cell 3 enters no ratio — it is native (no emulation to
+price) and ran on a different cloud. Details on each undefined case are
+in Notes.
 
-| Workload | QEMU binfmt (cell 2 / cell 1) | Docker Desktop (cell 4 / cell 1) |
-| --- | --- | --- |
-| Starter compile+run | undefined (no cell 2 timing — container never healthy; see Notes) | undefined (cell 1 = 0.0 s, at timer floor; see Notes) |
-| ast3 | undefined (no cell 2 timing — workload never ran; see Notes) | undefined (cell 1 build 0.0 s) |
-| ast04 | undefined (no cell 2 timing — workload never ran; see Notes) | undefined (cell 1 build 0.0 s) |
-| ast06 | undefined (no cell 2 timing — workload never ran; see Notes) | ≈12.5× (build: 2.5 / 0.2) |
-| ast12 | undefined (no cell 2 timing — workload never ran; see Notes) | ≈10.3× (build: 3.1 / 0.3) |
-
-## Table 4 — Host records (embedded in each JSON)
+## Table 3 — Host records (embedded in each JSON)
 
 | Field | Cell 1 | Cell 2 | Cell 3 | Cell 4 |
 | --- | --- | --- | --- | --- |
@@ -149,7 +147,7 @@ itself a result.)
   gdb "broken" is an exec against a dead container rather than a clean
   ptrace probe (it coincides with the expected finding but does not
   evidence it), the tool-version strings are empty, and idle memory reads
-  0B (an exited container). Ratio consequence for Table 3: the entire QEMU
+  0B (an exited container). Ratio consequence for the derived ratios: the entire QEMU
   binfmt column is undefined — there are no cell 2 timings to divide.
 - **Cell 2 crash cause — confirmed by a dedicated re-run (n=2, not a
   flake).** A separate confirmation launch at ~07:01 UTC on 2026-08-18
@@ -224,7 +222,7 @@ itself a result.)
   every workload run recorded 0.0 s. These are real builds, not skips — the
   suite runs `make clean` before every timed `make`, and the run log shows
   the coursework zip fetched from S3 and all 13 checks executing. Ratio
-  consequence for Table 3: rows with a 0.0 s cell-1 denominator (starter,
+  consequence for the derived ratios: rows with a 0.0 s cell-1 denominator (starter,
   ast3, ast04, and all run-time ratios) are undefined at this timer
   resolution; only the ast06 and ast12 build times give usable
   denominators, and even those carry coarse quantization (a 0.2–0.3 s
