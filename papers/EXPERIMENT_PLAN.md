@@ -128,11 +128,59 @@ State these plainly in the paper; do not present partial coverage as full:
   working — the only Mac where debugger assignments would work locally).
   Stated as an expectation, not a result.
 - **Windows-on-ARM:** untestable in any cloud (no nested virtualization on
-  ARM VMs). Expected to match the emulated cells' behavior; stated as an
-  expectation, not a result.
+  ARM VMs). Expected working with gdb broken (like cell 4): the 2026-08-18
+  QEMU follow-up run showed the Linux-arm64 crash was version-bound to
+  QEMU 8.2.2, and Docker's own handler build (`tonistiigi/binfmt` — the
+  same lineage Docker Desktop bundles inside its WSL2 VM) passed 8/8 on
+  otherwise identical hardware (see `record-results/RESULTS.md`, cell 2).
+  Stated as an expectation, not a result.
 - **Single consumer-hardware point:** cell 4 is one machine, not a sample of
   student hardware; cloud/CI timings are server-class best-case. Broader
   consumer-hardware measurement folds into the planned course study.
+
+### Path to completion (added 2026-08-18)
+
+Measurement is done — all four matrix cells are recorded in
+[`record-results/RESULTS.md`](../record-results/RESULTS.md)
+(execution-order steps 1–3 below are complete). What remains, in order:
+
+1. **Close out the RESULTS.md provenance blanks:** the actual AWS cost
+   from Cost Explorer, the actual Azure cost once billing posts (~1 day
+   after the 2026-08-18 run), and the familiarization-run date.
+2. **Write the paper, stage 1 (pre-deployment):** the system/design paper
+   per [RESEARCH_PAPER_ASSIGNMENT.md](./RESEARCH_PAPER_ASSIGNMENT.md) —
+   introduction, related work (from
+   [LITERATURE_SUMMARIES.md](./LITERATURE_SUMMARIES.md)), course context,
+   design, technical evaluation transcribed from RESULTS.md, limitations,
+   and the planned educational study. Execution-order step 4 lands here:
+   the excluded-cells text above goes into §Discussion / §Future Work as
+   stated expectations, not results.
+3. **Optionally close the two untested cells with physical hardware.**
+   Both are blocked in every cloud, so the only route is owned or
+   borrowed machines running the same published `ci-test.sh`: an Intel
+   Mac for the macOS-Intel cell (expected native amd64, gdb working) and
+   a Windows-on-ARM laptop (e.g. Snapdragon X) for the Windows-ARM cell
+   (expected emulated, gdb broken) — physical ARM machines run
+   WSL2/Docker Desktop fine; only cloud ARM VMs lack nested
+   virtualization. If no hardware materializes, the paper keeps them as
+   expectations.
+4. **Optional follow-ups:** the `scripts/aws-matrix.sh` capstone run
+   diffed against the record run. ~~A check whether a newer QEMU resolves
+   cell 2's SIGSEGV~~ — **done 2026-08-18** (`scripts/aws-qemu-followup.sh`,
+   run `20260818-195946`): Docker's `tonistiigi/binfmt` handler build
+   passed 8/8 on the same Ubuntu 24.04/m8g.large that crashed under
+   QEMU 8.2.2, and that run now fills cell 2's tables (see
+   `record-results/RESULTS.md`). Still open from it: a re-run with the
+   coursework workload shipped, to populate the QEMU-binfmt
+   emulation-overhead ratios; the Ubuntu 26.04 distro-QEMU variant was a
+   rig failure (package uninstallable on that AMI) and remains untested.
+5. **Student docs for Linux-ARM hosts:** fold the working one-liner
+   (`docker run --privileged --rm tonistiigi/binfmt --install amd64`,
+   re-run after each reboot) into `x86/README.md`, noting stock Ubuntu
+   24.04 QEMU crashes and gdb stays broken under emulation regardless.
+6. **Stage 2 (separate cycle):** classroom deployment and the planned
+   educational study; broader consumer-hardware measurement (the
+   single-consumer-point limitation above) folds in there.
 
 ## Measured metrics (per cell, x86 image) — compensating for no classroom data
 
