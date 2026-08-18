@@ -2,7 +2,8 @@
 
 Companion to [AWS_RUNBOOK.md](./AWS_RUNBOOK.md) and
 [EXPERIMENT_PLAN.md](./EXPERIMENT_PLAN.md). Written from the successful
-cell A3 record run (`20260818-093352`, 2026-08-18) — see the cell 3 column
+cell 3 record run (`20260818-093352`, 2026-08-18; labeled `cell A3` in the
+evidence archive) — see the cell 3 column
 of [RESULTS.md](../record-results/RESULTS.md) for the numbers.
 This file carries the **operational knowledge**: why Azure at all, what an
 Azure for Students subscription can and cannot launch, every failure mode
@@ -132,7 +133,8 @@ semantics.**
 ## Phase 3 — The four failure modes of unattended Docker Desktop on Windows 11
 
 All four were hit, diagnosed, and fixed live during run `20260818-093352`
-(full trail in the cell A3 transcript in `record-results/EVIDENCE.md`). Any
+(full trail in the cell 3 transcript — the `azure-cellA3` blocks in
+`record-results/EVIDENCE.md`). Any
 future Windows automation should treat this list as a preflight checklist.
 
 1. **Script delivery** — encoded-command size limit above. Fix:
@@ -255,7 +257,7 @@ order: no idle cloud resources, hard 2-hour kill on the run):
 
 - Compute: ~1.8 h of Standard_D4s_v5 plus disk pennies — **well under $1**
   (final figure in RESULTS.md provenance once billing posts).
-- Proved: the platform matrix's Windows 11 verdict (cell A3, 13/13) on
+- Proved: the platform matrix's Windows 11 verdict (cell 3, 13/13) on
   Docker Desktop's actually-supported OS — the cell no CI vendor rents:
   hosted Windows runners are Server without nested virtualization, which
   is precisely why a classroom Docker-on-Windows story needs measuring on
