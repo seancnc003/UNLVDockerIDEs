@@ -70,16 +70,14 @@ QEMU binfmt; cell 4 ÷ cell 1 for Docker Desktop).
 | OS build | | | | |
 | Docker version | | | | |
 
-## Table 5 — Tool versions (reproducibility)
+## Toolchain versions
 
-Expected identical in every cell — the container promise itself.
-
-| Tool | Cell 1 | Cell 2 | Cell 3 | Cell 4 |
-| --- | --- | --- | --- | --- |
-| code-server | | | | |
-| yasm | | | | |
-| nasm | | | | |
-| gdb | | | | |
+Not a per-cell table: given the same image digest (see Provenance), tool
+versions are a fixed property of the image, so they are listed once in the
+repo [README](README.md). The per-cell verification still exists in the
+raw data — every `ci-test.sh` JSON records the versions it observed — and
+a mismatch would mean a different image ran, which the Provenance digest
+is the check for.
 
 ## Notes / anomalies
 

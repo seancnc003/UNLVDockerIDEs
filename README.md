@@ -16,6 +16,13 @@ Browser-based programming environments for UNLV computer science courses. Each i
 | UNLV C++ IDE | C++ programming | `seancnc/unlv-cpp-ide` | `linux/amd64` + `linux/arm64` (native everywhere) |
 | UNLV x86 Assembly IDE | x86-64 Linux assembly | `seancnc/unlv-x86-ide` | `linux/amd64` only (emulated on Apple Silicon) |
 
+Shipped toolchain (as of the current published images — identical on every machine, because the toolchain lives in the image, not on your computer):
+
+| Image | Editor | Course toolchain |
+| --- | --- | --- |
+| `seancnc/unlv-cpp-ide` | code-server 4.126.0 | g++ 11.4.0 |
+| `seancnc/unlv-x86-ide` | code-server 4.126.0 | yasm 1.3.0, nasm 2.15.05, gdb 12.1 |
+
 ## Quick Start
 
 1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) and make sure it is running.
