@@ -1,68 +1,59 @@
 # Results — Platform Matrix (x86 image only)
 
 Cells 1–2 are filled from the AWS record run (2026-08-18); cell 3 is
-blank — its AWS launch was an infrastructure failure of the test rig
-(the suite never ran; see Notes) and the cell was re-run on Azure real
-Windows 11, where it **passed 13/13** (recorded as cell A3 in the Azure
-section, never merged into the tables below); cell 4 is filled
-(2026-08-17). Azure results get their own section at the
-end of this file (see "Azure record run"); their **timings** are never
-merged into the tables below — different cloud, different CPUs and VM
-sizes. The one all-cell view is Table 0, which unifies **behavioral
-verdicts only**.
+filled from the Azure record run on real Windows 11 Pro (2026-08-18,
+after the AWS Windows Server proxy attempt failed as rig infrastructure
+— see Notes); cell 4 is the local MacBook run (2026-08-17).
 Every number below is transcribed from the
 JSONs emitted by the unmodified published `scripts/ci-test.sh` — no other
 source. Cells 1–2 come from the AWS **record run** (pass 2 of
 [`papers/AWS_RUNBOOK.md`](../papers/AWS_RUNBOOK.md); the familiarization pass under `manual-practice/` is never
-reported). Cell 4 is the local MacBook run. All raw record-run outputs
+reported). All raw record-run outputs
 (JSONs, transcripts, diagnostics) are archived verbatim in
 [EVIDENCE.md](EVIDENCE.md) alongside this file; generated working
 directories remain ignored. Image under test:
 `seancnc/unlv-x86-ide` (amd64-only by design).
 
-## Table 0 — Unified behavioral verdicts (all cells, both clouds + local)
-
-Behavioral properties only — platform verdicts, not hardware
-measurements. All timings remain in their per-cloud tables (Tables 1–4
-for AWS + local, the A-tables for Azure) and are never cross-compared;
-see "Azure comparability and provenance notes".
-
-| Cell | Environment | x86 image mode | gdb probe | Starter seeding | Persistence | Verdict |
-| --- | --- | --- | --- | --- | --- | --- |
-| 1 | Linux amd64 — AWS m8i.large | native | working | pass | pass | pass (13 checks passed, 0 failed) |
-| 2 | Linux arm64 — AWS m8g.large | emulated (QEMU binfmt) | broken (not a clean probe; see Notes) | pass | pass | fail (3 passed, 5 failed; container never reached healthy — see Notes) |
-| 3 | Windows amd64 — AWS m8i.xlarge, Windows Server 2025 proxy | — | — | — | — | no result — rig infrastructure failure, suite never ran; superseded by cell A3 |
-| A3 | Windows amd64 — Azure Standard_D4s_v5, Windows 11 Pro 24H2 | native (Docker Desktop/WSL2) | working | pass | pass | pass (13 checks passed, 0 failed) |
-| 4 | macOS arm64 — Apple M1 Pro, 16 GB (local) | emulated (Docker Desktop) | broken (as expected) | pass | pass | recorded (12 checks passed, 0 failed; gdb broken recorded, not failed) |
+**Cross-cloud caveat for cell 3's timings:** cell 3 ran on Azure
+(Standard_D4s_v5, Emerald Rapids) while cells 1–2 ran on AWS (m8i/m8g,
+same-size siblings) — a different cloud, CPU model, and VM size. Its
+behavioral results (pass/fail, gdb, seeding, persistence) are directly
+comparable; its seconds are indicative and are never cross-divided with
+the other cells' (cell 3 appears in no Table 3 ratio, which was already
+true by design).
 
 ## Provenance
 
 | Field | Value |
 | --- | --- |
-| Record-run date (cells 1–3) | 2026-08-18, matrix run `20260818-053827` (cells 1–2 landed; cell 3 AWS launch was an infrastructure failure — no JSON, suite never ran; the Azure re-run passed 13/13, recorded separately as cell A3 — see Notes and the "Azure record run" section) |
+| Record-run date (cells 1–2, AWS) | 2026-08-18, matrix run `20260818-053827` (the same run's Windows Server launch was an infrastructure failure — no JSON, suite never ran; see Notes) |
+| Record-run date (cell 3, Azure) | 2026-08-18, run `20260818-093352` — complete, pass 13/13 (evidence files carry the run's `azure-cellA3-` label) |
 | Familiarization-run date (not reported) | |
 | Cell 2 confirmation re-run (diagnostic only, not a tables source) | 2026-08-18 ~07:01 UTC, separate launch, S3 prefix `20260818-053827-arm64-rerun` |
 | Cell 4 run date | 2026-08-17 |
-| Image tag / digest | `seancnc/unlv-x86-ide:latest` / `sha256:1d0b91b3581915c2b6b9926fea9b28130e4a8186bcd22abad90b19f5709ca3b6` |
-| ci-test.sh git commit | `b8332e71c5da0beca68a3373f94f4b2b440483cc` |
+| Cell 3 platform | Azure Standard_D4s_v5, westcentralus, Windows 11 Pro 24H2 (`MicrosoftWindowsDesktop:windows-11:win11-24h2-pro:latest`, version 26100.9168.260809), `--security-type Standard`, no public IP, no inbound NSG rules |
+| Cell 3 subscription / licensing | Pay-As-You-Go (upgraded from Azure for Students 2026-08-18); launched with `--license-type Windows_Client` — see the licensing note in Notes |
+| Image tag / digest | `seancnc/unlv-x86-ide:latest` / `sha256:1d0b91b3581915c2b6b9926fea9b28130e4a8186bcd22abad90b19f5709ca3b6` (same digest verified on every cell, both clouds and local) |
+| ci-test.sh git commit | `b8332e71c5da0beca68a3373f94f4b2b440483cc` (cell 3 fetched the published main copy from raw.githubusercontent.com at run time, unmodified) |
 | Total AWS cost (Cost Explorer, actual) | |
+| Total Azure cost | ~$0.40–0.60 **(estimate — Azure billing lags ~1 day; replace with the portal's actual figure)**: D4s_v5 ≈ $0.19/h × ~1.8 h + OS disk pennies; `--license-type Windows_Client` (BYOL) adds no software surcharge |
 
 ## Table 1 — Platform matrix
 
-| Metric | Cell 1: Linux amd64 (m8i.large) | Cell 2: Linux arm64 (m8g.large) | Cell 3: Windows amd64 (m8i.xlarge) | Cell 4: macOS arm64 (M1 Pro, 16 GB) |
+| Metric | Cell 1: Linux amd64 (AWS m8i.large) | Cell 2: Linux arm64 (AWS m8g.large) | Cell 3: Windows amd64 (Azure D4s_v5, Windows 11 Pro 24H2 — cross-cloud caveat above) | Cell 4: macOS arm64 (M1 Pro, 16 GB) |
 | --- | --- | --- | --- | --- |
 | x86 image mode | native | emulated (QEMU binfmt) | native (Docker Desktop/WSL2) | emulated (Docker Desktop) |
-| gdb probe (working/broken) | working | broken (not a clean probe; see Notes) | | broken |
-| Pull time (s) | 16.3 | 12.8 | | 44.7 |
-| Image size (MB) | 552 | 552 | | 552 |
-| Cold start → healthy (s) | 0.5 | null (never healthy in 300 s; see Notes) | | 4.8 |
-| Warm start (s) | 0.5 | null (never healthy in 300 s; see Notes) | | 4.3 |
-| Starter compile+run, median of 3 (s) | 0.0 | null (all 3 runs failed; see Notes) | | 0.4 |
-| Idle memory (MiB) | 54.29 | 0 (container had exited; see Notes) | | 263.1 |
-| Workload peak memory (MiB) | null (see Notes) | null (see Notes) | | 358 |
-| Starter seeding | pass | pass | | pass |
-| Persistence across replacement | pass | pass | | pass |
-| Overall (pass / recorded) | pass (13 checks passed, 0 failed; gdb working as expected) | fail (3 checks passed, 5 failed; container never reached healthy under QEMU binfmt — see Notes) | no result — suite never ran (rig infrastructure failure on AWS, not a platform fail; the Azure re-run passed 13/13 — recorded in the "Azure record run" section below, not in this table; see Notes) | recorded (12 checks passed, 0 failed; gdb broken as expected) |
+| gdb probe (working/broken) | working | broken (not a clean probe; see Notes) | working | broken |
+| Pull time (s) | 16.3 | 12.8 | 53.1 (network-dominated; engine warm — see Notes) | 44.7 |
+| Image size (MB) | 552 | 552 | 552 | 552 |
+| Cold start → healthy (s) | 0.5 | null (never healthy in 300 s; see Notes) | 0.6 | 4.8 |
+| Warm start (s) | 0.5 | null (never healthy in 300 s; see Notes) | 0.5 | 4.3 |
+| Starter compile+run, median of 3 (s) | 0.0 | null (all 3 runs failed; see Notes) | 0.2 (0.2 / 0.2 / 0.2) | 0.4 |
+| Idle memory (MiB) | 54.29 | 0 (container had exited; see Notes) | 56.36 | 263.1 |
+| Workload peak memory (MiB) | null (see Notes) | null (see Notes) | 90 | 358 |
+| Starter seeding | pass | pass | pass | pass |
+| Persistence across replacement | pass | pass | pass | pass |
+| Overall (pass / recorded) | pass (13 checks passed, 0 failed; gdb working as expected) | fail (3 checks passed, 5 failed; container never reached healthy under QEMU binfmt — see Notes) | pass (13 checks passed, 0 failed; gdb working; Azure record run — the AWS Server-proxy attempt was a rig failure, see Notes) | recorded (12 checks passed, 0 failed; gdb broken as expected) |
 
 ## Table 2 — Coursework workload (CS 218 assignments)
 
@@ -71,10 +62,10 @@ run-fail (recorded, not failed, under emulation — same policy as gdb).
 
 | Assignment | Cell 1 build / run / status | Cell 2 build / run / status | Cell 3 build / run / status | Cell 4 build / run / status |
 | --- | --- | --- | --- | --- |
-| ast3 (pure assembly) | 0.0 / 0.0 / pass | 0.0 / null / build-fail (exec against dead container; see Notes) | | 0.4 / 0.2 / pass |
-| ast04 (pure assembly) | 0.0 / 0.0 / pass | 0.0 / null / build-fail (exec against dead container; see Notes) | | 0.4 / 0.1 / pass |
-| ast06 (C++ driver + assembly, file I/O) | 0.2 / 0.0 / pass | 0.0 / null / build-fail (exec against dead container; see Notes) | | 2.5 / 0.2 / pass |
-| ast12 (multithreaded pthread + assembly, checkable answer) | 0.3 / 0.0 / pass | 0.0 / null / build-fail (exec against dead container; see Notes) | | 3.1 / 0.2 / pass |
+| ast3 (pure assembly) | 0.0 / 0.0 / pass | 0.0 / null / build-fail (exec against dead container; see Notes) | 0.2 / 0.2 / pass | 0.4 / 0.2 / pass |
+| ast04 (pure assembly) | 0.0 / 0.0 / pass | 0.0 / null / build-fail (exec against dead container; see Notes) | 0.2 / 0.2 / pass | 0.4 / 0.1 / pass |
+| ast06 (C++ driver + assembly, file I/O) | 0.2 / 0.0 / pass | 0.0 / null / build-fail (exec against dead container; see Notes) | 0.5 / 0.2 / pass | 2.5 / 0.2 / pass |
+| ast12 (multithreaded pthread + assembly, checkable answer) | 0.3 / 0.0 / pass | 0.0 / null / build-fail (exec against dead container; see Notes) | 0.6 / 0.2 / pass | 3.1 / 0.2 / pass |
 
 ## Table 3 — Emulation overhead ratios (derived)
 
@@ -84,7 +75,8 @@ denominator by design: cells 1 and 2 are same-size, same-generation
 Intel/Graviton siblings running identical Ubuntu + Docker Engine, so the
 ratio isolates the emulation layer as the only changed variable. Cell 3
 appears in no ratio — it is native (no emulation to price), and dividing
-by it would mix in Windows, WSL2, and a larger instance size (see
+by it would mix in Windows, WSL2, a different cloud, and a different
+instance size (see
 [`papers/EXPERIMENT_PLAN.md`](../papers/EXPERIMENT_PLAN.md), "Ratio baseline").
 
 | Workload | QEMU binfmt (cell 2 / cell 1) | Docker Desktop (cell 4 / cell 1) |
@@ -99,11 +91,19 @@ by it would mix in Windows, WSL2, and a larger instance size (see
 
 | Field | Cell 1 | Cell 2 | Cell 3 | Cell 4 |
 | --- | --- | --- | --- | --- |
-| CPU model | Intel(R) Xeon(R) 6975P-C | Neoverse-V2 | | Apple M1 Pro |
-| Cores | 2 | 2 | | 8 |
-| RAM (GB) | 8 | 8 | | 16 |
-| OS build | Ubuntu 24.04.4 LTS | Ubuntu 24.04.4 LTS | | macOS 26.4 |
-| Docker version | Docker 29.1.3 | Docker 29.1.3 | | Docker 29.2.1 |
+| CPU model | Intel(R) Xeon(R) 6975P-C | Neoverse-V2 | Intel Xeon Platinum 8573C | Apple M1 Pro |
+| Cores | 2 | 2 | 4 | 8 |
+| RAM (GB) | 8 | 8 | 8 (WSL2 view — see note below) | 16 |
+| OS build | Ubuntu 24.04.4 LTS | Ubuntu 24.04.4 LTS | Ubuntu 26.04 LTS (WSL2 guest — see note below) | macOS 26.4 |
+| Docker version | Docker 29.1.3 | Docker 29.1.3 | Docker 29.7.2 | Docker 29.2.1 |
+
+Cell 3 note: `ci-test.sh` runs inside WSL2, so its JSON's host block
+records the WSL2 guest's view — the Ubuntu distro, WSL's default RAM
+grant (8 GB = half of the VM's 16 GB), and the Linux-side Docker engine.
+The first-level host is the Windows layer: Windows 11 Pro 24H2 build
+26100.9168 on an Azure Standard_D4s_v5 (4 vCPU, 16 GB), Docker Desktop
+current stable, WSL 2.7.11. Both layers are provenance; the table shows
+what the JSON itself recorded.
 
 ## Toolchain versions
 
@@ -210,10 +210,9 @@ itself a result.)
   platform students actually use. The cell was re-run on Azure, which
   offers real Windows 11 Pro x86 VMs with nested virtualization
   (`scripts/azure-matrix.sh`), and **passed 13/13 with gdb working** —
-  recorded as cell A3 in the separate "Azure record run" section below.
-  By explicit decision Azure results are never merged into the tables
-  above, so cell 3's column here remains without data; the platform
-  verdict for Windows 11 x86 lives in the Azure section.
+  that Azure run is what fills cell 3's column in the tables above
+  (cross-cloud caveat in the intro; evidence files carry the run's
+  `azure-cellA3-` label in EVIDENCE.md).
 - **Cell 1 workload peak memory is null:** the whole four-assignment
   workload finished in ≈0.5 s of container time on native hardware, faster
   than the `docker stats` sampler could return a single sample, so the JSON
@@ -230,136 +229,42 @@ itself a result.)
   resolution; only the ast06 and ast12 build times give usable
   denominators, and even those carry coarse quantization (a 0.2–0.3 s
   denominator makes the ratios order-of-magnitude figures, hence the ≈).
-
----
-
-# Azure record run (separate matrix — never merged into the tables above)
-
-This section exists because the AWS windows cell (cell 3 above) was an
-infrastructure failure of its Windows Server 2025 proxy, and Azure rents
-real Windows 11 Pro — so the Windows cell is re-run there
-(`scripts/azure-matrix.sh`). By explicit decision Azure numbers live only
-in the tables of this section: a different cloud, different CPU models,
-and different VM sizes make them non-comparable with the AWS + local
-matrix above. Same evidence rules as above: every number is transcribed
-from the JSONs emitted by the unmodified published `scripts/ci-test.sh`,
-uploaded to the shared results bucket under `azure-matrix/<runid>/`.
-
-**The Azure run is Windows-only (cell A3).** Two Azure Linux companion
-cells (A1: Linux amd64, A2: Linux arm64) were planned and then cancelled
-before any VM launched — no Azure Linux results exist. Two reasons,
-recorded for the run history: (1) they were redundant — the AWS matrix
-above already holds a clean native-Linux record (cell 1) and a
-reproduced, root-caused emulated-Linux record (cell 2); (2) the Azure
-for Students subscription turned out to restrict essentially every
-fixed-performance VM family (D/E/F report `NotAvailableForSubscription`
-in every region), leaving only burstable B-series sizes, which would
-have added a CPU-throttling confound anyway.
-
-The same subscription restriction blocked cell A3 itself on the student
-offer: the launchable Bsv2/Basv2/Bpsv2 families officially do **not**
-support nested virtualization, which WSL2/Docker Desktop requires. The
-subscription was upgraded to Pay-As-You-Go on 2026-08-18 to unlock the
-Dsv5 family, and cell A3 launched on a Standard_D4s_v5 (run
-`20260818-093352` — see provenance below).
-
-## Azure provenance
-
-| Field | Value |
-| --- | --- |
-| Record-run date / run id | 2026-08-18, run `20260818-093352` — complete, pass 13/13 |
-| Region | westcentralus (westus3 was SKU-restricted on the prior subscription) |
-| S3 prefix | `azure-matrix/20260818-093352/` (bucket deleted post-run per teardown order; evidence archived in this directory, full bucket snapshot in local `results/s3-final-backup/`) |
-| VM size / security | Standard_D4s_v5, `--security-type Standard`, no public IP, no inbound NSG rules |
-| Windows image | `MicrosoftWindowsDesktop:windows-11:win11-24h2-pro:latest` (version 26100.9168.260809 at launch) |
-| Subscription / licensing | Pay-As-You-Go (upgraded from Azure for Students 2026-08-18); launched with `--license-type Windows_Client` — see licensing note below |
-| Image tag / digest | `seancnc/unlv-x86-ide@sha256:1d0b91b3581915c2b6b9926fea9b28130e4a8186bcd22abad90b19f5709ca3b6` |
-| ci-test.sh git commit | published main (fetched from raw.githubusercontent.com at run time, unmodified) |
-| Total Azure cost | ~$0.40–0.60 **(estimate — Azure billing lags ~1 day; replace with the portal's actual figure)**: D4s_v5 ≈ $0.19/h × ~1.8 h + OS disk pennies; `--license-type Windows_Client` (BYOL) adds no software surcharge |
-
-## Table A1 — Azure platform matrix (Windows cell only)
-
-Cells A1 (Linux amd64) and A2 (Linux arm64) were cancelled before launch
-(see above); their ids are retired, not reused.
-
-| Metric | Cell A3: Windows amd64 (Windows 11 Pro 24H2) |
-| --- | --- |
-| x86 image mode | native (Docker Desktop/WSL2) |
-| gdb probe (working/broken) | working |
-| Pull time (s) | 53.1 (engine warm at pull time — see anomalies; network-dominated) |
-| Image size (MB) | 552 |
-| Cold start → healthy (s) | 0.6 |
-| Warm start (s) | 0.5 |
-| Starter compile+run, median of 3 (s) | 0.2 (0.2 / 0.2 / 0.2) |
-| Idle memory (MiB) | 56.36 |
-| Workload peak memory (MiB) | 90 |
-| Starter seeding | pass |
-| Persistence across replacement | pass |
-| Overall (pass / recorded) | pass (13 checks passed, 0 failed; gdb working) |
-
-## Table A2 — Coursework workload (CS 218 assignments), Azure
-
-Build and run seconds per assignment; status is pass / build-fail /
-run-fail.
-
-| Assignment | Cell A3 build / run / status |
-| --- | --- |
-| ast3 (pure assembly) | 0.2 / 0.2 / pass |
-| ast04 (pure assembly) | 0.2 / 0.2 / pass |
-| ast06 (C++ driver + assembly, file I/O) | 0.5 / 0.2 / pass |
-| ast12 (multithreaded pthread + assembly, checkable answer) | 0.6 / 0.2 / pass |
-
-## Table A3 — Host record (embedded in the JSON), Azure
-
-| Field | Cell A3 |
-| --- | --- |
-| CPU model | Intel Xeon Platinum 8573C (Emerald Rapids) |
-| Cores | 4 |
-| RAM (GB) | 8 (WSL2 view — see note) |
-| OS build | Ubuntu 26.04 LTS (WSL2 guest; see note) |
-| Docker version | Docker 29.7.2 |
-
-Note: `ci-test.sh` runs inside WSL2, so the JSON's host block records the
-WSL2 guest's view — the Ubuntu distro, WSL's default RAM grant (8 GB =
-half of the VM's 16 GB), and the Linux-side Docker engine. The physical
-(well, first-level virtual) host is the Windows layer: Windows 11 Pro
-24H2 build 26100.9168 on an Azure Standard_D4s_v5 (4 vCPU, 16 GB),
-Docker Desktop current stable, WSL 2.7.11. Both layers are provenance;
-the table shows what the JSON itself recorded.
-
-## No Azure ratio table
-
-Table 3's emulation ratio needs a same-size, same-generation native
-sibling as denominator; with the Azure Linux cells cancelled no such
-sibling exists inside Azure, and cross-cloud denominators are out of
-scope by design. Cell A3 therefore never enters Table 3's numerators or
-denominators — its role is the behavioral Windows record (pass/fail,
-gdb probe, seeding, persistence) plus indicative timings.
-
-## Azure comparability and provenance notes
-
-- **Not comparable with the main matrix.** Azure numbers are never
-  merged into Tables 1–4 or Table 3's ratios: different cloud, different
-  CPU models, different VM sizes. Cross-cloud comparisons of these
-  timings are out of scope by design.
-- **Cell A3 is the point of the Azure run: real Windows 11 Pro 24H2, not
-  a Server proxy.** Docker Desktop runs on an OS inside its official
-  support matrix (Windows 10/11), unlike the AWS cell 3 attempt on
-  Windows Server 2025. Azure may rent client Windows; AWS may not.
-  Requires `--security-type Standard` (Trusted Launch blocks the nested
-  virtualization WSL2 needs).
-- **Subscription constraints shaped this run (2026-08-18).** On the
-  Azure for Students offer, `az vm list-skus` reported every
-  fixed-performance family tried (D/E/F) as
+- **Cell 3 run anomalies (Azure run `20260818-093352`).** The recorded
+  result is attempt 4 on the same VM; attempts 1–3 were failures of the
+  scripted automation, not of the platform, all diagnosed and fixed live
+  via `az vm run-command` with the full trail in the archived run log:
+  (1) the initial CustomScriptExtension hit the encoded-command size
+  limit; (2) phase 1 left WSL not installed, and a wrong `docker.exe`
+  path made the phase-2 engine probe report a false "engine up"
+  (that attempt's JSON is archived as
+  `azure-cellA3-windows-run1-no-wsl-integration.json` in
+  [EVIDENCE.md](EVIDENCE.md) — anomaly evidence, not a result); (3)
+  Docker Desktop's WSL integration was off for the distro. The suite
+  itself (`ci-test.sh`) ran unmodified in all attempts. Two further
+  caveats: the suite ran via an interactive scheduled task in the
+  autologon session rather than the original phase-2 task mechanism,
+  and the Docker engine was already warm (Docker Desktop autostart)
+  when the recorded attempt began — pull time is network-dominated and
+  unaffected, and cold start → healthy measures container start, not
+  engine start, in this cell exactly as in the others. Separately,
+  result uploads via pre-signed URLs initially failed with HTTP 400:
+  new AWS CLI/boto3 defaults attach checksum parameters that
+  pre-signed PUTs reject — fixed with
+  `AWS_REQUEST_CHECKSUM_CALCULATION=when_required` (see
+  `papers/AZURE_RUNBOOK.md`).
+- **Cell 3 subscription constraints (why the run needed a Pay-As-You-Go
+  upgrade).** On the Azure for Students offer, `az vm list-skus`
+  reported every fixed-performance family tried (D/E/F) as
   `NotAvailableForSubscription` in every region checked; only burstable
   Bsv2/Basv2/Bpsv2 sizes were launchable (6-vCPU regional cap), and per
   their Microsoft size documentation none of those support the nested
-  virtualization WSL2 needs. This cancelled the Linux companion cells
-  (also redundant with AWS cells 1–2) and gates the Windows cell on a
-  Pay-As-You-Go upgrade. One resource group from an aborted launch
-  (`unlv-ide-matrix-20260818-091659`, westcentralus, zero VMs created)
-  was deleted; no Azure compute ran. Sources: the official size pages
-  state "Nested Virtualization: Not Supported" for
+  virtualization WSL2 needs — so the cell was unlaunchable on the
+  student offer. The subscription was upgraded to Pay-As-You-Go on
+  2026-08-18 to unlock the Dsv5 family. One resource group from an
+  aborted launch (`unlv-ide-matrix-20260818-091659`, westcentralus,
+  zero VMs created) was deleted; no Azure compute ran before the
+  recorded run. Sources: the official size pages state "Nested
+  Virtualization: Not Supported" for
   [Bsv2](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/general-purpose/bsv2-series),
   [Basv2](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/general-purpose/basv2-series), and
   [Bpsv2](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/general-purpose/bpsv2-series)
@@ -371,42 +276,27 @@ gdb probe, seeding, persistence) plus indicative timings.
   (upgrade to Pay-As-You-Go is the documented path), and Microsoft staff
   [confirm](https://techcommunity.microsoft.com/discussions/microsoft-learn-for-educators/sku-quota-and-policy-restrictions-on-azure-for-students-and-free-subscriptions/4525160)
   student offers carry undocumented SKU restrictions beyond visible
-  policy. The burstable
-  [CPU credit model](https://learn.microsoft.com/en-us/azure/virtual-machines/b-series-cpu-credit-model/b-series-cpu-credit-model)
-  is the throttling confound the cancelled Linux cells would have
-  carried.
-- **Licensing caveat for cell A3.** Windows 11 client images on Azure
-  formally require
+  policy.
+- **Cell 3 licensing.** Windows 11 client images on Azure formally
+  require
   [Multitenant Hosting Rights](https://learn.microsoft.com/en-us/azure/virtual-machines/windows/windows-desktop-multitenant-hosting-deployment)
   (eligible licenses: Windows 11 E3/E5, Microsoft 365 E3/E5/A3/A5/
-  Business Premium; deployment includes an attestation checkbox); the
-  student subscription does not include them. The caveat was surfaced to
-  the operator before launch; the run proceeded on the upgraded
-  Pay-As-You-Go subscription with `--license-type Windows_Client` (the
-  bring-your-own-license attestation) by explicit operator decision.
-  Recorded here so the run's licensing posture is explicit. Related: the
+  Business Premium; deployment includes an attestation checkbox). The
+  caveat was surfaced to the operator before launch; the run proceeded
+  with `--license-type Windows_Client` (the bring-your-own-license
+  attestation) by explicit operator decision. Recorded here so the
+  run's licensing posture is explicit. Related: the
   [Windows 11 on Azure support matrix](https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/windows/windows-11-support-azure-virtual-machines)
   lists ARM64 families as Preview-only (and notes the portal may offer
   unsupported combinations) — the basis for treating a Windows-on-ARM
   cloud cell as untestable.
-- **Run anomalies (cell A3, run `20260818-093352`).** The recorded
-  result is attempt 4 on the same VM; attempts 1–3 were failures of the
-  scripted automation, not of the platform, all diagnosed and fixed live
-  via `az vm run-command` with the full trail in the archived run log:
-  (1) the initial CustomScriptExtension hit the encoded-command size
-  limit; (2) phase 1 left WSL not installed, and a wrong `docker.exe`
-  path made the phase-2 engine probe report a false "engine up"
-  (that attempt's JSON is archived as
-  `azure-cellA3-windows-run1-no-wsl-integration.json` in [EVIDENCE.md](EVIDENCE.md) — anomaly
-  evidence, not a result); (3) Docker Desktop's WSL integration was off
-  for the distro. The suite itself (`ci-test.sh`) ran unmodified in all
-  attempts. Two further caveats: the suite ran via an interactive
-  scheduled task in the autologon session rather than the original
-  phase-2 task mechanism, and the Docker engine was already warm
-  (Docker Desktop autostart) when the recorded attempt began — pull
-  time is network-dominated and unaffected, but cold start → healthy
-  measures container start, not engine start, in this cell exactly as
-  in the others. Separately, result uploads via pre-signed URLs
-  initially failed with HTTP 400: new AWS CLI/boto3 defaults attach
-  checksum parameters that pre-signed PUTs reject — fixed with
-  `AWS_REQUEST_CHECKSUM_CALCULATION=when_required` (runbook-worthy).
+- **Cancelled Azure Linux cells (labels A1/A2, retired).** Two Azure
+  Linux companion cells were planned alongside the Windows re-run and
+  cancelled before any VM launched — no Azure Linux results exist.
+  Reasons, recorded for the run history: they were redundant (cells 1–2
+  above already hold the native and emulated Linux records), and the
+  student-offer SKU restrictions left only burstable B-series sizes,
+  whose
+  [CPU credit model](https://learn.microsoft.com/en-us/azure/virtual-machines/b-series-cpu-credit-model/b-series-cpu-credit-model)
+  would have added a throttling confound.
+

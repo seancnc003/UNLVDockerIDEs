@@ -2,8 +2,8 @@
 
 Companion to [AWS_RUNBOOK.md](./AWS_RUNBOOK.md) and
 [EXPERIMENT_PLAN.md](./EXPERIMENT_PLAN.md). Written from the successful
-cell A3 record run (`20260818-093352`, 2026-08-18) — see the "Azure record
-run" section of [RESULTS.md](../record-results/RESULTS.md) for the numbers.
+cell A3 record run (`20260818-093352`, 2026-08-18) — see the cell 3 column
+of [RESULTS.md](../record-results/RESULTS.md) for the numbers.
 This file carries the **operational knowledge**: why Azure at all, what an
 Azure for Students subscription can and cannot launch, every failure mode
 we hit on the way to a 13/13 pass, and the remote-operations toolbox that

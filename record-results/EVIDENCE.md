@@ -29,7 +29,7 @@ transcribed from the JSONs in this file; see
   - `cell2-linux-arm64-rerun-diag-ps.txt`
 - Cell 3 AWS attempt — Windows Server 2025 proxy (rig infrastructure failure)
   - `cell3-windows-aws-runlog.txt`
-- Cell A3 — Windows 11 Pro 24H2 (Azure Standard_D4s_v5, record run 20260818-093352)
+- Cell 3 — Windows 11 Pro 24H2 (Azure Standard_D4s_v5, record run 20260818-093352; files keep the run's `azure-cellA3-` label)
   - `azure-cellA3-windows.json`
   - `azure-cellA3-windows-run1-no-wsl-integration.json`
   - `azure-cellA3-windows-runlog.txt`
@@ -2568,11 +2568,11 @@ End time: 20260818084954
 ````
 
 
-## Cell A3 — Windows 11 Pro 24H2 (Azure Standard_D4s_v5, record run 20260818-093352)
+## Cell 3 — Windows 11 Pro 24H2 (Azure Standard_D4s_v5, record run 20260818-093352; files keep the run's `azure-cellA3-` label)
 
 ### `azure-cellA3-windows.json` (1220 bytes)
 
-record JSON (pass 13/13; source for the Azure A-tables).
+record JSON (pass 13/13; source for the Table 1 cell 3 column).
 
 ````json
 {
