@@ -1,41 +1,45 @@
 #!/usr/bin/env bash
 # ------------------------------------------------------------------------------
-# UNLV Docker IDEs — QEMU-version follow-up (cell 2 diagnostic, NOT a record run).
+# UNLV Docker IDEs — Linux arm64 cell under Docker's binfmt handlers.
 #
-# Cell 2's record run found Ubuntu 24.04's qemu-user-static 8.2.2 segfaulting
-# internally (`QEMU internal SIGSEGV {code=MAPERR}`) while emulating
-# code-server's Node.js runtime, so the x86 image never reached healthy on
-# Linux arm64 (record-results/RESULTS.md, Notes; confirmed n=2). This launches
-# two Graviton instances — same m8g.large size and flow as cell 2, so the QEMU
-# handler build is the only changed variable per variant — to test whether
-# newer QEMU builds fix it:
+# Background: the record run's cell 2 (Ubuntu 24.04 stock qemu-user-static
+# 8.2.2) crashed with a QEMU-internal SIGSEGV emulating code-server's Node.js
+# runtime (record-results/RESULTS.md, Notes). The first run of this driver
+# (20260818-195946, diagnostic scope — no coursework shipped) demonstrated the
+# fix: Docker's tonistiigi/binfmt handler build passes on otherwise identical
+# hardware/OS. This driver now runs at full record scope: when the private
+# code/ folder is present locally it is uploaded and fetched so ci-test.sh
+# measures every metric the other cells track — the four CS 218 coursework
+# assignments (build + run + status), workload peak memory, and the rest.
 #
 #   variant          instance    OS            QEMU handler source
 #   arm64-binfmt     m8g.large   Ubuntu 24.04  tonistiigi/binfmt (Docker's
-#                                              build lineage — the same family
-#                                              Docker Desktop bundles, so this
-#                                              is the Windows-on-ARM-relevant
-#                                              data point)
-#   arm64-distro-new m8g.large   Ubuntu 26.04  distro qemu-user-static (newer
-#                                              than the 8.2.2 that crashed)
+#                                              build lineage — what Docker
+#                                              Desktop bundles)
+#   arm64-distro-new m8g.large   Ubuntu 26.04  distro qemu-user-static.
+#                                              OPT-IN (VARIANTS="binfmt distro"):
+#                                              known rig failure — the package
+#                                              had no installation candidate on
+#                                              the 26.04 AMI (run 20260818-195946)
 #
-# Each runs the unmodified published scripts/ci-test.sh (same methodology as
-# the record run), then a standalone 90 s container probe with `docker
-# inspect`/`docker logs` captures (mirroring the arm64-rerun diagnostics),
-# uploads everything to S3, and self-terminates. Outcomes land in RESULTS.md's
-# Notes as follow-up evidence; cell 2's recorded table numbers never change.
+# Each instance runs the unmodified published scripts/ci-test.sh (same
+# methodology as the record runs), then a standalone 90 s container probe with
+# `docker inspect`/`docker logs` captures, uploads everything to S3, and
+# self-terminates.
 #
-# Zero-touch, no inbound ports. Cost: ≈ $0.05–0.10 total (two Linux cells,
-# ~15 min each). Failsafes: per-instance scheduled shutdown,
-# terminate-on-shutdown, and a terminate-all in this script's exit trap.
+# Zero-touch, no inbound ports. Cost: ≈ $0.05 per variant (~15 min).
+# Failsafes: per-instance scheduled shutdown, terminate-on-shutdown, and a
+# terminate-all in this script's exit trap.
 #
-# Usage: scripts/aws-qemu-followup.sh [region]   (default us-east-1)
-#        UBUNTU_NEW=25.04 scripts/aws-qemu-followup.sh   to change variant B's OS
+# Usage: scripts/aws-qemu-followup.sh [region]      (default us-east-1)
+#        VARIANTS="binfmt distro" scripts/aws-qemu-followup.sh   both variants
+#        UBUNTU_NEW=25.04 ...                       change the distro variant's OS
 # ------------------------------------------------------------------------------
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 REGION="${1:-us-east-1}"
+VARIANTS="${VARIANTS:-binfmt}"
 UBUNTU_NEW="${UBUNTU_NEW:-26.04}"
 RUN_ID="$(date -u +%Y%m%d-%H%M%S)"
 ACCOUNT="$(aws sts get-caller-identity --query Account --output text)"
@@ -49,6 +53,17 @@ AMI_NEW_ARM64=/aws/service/canonical/ubuntu/server/$UBUNTU_NEW/stable/current/ar
 echo "== Results bucket (idempotent) =="
 aws s3api head-bucket --bucket "$BUCKET" 2>/dev/null || \
   aws s3 mb "s3://$BUCKET" --region "$REGION"
+
+# Coursework workload (gitignored course material — travels via S3, not git).
+# Uploaded fresh when present locally; cells fetch it and ci-test.sh skips
+# the workload stage cleanly if this upload never happened.
+if [ -d code ]; then
+  echo "== Uploading coursework workload =="
+  (cd "$(mktemp -d)" && cp -R "$OLDPWD/code" code && zip -qr code.zip code && \
+   aws s3 cp code.zip "s3://$BUCKET/workload/code.zip" --region "$REGION")
+else
+  echo "== NOTE: no local code/ folder — workload stage will be skipped (diagnostic scope) =="
+fi
 
 echo "== IAM role + instance profile (idempotent, object read/write on this bucket only) =="
 if ! aws iam get-role --role-name "$ROLE" >/dev/null 2>&1; then
@@ -68,9 +83,6 @@ fi
 
 ami() { aws ssm get-parameter --region "$REGION" --name "$1" --query Parameter.Value --output text; }
 
-# Coursework workload is deliberately NOT uploaded: this is a can-the-container-
-# reach-healthy diagnostic, and ci-test.sh skips the workload stage cleanly.
-
 userdata() { # variant-name handler-mode(binfmt|distro)
   cat <<EOF
 #!/bin/bash
@@ -84,15 +96,16 @@ apt-get install -y -qq docker.io curl unzip
 curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-\$(uname -m).zip" -o /tmp/awscliv2.zip
 unzip -q /tmp/awscliv2.zip -d /tmp && /tmp/aws/install
 if [ "$2" = distro ]; then
-  # Variant B: this OS release's own qemu-user-static (newer than the 8.2.2
-  # that crashed in cell 2). Log the exact version for provenance.
+  # Distro variant: this OS release's own qemu-user-static. Log the exact
+  # version for provenance.
   apt-get install -y -qq qemu-user-static binfmt-support
   /usr/bin/qemu-x86_64-static --version | head -1
 fi
 systemctl start docker
 if [ "$2" = binfmt ]; then
-  # Variant A: Docker's binfmt handler image on the same Ubuntu 24.04 as
-  # cell 2 — only the handler build changes. Log its digest for provenance.
+  # Docker's binfmt handler image on the same Ubuntu 24.04 as the superseded
+  # record cell — only the handler build changes. Log its digest for
+  # provenance.
   docker run --privileged --rm tonistiigi/binfmt --install amd64
   docker inspect --format '{{index .RepoDigests 0}}' tonistiigi/binfmt
 fi
@@ -100,6 +113,11 @@ ls /proc/sys/fs/binfmt_misc/
 mkdir -p /root/scripts /root/results
 curl -fsSL $RAW_BASE/scripts/ci-test.sh -o /root/scripts/ci-test.sh
 cd /root
+# Coursework workload (private, optional): fetch if this run's upload exists;
+# ci-test.sh skips the stage cleanly when code/ is absent.
+if aws s3 cp "s3://$BUCKET/workload/code.zip" /root/code.zip --region $REGION 2>/dev/null; then
+  unzip -o /root/code.zip -d /root
+fi
 bash scripts/ci-test.sh x86
 # Diagnostics regardless of suite outcome: a standalone 90 s probe with the
 # same captures as the record run's arm64-rerun (inspect + full logs).
@@ -126,33 +144,43 @@ launch() { # name ami-id userdata-file
     --query 'Instances[0].InstanceId' --output text
 }
 
-echo "== Launch both variants =="
+echo "== Launch: $VARIANTS =="
 TMP="$(mktemp -d)"
-userdata arm64-binfmt binfmt > "$TMP/ud-binfmt.sh"
-userdata arm64-distro-new distro > "$TMP/ud-distro.sh"
-ID_BINFMT="$(launch arm64-binfmt "$(ami "$AMI_NOBLE_ARM64")" "$TMP/ud-binfmt.sh")"
-ID_DISTRO="$(launch arm64-distro-new "$(ami "$AMI_NEW_ARM64")" "$TMP/ud-distro.sh")"
+ALL_IDS=()
+EXPECT=0
+for V in $VARIANTS; do
+  case "$V" in
+    binfmt)
+      userdata arm64-binfmt binfmt > "$TMP/ud-binfmt.sh"
+      ID="$(launch arm64-binfmt "$(ami "$AMI_NOBLE_ARM64")" "$TMP/ud-binfmt.sh")"
+      echo "arm64-binfmt: $ID" ;;
+    distro)
+      userdata arm64-distro-new distro > "$TMP/ud-distro.sh"
+      ID="$(launch arm64-distro-new "$(ami "$AMI_NEW_ARM64")" "$TMP/ud-distro.sh")"
+      echo "arm64-distro-new (Ubuntu $UBUNTU_NEW): $ID" ;;
+    *) echo "unknown variant: $V" >&2; exit 1 ;;
+  esac
+  ALL_IDS+=("$ID"); EXPECT=$((EXPECT + 1))
+done
 rm -rf "$TMP"
-ALL_IDS=("$ID_BINFMT" "$ID_DISTRO")
-echo "arm64-binfmt: $ID_BINFMT   arm64-distro-new (Ubuntu $UBUNTU_NEW): $ID_DISTRO"
 echo "run prefix: s3://$BUCKET/$PREFIX/"
 
 cleanup() {
-  echo "== Ensuring both instances are terminated =="
+  echo "== Ensuring all launched instances are terminated =="
   aws ec2 terminate-instances --region "$REGION" --instance-ids "${ALL_IDS[@]}" >/dev/null 2>&1 || true
 }
 trap cleanup EXIT
 
-echo "== Waiting for 2 result JSONs (~15 min typical; 45 min cap) =="
+echo "== Waiting for $EXPECT result JSON(s) (~15 min typical; 45 min cap) =="
 DEADLINE=$((SECONDS + 2700))
 while [ $SECONDS -lt $DEADLINE ]; do
   N="$(aws s3 ls "s3://$BUCKET/$PREFIX/" --recursive 2>/dev/null | grep -c '\.json' || true)"
   STATES="$(aws ec2 describe-instances --region "$REGION" --instance-ids "${ALL_IDS[@]}" \
     --query 'Reservations[].Instances[].State.Name' --output text 2>/dev/null | tr '\t' ' ' || echo unknown)"
-  echo "  $(date -u +%H:%M:%SZ)  jsons: ${N:-0}/2  instances: $STATES"
-  [ "${N:-0}" -ge 2 ] && break
-  if ! echo "$STATES" | grep -qE 'pending|running' && [ "${N:-0}" -lt 2 ]; then
-    echo "Both instances stopped without full results — check the run.log files below."
+  echo "  $(date -u +%H:%M:%SZ)  jsons: ${N:-0}/$EXPECT  instances: $STATES"
+  [ "${N:-0}" -ge "$EXPECT" ] && break
+  if ! echo "$STATES" | grep -qE 'pending|running' && [ "${N:-0}" -lt "$EXPECT" ]; then
+    echo "All instances stopped without full results — check the run.log files below."
     break
   fi
   sleep 60
@@ -164,11 +192,10 @@ mkdir -p "$DEST"
 aws s3 cp "s3://$BUCKET/$PREFIX/" "$DEST/" --recursive || true
 find "$DEST" -type f | sort
 echo "== Quick verdicts (healthy-or-not per variant) =="
-for V in arm64-binfmt arm64-distro-new; do
-  echo "--- $V ---"
-  [ -f "$DEST/$V/diag-inspect.txt" ] && cat "$DEST/$V/diag-inspect.txt" || echo "(no diag capture)"
-  [ -f "$DEST/$V/diag-logs.txt" ] && tail -3 "$DEST/$V/diag-logs.txt"
+for D in "$DEST"/*/; do
+  echo "--- $(basename "$D") ---"
+  [ -f "$D/diag-inspect.txt" ] && cat "$D/diag-inspect.txt" || echo "(no diag capture)"
 done
 J="$(find "$DEST" -name '*.json' | wc -l | tr -d ' ')"
-[ "$J" -ge 2 ] && echo "RESULT: both variants complete — transcribe into RESULTS.md Notes" \
-  || { echo "RESULT: incomplete ($J/2 JSONs) — see the per-variant run.log files"; exit 1; }
+[ "$J" -ge "$EXPECT" ] && echo "RESULT: all $EXPECT variant(s) complete — transcribe into RESULTS.md" \
+  || { echo "RESULT: incomplete ($J/$EXPECT JSONs) — see the per-variant run.log files"; exit 1; }

@@ -27,7 +27,7 @@ transcribed from the JSONs in this file; see
   - `cell2-linux-arm64-rerun-diag-dmesg.txt`
   - `cell2-linux-arm64-rerun-diag-free.txt`
   - `cell2-linux-arm64-rerun-diag-ps.txt`
-- Cell 2 QEMU follow-up run (AWS run 20260818-195946; tables source for cell 2)
+- Cell 2 QEMU follow-up run, diagnostic scope (AWS run 20260818-195946; no coursework shipped — first demonstration of the working handler build)
   - `cell2-qemu-followup-binfmt.json`
   - `cell2-qemu-followup-binfmt-runlog.txt`
   - `cell2-qemu-followup-binfmt-diag-inspect.txt`
@@ -36,6 +36,11 @@ transcribed from the JSONs in this file; see
   - `cell2-qemu-followup-distro-runlog.txt`
   - `cell2-qemu-followup-distro-diag-inspect.txt`
   - `cell2-qemu-followup-distro-diag-logs.txt`
+- Cell 2 QEMU follow-up full run (AWS run 20260818-202601; tables source for cell 2)
+  - `cell2-qemu-followup-full.json`
+  - `cell2-qemu-followup-full-runlog.txt`
+  - `cell2-qemu-followup-full-diag-inspect.txt`
+  - `cell2-qemu-followup-full-diag-logs.txt`
 - Cell 3 AWS attempt — Windows Server 2025 proxy (rig infrastructure failure)
   - `cell3-windows-aws-runlog.txt`
 - Cell 3 — Windows 11 Pro 24H2 (Azure Standard_D4s_v5, record run 20260818-093352; files keep the run's `azure-cellA3-` label)
@@ -1001,11 +1006,11 @@ CONTAINER ID   IMAGE                  COMMAND                  CREATED          
 ````
 
 
-## Cell 2 QEMU follow-up run (AWS run 20260818-195946; tables source for cell 2)
+## Cell 2 QEMU follow-up run, diagnostic scope (AWS run 20260818-195946; no coursework shipped — first demonstration of the working handler build)
 
 ### `cell2-qemu-followup-binfmt.json` (738 bytes)
 
-follow-up JSON, `arm64-binfmt` variant (recorded 8/8 with gdb broken as expected; source for the Table 1 cell 2 column in RESULTS.md).
+follow-up JSON, `arm64-binfmt` variant, diagnostic scope (recorded 8/8 with gdb broken as expected; superseded as tables source by the full run below).
 
 ````json
 {
@@ -1049,7 +1054,28 @@ instance user-data transcript, `arm64-binfmt` variant: tonistiigi/binfmt handler
 + apt-get install -y -qq docker.io curl unzip
 Preconfiguring packages ...
 Selecting previously unselected package pigz.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 74109 files and directories currently installed.)
+(Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 74109 files and directories currently installed.)
 Preparing to unpack .../0-pigz_2.8-1_arm64.deb ...
 Unpacking pigz (2.8-1) ...
 Selecting previously unselected package bridge-utils.
@@ -1083,14 +1109,18 @@ Setting up dns-root-data (2024071801~ubuntu0.24.04.1) ...
 Setting up bridge-utils (1.7.1-1ubuntu2) ...
 Setting up pigz (2.8-1) ...
 Setting up containerd (2.2.1-0ubuntu1~24.04.3) ...
-Created symlink /etc/systemd/system/multi-user.target.wants/containerd.service → /usr/lib/systemd/system/containerd.service.
+Created symlink /etc/systemd/system/multi-user.target.wants/containerd.service → /usr/lib/systemd/system/containerd.service.
+
 Setting up ubuntu-fan (0.12.16+24.04.1) ...
-Created symlink /etc/systemd/system/multi-user.target.wants/ubuntu-fan.service → /usr/lib/systemd/system/ubuntu-fan.service.
+Created symlink /etc/systemd/system/multi-user.target.wants/ubuntu-fan.service → /usr/lib/systemd/system/ubuntu-fan.service.
+
 Setting up docker.io (29.1.3-0ubuntu3~24.04.2) ...
 info: Selecting GID from range 100 to 999 ...
 info: Adding group `docker' (GID 112) ...
-Created symlink /etc/systemd/system/multi-user.target.wants/docker.service → /usr/lib/systemd/system/docker.service.
-Created symlink /etc/systemd/system/sockets.target.wants/docker.socket → /usr/lib/systemd/system/docker.socket.
+Created symlink /etc/systemd/system/multi-user.target.wants/docker.service → /usr/lib/systemd/system/docker.service.
+
+Created symlink /etc/systemd/system/sockets.target.wants/docker.socket → /usr/lib/systemd/system/docker.socket.
+
 Processing triggers for dbus (1.14.10-4ubuntu4.1) ...
 Processing triggers for man-db (2.12.0-4build2) ...
 
@@ -1185,9 +1215,14 @@ RESULT: 8 passed, 0 failed
 + docker rm -f diagprobe
 diagprobe
 + aws s3 cp /root/results/ s3://unlv-ide-ci-results-372172764211/qemu-followup/20260818-195946/arm64-binfmt/ --recursive --region us-east-1
-Completed 32 Bytes/1.3 KiB (415 Bytes/s) with 3 file(s) remainingupload: results/diag-inspect.txt to s3://unlv-ide-ci-results-372172764211/qemu-followup/20260818-195946/arm64-binfmt/diag-inspect.txt
-Completed 32 Bytes/1.3 KiB (415 Bytes/s) with 2 file(s) remainingCompleted 628 Bytes/1.3 KiB (6.1 KiB/s) with 2 file(s) remaining upload: results/diag-logs.txt to s3://unlv-ide-ci-results-372172764211/qemu-followup/20260818-195946/arm64-binfmt/diag-logs.txt
-Completed 628 Bytes/1.3 KiB (6.1 KiB/s) with 1 file(s) remainingCompleted 1.3 KiB/1.3 KiB (4.5 KiB/s) with 1 file(s) remaining  upload: results/x86-aarch64.json to s3://unlv-ide-ci-results-372172764211/qemu-followup/20260818-195946/arm64-binfmt/x86-aarch64.json
+Completed 32 Bytes/1.3 KiB (415 Bytes/s) with 3 file(s) remaining
+upload: results/diag-inspect.txt to s3://unlv-ide-ci-results-372172764211/qemu-followup/20260818-195946/arm64-binfmt/diag-inspect.txt
+Completed 32 Bytes/1.3 KiB (415 Bytes/s) with 2 file(s) remaining
+Completed 628 Bytes/1.3 KiB (6.1 KiB/s) with 2 file(s) remaining 
+upload: results/diag-logs.txt to s3://unlv-ide-ci-results-372172764211/qemu-followup/20260818-195946/arm64-binfmt/diag-logs.txt
+Completed 628 Bytes/1.3 KiB (6.1 KiB/s) with 1 file(s) remaining
+Completed 1.3 KiB/1.3 KiB (4.5 KiB/s) with 1 file(s) remaining  
+upload: results/x86-aarch64.json to s3://unlv-ide-ci-results-372172764211/qemu-followup/20260818-195946/arm64-binfmt/x86-aarch64.json
 + aws s3 cp /var/log/unlv-run.log s3://unlv-ide-ci-results-372172764211/qemu-followup/20260818-195946/arm64-binfmt/run.log --region us-east-1
 ````
 
@@ -1259,7 +1294,28 @@ instance user-data transcript, `arm64-distro-new` variant: documents `E: Package
 + apt-get install -y -qq docker.io curl unzip
 Preconfiguring packages ...
 Selecting previously unselected package pigz.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 88845 files and directories currently installed.)
+(Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 88845 files and directories currently installed.)
 Preparing to unpack .../0-pigz_2.8-1build1_arm64.deb ...
 Unpacking pigz (2.8-1build1) ...
 Selecting previously unselected package bridge-utils.
@@ -1368,9 +1424,14 @@ f33cad01c11de856db4538eb270872978e62e753879137946d87bf903d9e3d66
 + docker rm -f diagprobe
 diagprobe
 + aws s3 cp /root/results/ s3://unlv-ide-ci-results-372172764211/qemu-followup/20260818-195946/arm64-distro-new/ --recursive --region us-east-1
-Completed 38 Bytes/783 Bytes (590 Bytes/s) with 3 file(s) remainingupload: results/diag-logs.txt to s3://unlv-ide-ci-results-372172764211/qemu-followup/20260818-195946/arm64-distro-new/diag-logs.txt
-Completed 38 Bytes/783 Bytes (590 Bytes/s) with 2 file(s) remainingCompleted 71 Bytes/783 Bytes (1.1 KiB/s) with 2 file(s) remaining  upload: results/diag-inspect.txt to s3://unlv-ide-ci-results-372172764211/qemu-followup/20260818-195946/arm64-distro-new/diag-inspect.txt
-Completed 71 Bytes/783 Bytes (1.1 KiB/s) with 1 file(s) remainingCompleted 783 Bytes/783 Bytes (9.3 KiB/s) with 1 file(s) remainingupload: results/x86-aarch64.json to s3://unlv-ide-ci-results-372172764211/qemu-followup/20260818-195946/arm64-distro-new/x86-aarch64.json
+Completed 38 Bytes/783 Bytes (590 Bytes/s) with 3 file(s) remaining
+upload: results/diag-logs.txt to s3://unlv-ide-ci-results-372172764211/qemu-followup/20260818-195946/arm64-distro-new/diag-logs.txt
+Completed 38 Bytes/783 Bytes (590 Bytes/s) with 2 file(s) remaining
+Completed 71 Bytes/783 Bytes (1.1 KiB/s) with 2 file(s) remaining  
+upload: results/diag-inspect.txt to s3://unlv-ide-ci-results-372172764211/qemu-followup/20260818-195946/arm64-distro-new/diag-inspect.txt
+Completed 71 Bytes/783 Bytes (1.1 KiB/s) with 1 file(s) remaining
+Completed 783 Bytes/783 Bytes (9.3 KiB/s) with 1 file(s) remaining
+upload: results/x86-aarch64.json to s3://unlv-ide-ci-results-372172764211/qemu-followup/20260818-195946/arm64-distro-new/x86-aarch64.json
 + aws s3 cp /var/log/unlv-run.log s3://unlv-ide-ci-results-372172764211/qemu-followup/20260818-195946/arm64-distro-new/run.log --region us-east-1
 ````
 
@@ -1388,6 +1449,268 @@ complete docker logs of the diagnostic container (one line: tini exec format err
 
 ````
 exec /usr/bin/tini: exec format error
+````
+
+
+## Cell 2 QEMU follow-up full run (AWS run 20260818-202601; tables source for cell 2)
+
+### `cell2-qemu-followup-full.json` (1049 bytes)
+
+full-run JSON (recorded 12 checks passed, 0 failed — full emulated-cell scope with coursework; source for the Table 1 and Table 2 cell 2 columns in RESULTS.md).
+
+````json
+{
+  "image": "seancnc/unlv-x86-ide",
+  "kind": "x86",
+  "host_arch": "aarch64",
+  "mode": "emulated",
+  "host": {
+    "cpu": "Neoverse-V2",
+    "cores": 2,
+    "ram_gb": 8,
+    "os": "Ubuntu 24.04.4 LTS",
+    "docker": "Docker version 29.1.3"
+  },
+  "digest": "seancnc/unlv-x86-ide@sha256:1d0b91b3581915c2b6b9926fea9b28130e4a8186bcd22abad90b19f5709ca3b6",
+  "size_mb": 552,
+  "pull_seconds": 12.9,
+  "start_to_healthy_seconds": 6.7,
+  "warm_start_seconds": 6.2,
+  "compile_run_seconds": [0.3, 0.3, 0.3],
+  "gdb": "broken",
+  "workload": [{"name": "ast3", "build_seconds": 0.3, "run_seconds": 0.1, "status": "pass"}, {"name": "ast04", "build_seconds": 0.3, "run_seconds": 0.1, "status": "pass"}, {"name": "ast06", "build_seconds": 2.8, "run_seconds": 0.1, "status": "pass"}, {"name": "ast12", "build_seconds": 3.6, "run_seconds": 0.1, "status": "pass"}],
+  "workload_peak_mem_mib": 334,
+  "idle_memory": "254.8MiB",
+  "code_server": "4.126.0",
+  "tools": "nasm 2.15.05, yasm 1.3.0, gdb 12.1",
+  "persistence": "pass",
+  "passed": 12,
+  "failed": 0
+}
+````
+
+### `cell2-qemu-followup-full-runlog.txt` (9963 bytes)
+
+instance user-data transcript, full run: tonistiigi/binfmt handler install with image digest, coursework zip fetched and unpacked, unmodified ci-test.sh run, diagnostics probe, S3 upload.
+
+````
++ export DEBIAN_FRONTEND=noninteractive
++ DEBIAN_FRONTEND=noninteractive
++ apt-get update -qq
++ apt-get install -y -qq docker.io curl unzip
+Preconfiguring packages ...
+Selecting previously unselected package pigz.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 74109 files and directories currently installed.)
+Preparing to unpack .../0-pigz_2.8-1_arm64.deb ...
+Unpacking pigz (2.8-1) ...
+Selecting previously unselected package bridge-utils.
+Preparing to unpack .../1-bridge-utils_1.7.1-1ubuntu2_arm64.deb ...
+Unpacking bridge-utils (1.7.1-1ubuntu2) ...
+Selecting previously unselected package runc.
+Preparing to unpack .../2-runc_1.3.4-0ubuntu1~24.04.1_arm64.deb ...
+Unpacking runc (1.3.4-0ubuntu1~24.04.1) ...
+Selecting previously unselected package containerd.
+Preparing to unpack .../3-containerd_2.2.1-0ubuntu1~24.04.3_arm64.deb ...
+Unpacking containerd (2.2.1-0ubuntu1~24.04.3) ...
+Selecting previously unselected package dns-root-data.
+Preparing to unpack .../4-dns-root-data_2024071801~ubuntu0.24.04.1_all.deb ...
+Unpacking dns-root-data (2024071801~ubuntu0.24.04.1) ...
+Selecting previously unselected package dnsmasq-base.
+Preparing to unpack .../5-dnsmasq-base_2.90-2ubuntu0.4_arm64.deb ...
+Unpacking dnsmasq-base (2.90-2ubuntu0.4) ...
+Selecting previously unselected package docker.io.
+Preparing to unpack .../6-docker.io_29.1.3-0ubuntu3~24.04.2_arm64.deb ...
+Unpacking docker.io (29.1.3-0ubuntu3~24.04.2) ...
+Selecting previously unselected package ubuntu-fan.
+Preparing to unpack .../7-ubuntu-fan_0.12.16+24.04.1_all.deb ...
+Unpacking ubuntu-fan (0.12.16+24.04.1) ...
+Selecting previously unselected package unzip.
+Preparing to unpack .../8-unzip_6.0-28ubuntu4.1_arm64.deb ...
+Unpacking unzip (6.0-28ubuntu4.1) ...
+Setting up unzip (6.0-28ubuntu4.1) ...
+Setting up dnsmasq-base (2.90-2ubuntu0.4) ...
+Setting up runc (1.3.4-0ubuntu1~24.04.1) ...
+Setting up dns-root-data (2024071801~ubuntu0.24.04.1) ...
+Setting up bridge-utils (1.7.1-1ubuntu2) ...
+Setting up pigz (2.8-1) ...
+Setting up containerd (2.2.1-0ubuntu1~24.04.3) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/containerd.service → /usr/lib/systemd/system/containerd.service.
+Setting up ubuntu-fan (0.12.16+24.04.1) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/ubuntu-fan.service → /usr/lib/systemd/system/ubuntu-fan.service.
+Setting up docker.io (29.1.3-0ubuntu3~24.04.2) ...
+info: Selecting GID from range 100 to 999 ...
+info: Adding group `docker' (GID 112) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/docker.service → /usr/lib/systemd/system/docker.service.
+Created symlink /etc/systemd/system/sockets.target.wants/docker.socket → /usr/lib/systemd/system/docker.socket.
+Processing triggers for dbus (1.14.10-4ubuntu4.1) ...
+Processing triggers for man-db (2.12.0-4build2) ...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+++ uname -m
++ curl -fsSL https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip -o /tmp/awscliv2.zip
++ unzip -q /tmp/awscliv2.zip -d /tmp
++ /tmp/aws/install
+You can now run: /usr/local/bin/aws --version
++ '[' binfmt = distro ']'
++ systemctl start docker
++ '[' binfmt = binfmt ']'
++ docker run --privileged --rm tonistiigi/binfmt --install amd64
+Unable to find image 'tonistiigi/binfmt:latest' locally
+latest: Pulling from tonistiigi/binfmt
+0f83986c7199: Pulling fs layer
+3491c3e68b66: Pulling fs layer
+0f83986c7199: Download complete
+44136fa355b3: Download complete
+4ce36ae801e2: Download complete
+44136fa355b3: Download complete
+79ae96f5419a: Download complete
+3491c3e68b66: Download complete
+3491c3e68b66: Pull complete
+0f83986c7199: Pull complete
+Digest: sha256:400a4873b838d1b89194d982c45e5fb3cda4593fbfd7e08a02e76b03b21166f0
+Status: Downloaded newer image for tonistiigi/binfmt:latest
+installing: amd64 OK
+{
+  "supported": [
+    "linux/arm64",
+    "linux/amd64",
+    "linux/amd64/v2"
+  ],
+  "emulators": [
+    "python3.12",
+    "qemu-x86_64"
+  ]
+}
++ docker inspect --format '{{index .RepoDigests 0}}' tonistiigi/binfmt
+tonistiigi/binfmt@sha256:400a4873b838d1b89194d982c45e5fb3cda4593fbfd7e08a02e76b03b21166f0
++ ls /proc/sys/fs/binfmt_misc/
+python3.12
+qemu-x86_64
+register
+status
++ mkdir -p /root/scripts /root/results
++ curl -fsSL https://raw.githubusercontent.com/seancnc003/UNLVDockerIDEs/main/scripts/ci-test.sh -o /root/scripts/ci-test.sh
++ cd /root
++ aws s3 cp s3://unlv-ide-ci-results-372172764211/workload/code.zip /root/code.zip --region us-east-1
+Completed 256.0 KiB/825.9 KiB (2.5 MiB/s) with 1 file(s) remainingCompleted 512.0 KiB/825.9 KiB (4.9 MiB/s) with 1 file(s) remainingCompleted 768.0 KiB/825.9 KiB (7.2 MiB/s) with 1 file(s) remainingCompleted 825.9 KiB/825.9 KiB (7.7 MiB/s) with 1 file(s) remainingdownload: s3://unlv-ide-ci-results-372172764211/workload/code.zip to ./code.zip
++ unzip -o /root/code.zip -d /root
+Archive:  /root/code.zip
+   creating: /root/code/
+   creating: /root/code/ast06/
+  inflating: /root/code/ast06/main.o  
+  inflating: /root/code/ast06/makefile  
+  inflating: /root/code/ast06/ast6procs.lst  
+  inflating: /root/code/ast06/a6f3.txt  
+  inflating: /root/code/ast06/ast6procs.o  
+  inflating: /root/code/ast06/a6f4.txt  
+  inflating: /root/code/ast06/ast6procs.asm  
+  inflating: /root/code/ast06/main   
+  inflating: /root/code/ast06/main.cpp  
+   creating: /root/code/ast3/
+  inflating: /root/code/ast3/a3out.txt  
+  inflating: /root/code/ast3/ast3    
+  inflating: /root/code/ast3/makefile  
+  inflating: /root/code/ast3/ast3-recovered.asm  
+  inflating: /root/code/ast3/ast3.o  
+  inflating: /root/code/ast3/ast3.lst  
+  inflating: /root/code/ast3/asst03.pdf  
+  inflating: /root/code/ast3/ast3.asm  
+  inflating: /root/code/ast3/a3in.txt  
+   creating: /root/code/ast12/
+  inflating: /root/code/ast12/evilNums  
+  inflating: /root/code/ast12/a12procs.lst  
+ extracting: /root/code/ast12/write_up.pdf  
+  inflating: /root/code/ast12/evilNums.cpp  
+  inflating: /root/code/ast12/makefile  
+  inflating: /root/code/ast12/asst12.pdf  
+  inflating: /root/code/ast12/a12procs.o  
+  inflating: /root/code/ast12/evilNums.o  
+  inflating: /root/code/ast12/ast12results.ods  
+  inflating: /root/code/ast12/a12procs-recovered.asm  
+  inflating: /root/code/ast12/a12procs.asm  
+ extracting: /root/code/ast12/a12times.txt  
+  inflating: /root/code/workloads.tsv  
+   creating: /root/code/ast04/
+  inflating: /root/code/ast04/ast04.asm  
+  inflating: /root/code/ast04/makefile  
+  inflating: /root/code/ast04/ast04  
+  inflating: /root/code/ast04/ast04.o  
+  inflating: /root/code/ast04/ast04.lst  
++ bash scripts/ci-test.sh x86
+== x86 on aarch64 (emulated) ==
+== 1. Pull ==
+  PASS  pulled seancnc/unlv-x86-ide in 12.9s
+  size: 552 MB  digest: seancnc/unlv-x86-ide@sha256:1d0b91b3581915c2b6b9926fea9b28130e4a8186bcd22abad90b19f5709ca3b6
+== 2. Cold start to healthy ==
+  PASS  healthy on :8218 in 6.7s
+== 3. Starter seeding ==
+  PASS  starter hello.asm seeded to host
+== 4. Compile and run (3 timed runs) ==
+  PASS  run 1: 'Hello, x86!' in 0.3s
+  PASS  run 2: 'Hello, x86!' in 0.3s
+  PASS  run 3: 'Hello, x86!' in 0.3s
+== 5. gdb probe ==
+  INFO  gdb under emulation: broken (documented limitation is 'broken')
+== 6. Idle resource use ==
+  idle memory: 254.8MiB
+== 7. Tool versions (for the paper's reproducibility table) ==
+  code-server 4.126.0; nasm 2.15.05, yasm 1.3.0, gdb 12.1
+== 8. Coursework workload (real assignments) ==
+  PASS  workload ast3: build 0.3s, run 0.1s
+  PASS  workload ast04: build 0.3s, run 0.1s
+  PASS  workload ast06: build 2.8s, run 0.1s
+  PASS  workload ast12: build 3.6s, run 0.1s
+  peak container memory during workload: 334 MiB
+== 9. Persistence across container replacement (+ warm start) ==
+  PASS  replacement container healthy (warm start 6.2s)
+  PASS  student files and edits survive container replacement (no re-seed overwrite)
+== Cleanup ==
+wrote results/x86-aarch64.json
+
+RESULT: 12 passed, 0 failed
++ docker rm -f diagprobe
++ docker run -d --platform linux/amd64 --name diagprobe seancnc/unlv-x86-ide
+2e0cd147a34704413b1effb0f39e5c68c0b190f89d00f8d2bb9542fdfacb7003
++ sleep 90
++ docker inspect --format 'status={{.State.Status}} exit={{.State.ExitCode}} oom={{.State.OOMKilled}}' diagprobe
++ docker logs diagprobe
++ docker rm -f diagprobe
+diagprobe
++ aws s3 cp /root/results/ s3://unlv-ide-ci-results-372172764211/qemu-followup/20260818-202601/arm64-binfmt/ --recursive --region us-east-1
+Completed 32 Bytes/1.6 KiB (449 Bytes/s) with 3 file(s) remainingupload: results/diag-inspect.txt to s3://unlv-ide-ci-results-372172764211/qemu-followup/20260818-202601/arm64-binfmt/diag-inspect.txt
+Completed 32 Bytes/1.6 KiB (449 Bytes/s) with 2 file(s) remainingCompleted 1.1 KiB/1.6 KiB (14.6 KiB/s) with 2 file(s) remaining  upload: results/x86-aarch64.json to s3://unlv-ide-ci-results-372172764211/qemu-followup/20260818-202601/arm64-binfmt/x86-aarch64.json
+Completed 1.1 KiB/1.6 KiB (14.6 KiB/s) with 1 file(s) remainingCompleted 1.6 KiB/1.6 KiB (19.6 KiB/s) with 1 file(s) remainingupload: results/diag-logs.txt to s3://unlv-ide-ci-results-372172764211/qemu-followup/20260818-202601/arm64-binfmt/diag-logs.txt
++ aws s3 cp /var/log/unlv-run.log s3://unlv-ide-ci-results-372172764211/qemu-followup/20260818-202601/arm64-binfmt/run.log --region us-east-1
+````
+
+### `cell2-qemu-followup-full-diag-inspect.txt` (32 bytes)
+
+docker inspect of the standalone 90 s diagnostic container (live, exit 0).
+
+````
+status=running exit=0 oom=false
+````
+
+### `cell2-qemu-followup-full-diag-logs.txt` (596 bytes)
+
+complete docker logs of the diagnostic container (code-server serving).
+
+````
+[2026-08-18T20:27:51.641Z] info  code-server 4.126.0 2c06497ca93cab8ced876947c58e6b42be5a8210
+[2026-08-18T20:27:51.662Z] info  Using user-data-dir /home/coder/.local/share/code-server
+[2026-08-18T20:27:51.823Z] info  Using config file /home/coder/.config/code-server/config.yaml
+[2026-08-18T20:27:51.824Z] info  HTTP server listening on http://0.0.0.0:8080/
+[2026-08-18T20:27:51.825Z] info    - Authentication is disabled
+[2026-08-18T20:27:51.825Z] info    - Not serving HTTPS
+[2026-08-18T20:27:51.826Z] info  Session server listening on /home/coder/.local/share/code-server/code-server-ipc.sock
 ````
 
 

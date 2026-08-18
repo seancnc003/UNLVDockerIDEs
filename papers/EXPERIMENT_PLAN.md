@@ -166,14 +166,16 @@ Measurement is done — all four matrix cells are recorded in
    expectations.
 4. **Optional follow-ups:** the `scripts/aws-matrix.sh` capstone run
    diffed against the record run. ~~A check whether a newer QEMU resolves
-   cell 2's SIGSEGV~~ — **done 2026-08-18** (`scripts/aws-qemu-followup.sh`,
-   run `20260818-195946`): Docker's `tonistiigi/binfmt` handler build
-   passed 8/8 on the same Ubuntu 24.04/m8g.large that crashed under
-   QEMU 8.2.2, and that run now fills cell 2's tables (see
-   `record-results/RESULTS.md`). Still open from it: a re-run with the
-   coursework workload shipped, to populate the QEMU-binfmt
-   emulation-overhead ratios; the Ubuntu 26.04 distro-QEMU variant was a
-   rig failure (package uninstallable on that AMI) and remains untested.
+   cell 2's SIGSEGV~~ — **done 2026-08-18** (`scripts/aws-qemu-followup.sh`):
+   Docker's `tonistiigi/binfmt` handler build passed on the same
+   Ubuntu 24.04/m8g.large that crashed under QEMU 8.2.2 — first at
+   diagnostic scope (run `20260818-195946`, 8/8), then at full suite
+   scope with the coursework shipped (run `20260818-202601`, 12 checks
+   passed, 0 failed), which now fills cell 2's tables and populates the
+   QEMU-binfmt emulation-overhead ratios (≈14× / ≈12× vs cell 1; see
+   `record-results/RESULTS.md`). Still open: the Ubuntu 26.04
+   distro-QEMU variant was a rig failure (package uninstallable on that
+   AMI) and remains untested.
 5. **Student docs for Linux-ARM hosts:** fold the working one-liner
    (`docker run --privileged --rm tonistiigi/binfmt --install amd64`,
    re-run after each reboot) into `x86/README.md`, noting stock Ubuntu
