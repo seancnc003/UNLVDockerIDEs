@@ -205,9 +205,12 @@ ops channel. Patterns that worked:
   byte-range chunks across successive run-commands
   (`scripts/`… see `fetch-file.sh` pattern in the session scratchpad; a
   future cleanup could commit a tools/ version).
-- PowerShell 5.1 transcripts and `Out-File` default to UTF-16; expect
-  mixed encodings in appended logs (`iconv -f UTF-16LE` recovers them,
-  imperfectly across mixed appends).
+- Check encodings before "fixing" them: the run's transcript turned out
+  to be UTF-8 (with BOM) already — a reflexive `iconv -f UTF-16LE` pass
+  produced mojibake that briefly contaminated the archive (caught in
+  review, fixed in commit `44b84c4`). `file` and a hexdump of the first
+  bytes beat assumptions; PowerShell's transcript/`Out-File` encodings
+  vary by version and host.
 
 ## Phase 5 — The presigned-URL checksum trap (cross-cloud plumbing)
 
