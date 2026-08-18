@@ -14,8 +14,9 @@ Every number below is transcribed from the
 JSONs emitted by the unmodified published `scripts/ci-test.sh` — no other
 source. Cells 1–2 come from the AWS **record run** (pass 2 of
 [`papers/AWS_RUNBOOK.md`](../papers/AWS_RUNBOOK.md); the familiarization pass under `manual-practice/` is never
-reported). Cell 4 is the local MacBook run. Official raw record-run JSONs are
-archived without modification alongside this file; generated working
+reported). Cell 4 is the local MacBook run. All raw record-run outputs
+(JSONs, transcripts, diagnostics) are archived verbatim in
+[EVIDENCE.md](EVIDENCE.md) alongside this file; generated working
 directories remain ignored. Image under test:
 `seancnc/unlv-x86-ide` (amd64-only by design).
 
@@ -153,7 +154,7 @@ itself a result.)
 - **Cell 2 crash cause — confirmed by a dedicated re-run (n=2, not a
   flake).** A separate confirmation launch at ~07:01 UTC on 2026-08-18
   (S3 prefix `20260818-053827-arm64-rerun`; JSON and diag captures
-  archived alongside this file as `cell2-linux-arm64-rerun.json` and
+  archived in [EVIDENCE.md](EVIDENCE.md) as `cell2-linux-arm64-rerun.json` and
   `cell2-linux-arm64-rerun-diag-*`) first reproduced the full suite
   outcome exactly — 3 passed, 5 failed, same stages failing — then ran a
   diagnostics stage: a fresh container from the same digest
@@ -183,7 +184,7 @@ itself a result.)
   the recorded-not-failed emulation results. The only evidence is the
   instance's PowerShell transcript (`run.log`, also in S3 under
   `matrix/20260818-053827/windows/`), archived verbatim alongside this
-  file as `cell3-windows-aws-runlog.txt`. It documents three failures,
+  file in [EVIDENCE.md](EVIDENCE.md) as `cell3-windows-aws-runlog.txt`. It documents three failures,
   all in the Windows Server 2025 host setup, before any test could run:
   (1) Docker Desktop's silent installer ran ~8–10 minutes inside phase
   1's transcript window (06:21:27–06:33:58 UTC — the transcript body is
@@ -396,7 +397,7 @@ gdb probe, seeding, persistence) plus indicative timings.
   limit; (2) phase 1 left WSL not installed, and a wrong `docker.exe`
   path made the phase-2 engine probe report a false "engine up"
   (that attempt's JSON is archived as
-  `azure-cellA3-windows-run1-no-wsl-integration.json` — anomaly
+  `azure-cellA3-windows-run1-no-wsl-integration.json` in [EVIDENCE.md](EVIDENCE.md) — anomaly
   evidence, not a result); (3) Docker Desktop's WSL integration was off
   for the distro. The suite itself (`ci-test.sh`) ran unmodified in all
   attempts. Two further caveats: the suite ran via an interactive

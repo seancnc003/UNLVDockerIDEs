@@ -13,7 +13,7 @@ adventure: **under $1** of compute.
 **Why Azure exists in this project at all:** the Windows cell needs Docker
 Desktop on an OS inside its official support matrix (Windows 10/11
 client). AWS does not rent client Windows; its Windows Server 2025 proxy
-failed three independent ways (see `record-results/cell3-windows-aws-runlog.txt`).
+failed three independent ways (see `record-results/EVIDENCE.md`, cell 3 AWS section).
 Azure rents real Windows 11 Pro. That is the entire reason.
 
 ---
@@ -132,7 +132,7 @@ semantics.**
 ## Phase 3 — The four failure modes of unattended Docker Desktop on Windows 11
 
 All four were hit, diagnosed, and fixed live during run `20260818-093352`
-(full trail in `record-results/azure-cellA3-windows-runlog.txt`). Any
+(full trail in the cell A3 transcript in `record-results/EVIDENCE.md`). Any
 future Windows automation should treat this list as a preflight checklist.
 
 1. **Script delivery** — encoded-command size limit above. Fix:

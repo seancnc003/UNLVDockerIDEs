@@ -1,2 +1,0 @@
-CONTAINER ID   IMAGE                  COMMAND                  CREATED              STATUS                            PORTS     NAMES
-481065c2c827   seancnc/unlv-x86-ide   "/usr/bin/tini -- /u…"   About a minute ago   Exited (139) About a minute ago             unlv-diag
