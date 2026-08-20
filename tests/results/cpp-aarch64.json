@@ -1,0 +1,28 @@
+{
+  "image": "seancnc/unlv-cpp-ide",
+  "kind": "cpp",
+  "host_arch": "aarch64",
+  "mode": "native",
+  "host": {
+    "cpu": "Apple M1 Max",
+    "cores": 10,
+    "ram_gb": 64,
+    "os": "macOS 26.4",
+    "docker": "Docker version 29.3.1"
+  },
+  "digest": "seancnc/unlv-cpp-ide@sha256:734e2ef00906ea2ff1695fb325f9a6d85ff2ba3c4d305076c7545fc074d1edc2",
+  "size_mb": 572,
+  "pull_seconds": 0.9,
+  "start_to_healthy_seconds": 0.6,
+  "warm_start_seconds": 0.6,
+  "compile_run_seconds": [0.3, 0.2, 0.2],
+  "gdb": "n/a",
+  "workload": null,
+  "workload_peak_mem_mib": null,
+  "idle_memory": "134.7MiB",
+  "code_server": "4.126.0",
+  "tools": "g++ 11.4.0",
+  "persistence": "pass",
+  "passed": 8,
+  "failed": 0
+}

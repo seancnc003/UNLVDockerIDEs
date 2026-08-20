@@ -3,11 +3,12 @@ archive/
 # (now tests/code/ — these patterns are unanchored, so they match at any depth)
 code/
 
-# All generated/downloaded results live under tests/results/ — local ci-test.sh
-# output at its root, cloud downloads in tests/results/aws/ and tests/results/azure/,
-# and the raw snapshot of the deleted S3 bucket in tests/results/s3-final-backup/
-# (evidence is archived in tests/record-results/; these are working copies).
-results/
+# Cloud + local run evidence under tests/results/ is TRACKED as of 2026-08-19:
+# it is the durable backup of the S3 results bucket, which was deleted that day.
+# The one exclusion is the coursework workload archive — it is a zip of the
+# local-only tests/code/ (UNLV assignment solutions + instructor PDFs) and must
+# not be published to this public repo.
+tests/results/s3-final-backup/workload/
 
 # Downloaded paper PDFs (copyright — keep local only)
 papers/literature/

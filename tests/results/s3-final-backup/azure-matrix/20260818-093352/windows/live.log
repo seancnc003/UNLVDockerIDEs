@@ -1,0 +1,24 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260818095031
+Username: WORKGROUP\SYSTEM
+RunAs User: WORKGROUP\SYSTEM
+Configuration Name: 
+Machine: unlv-windows (Microsoft Windows NT 10.0.26100.0)
+Host Application: powershell -ExecutionPolicy Bypass -File phase1.ps1
+Process ID: 4932
+PSVersion: 5.1.26100.9168
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9168
+BuildVersion: 10.0.26100.9168
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is C:\unlv-run.log
+PHASE1 start 2026-08-18T09:50:31.5010818+00:00
+
+PHASE1 wsl-install 2026-08-18T09:50:32.5069569+00:00
+
+PHASE1 docker-desktop-download 2026-08-18T09:50:32.5820018+00:00

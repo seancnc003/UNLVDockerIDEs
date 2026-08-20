@@ -1,0 +1,7 @@
+[2026-08-18T20:27:51.641Z] info  code-server 4.126.0 2c06497ca93cab8ced876947c58e6b42be5a8210
+[2026-08-18T20:27:51.662Z] info  Using user-data-dir /home/coder/.local/share/code-server
+[2026-08-18T20:27:51.823Z] info  Using config file /home/coder/.config/code-server/config.yaml
+[2026-08-18T20:27:51.824Z] info  HTTP server listening on http://0.0.0.0:8080/
+[2026-08-18T20:27:51.825Z] info    - Authentication is disabled
+[2026-08-18T20:27:51.825Z] info    - Not serving HTTPS
+[2026-08-18T20:27:51.826Z] info  Session server listening on /home/coder/.local/share/code-server/code-server-ipc.sock

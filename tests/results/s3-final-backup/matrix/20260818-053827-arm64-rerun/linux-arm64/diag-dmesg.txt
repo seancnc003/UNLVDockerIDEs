@@ -1,0 +1,150 @@
+[    1.456548] evm: security.ima
+[    1.457072] evm: security.capability
+[    1.457698] evm: HMAC attrs: 0x1
+[    1.475610] clk: Disabling unused clocks
+[    1.476306] PM: genpd: Disabling unused power domains
+[    1.477542] check access for rdinit=/init failed: -2, ignoring
+[    1.478196] md: Waiting for all devices to be available before autodetect
+[    1.479105] md: If you don't use raid, use raid=noautodetect
+[    1.479865] md: Autodetecting RAID arrays.
+[    1.480416] md: autorun ...
+[    1.480791] md: ... autorun DONE.
+[    1.484819] EXT4-fs (nvme0n1p1): Supports (experimental) DIO atomic writes awu_min: 4096, awu_max: 4096
+[    1.487104] EXT4-fs (nvme0n1p1): mounted filesystem 1ec57f43-1c53-452b-a2eb-d8c7dedcb7ee ro with ordered data mode. Quota mode: none.
+[    1.488606] VFS: Mounted root (ext4 filesystem) readonly on device 259:1.
+[    1.490194] devtmpfs: mounted
+[    1.492280] Freeing unused kernel memory: 14528K
+[    1.506662] Checked W+X mappings: passed, no W+X pages found
+[    1.507316] Run /sbin/init as init process
+[    1.507856]   with arguments:
+[    1.507857]     /sbin/init
+[    1.507858]   with environment:
+[    1.507859]     HOME=/
+[    1.507860]     TERM=linux
+[    1.639439] systemd[1]: Inserted module 'autofs4'
+[    1.662711] systemd[1]: systemd 255.4-1ubuntu8.16 running in system mode (+PAM +AUDIT +SELINUX +APPARMOR +IMA +SMACK +SECCOMP +GCRYPT -GNUTLS +OPENSSL +ACL +BLKID +CURL +ELFUTILS +FIDO2 +IDN2 -IDN +IPTC +KMOD +LIBCRYPTSETUP +LIBFDISK +PCRE2 -PWQUALITY +P11KIT +QRENCODE +TPM2 +BZIP2 +LZ4 +XZ +ZLIB +ZSTD -BPF_FRAMEWORK -XKBCOMMON +UTMP +SYSVINIT default-hierarchy=unified)
+[    1.667012] systemd[1]: Detected virtualization amazon.
+[    1.667706] systemd[1]: Detected architecture arm64.
+[    1.670279] systemd[1]: Hostname set to <ubuntu>.
+[    1.674949] systemd[1]: Initializing machine ID from VM UUID.
+[    1.675619] systemd[1]: Installed transient /etc/machine-id file.
+[    2.021278] systemd[1]: Queued start job for default target graphical.target.
+[    2.030364] systemd[1]: Created slice system-modprobe.slice - Slice /system/modprobe.
+[    2.032808] systemd[1]: Created slice system-serial\x2dgetty.slice - Slice /system/serial-getty.
+[    2.035405] systemd[1]: Created slice system-systemd\x2dfsck.slice - Slice /system/systemd-fsck.
+[    2.037953] systemd[1]: Created slice user.slice - User and Session Slice.
+[    2.039906] systemd[1]: Started systemd-ask-password-wall.path - Forward Password Requests to Wall Directory Watch.
+[    2.042704] systemd[1]: Set up automount proc-sys-fs-binfmt_misc.automount - Arbitrary Executable File Formats File System Automount Point.
+[    2.049384] systemd[1]: Expecting device dev-disk-by\x2dlabel-BOOT.device - /dev/disk/by-label/BOOT...
+[    2.051753] systemd[1]: Expecting device dev-disk-by\x2dlabel-UEFI.device - /dev/disk/by-label/UEFI...
+[    2.054202] systemd[1]: Expecting device dev-ttyS0.device - /dev/ttyS0...
+[    2.056026] systemd[1]: Reached target integritysetup.target - Local Integrity Protected Volumes.
+[    2.058558] systemd[1]: Reached target slices.target - Slice Units.
+[    2.060355] systemd[1]: Reached target snapd.mounts-pre.target - Mounting snaps.
+[    2.065372] systemd[1]: Reached target swap.target - Swaps.
+[    2.066911] systemd[1]: Reached target time-set.target - System Time Set.
+[    2.068907] systemd[1]: Reached target veritysetup.target - Local Verity Protected Volumes.
+[    2.071335] systemd[1]: Listening on dm-event.socket - Device-mapper event daemon FIFOs.
+[    2.073693] systemd[1]: Listening on lvm2-lvmpolld.socket - LVM2 poll daemon socket.
+[    2.081454] systemd[1]: Listening on multipathd.socket - multipathd control socket.
+[    2.084849] systemd[1]: Listening on syslog.socket - Syslog Socket.
+[    2.086585] systemd[1]: Listening on systemd-fsckd.socket - fsck to fsckd communication Socket.
+[    2.089089] systemd[1]: Listening on systemd-initctl.socket - initctl Compatibility Named Pipe.
+[    2.091623] systemd[1]: Listening on systemd-journald-dev-log.socket - Journal Socket (/dev/log).
+[    2.094169] systemd[1]: Listening on systemd-journald.socket - Journal Socket.
+[    2.096287] systemd[1]: Listening on systemd-networkd.socket - Network Service Netlink Socket.
+[    2.098688] systemd[1]: systemd-pcrextend.socket - TPM2 PCR Extension (Varlink) was skipped because of an unmet condition check (ConditionSecurity=measured-uki).
+[    2.100691] systemd[1]: Listening on systemd-udevd-control.socket - udev Control Socket.
+[    2.103000] systemd[1]: Listening on systemd-udevd-kernel.socket - udev Kernel Socket.
+[    2.120827] systemd[1]: Mounting dev-hugepages.mount - Huge Pages File System...
+[    2.123261] systemd[1]: Mounting dev-mqueue.mount - POSIX Message Queue File System...
+[    2.125935] systemd[1]: Mounting sys-kernel-debug.mount - Kernel Debug File System...
+[    2.131413] systemd[1]: Mounting sys-kernel-tracing.mount - Kernel Trace File System...
+[    2.138417] systemd[1]: Starting systemd-journald.service - Journal Service...
+[    2.140825] systemd[1]: Starting keyboard-setup.service - Set the console keyboard layout...
+[    2.145067] systemd[1]: Starting kmod-static-nodes.service - Create List of Static Device Nodes...
+[    2.149473] systemd[1]: Starting lvm2-monitor.service - Monitoring of LVM2 mirrors, snapshots etc. using dmeventd or progress polling...
+[    2.153634] systemd[1]: Starting modprobe@configfs.service - Load Kernel Module configfs...
+[    2.159858] systemd[1]: Starting modprobe@dm_mod.service - Load Kernel Module dm_mod...
+[    2.162269] systemd-journald[194]: Collecting audit messages is disabled.
+[    2.164169] systemd[1]: Starting modprobe@drm.service - Load Kernel Module drm...
+[    2.180854] systemd[1]: Starting modprobe@efi_pstore.service - Load Kernel Module efi_pstore...
+[    2.183847] systemd[1]: Starting modprobe@fuse.service - Load Kernel Module fuse...
+[    2.190144] pstore: Using crash dump compression: deflate
+[    2.191974] systemd[1]: Starting modprobe@loop.service - Load Kernel Module loop...
+[    2.192913] pstore: Registered efi_pstore as persistent store backend
+[    2.197354] systemd[1]: netplan-ovs-cleanup.service - OpenVSwitch configuration for cleanup was skipped because of an unmet condition check (ConditionFileIsExecutable=/usr/bin/ovs-vsctl).
+[    2.207862] systemd[1]: Starting systemd-fsck-root.service - File System Check on Root Device...
+[    2.221864] systemd[1]: Starting systemd-modules-load.service - Load Kernel Modules...
+[    2.224261] systemd[1]: systemd-pcrmachine.service - TPM2 PCR Machine ID Measurement was skipped because of an unmet condition check (ConditionSecurity=measured-uki).
+[    2.226523] systemd[1]: systemd-tpm2-setup-early.service - TPM2 SRK Setup (Early) was skipped because of an unmet condition check (ConditionSecurity=measured-uki).
+[    2.231847] systemd[1]: Starting systemd-udev-trigger.service - Coldplug All udev Devices...
+[    2.236054] systemd[1]: Started systemd-journald.service - Journal Service.
+[    2.358887] EXT4-fs (nvme0n1p1): re-mounted 1ec57f43-1c53-452b-a2eb-d8c7dedcb7ee r/w.
+[    2.376978] systemd-journald[194]: Received client request to flush runtime journal.
+[    2.439718] loop0: detected capacity change from 0 to 49832
+[    2.440673] loop1: detected capacity change from 0 to 141232
+[    2.449303] loop2: detected capacity change from 0 to 88824
+[    2.607698] ena 0000:27:00.0 ens34: renamed from eth0
+[    2.627374] nvme nvme0: using unchecked data buffer
+[    3.241457] EXT4-fs (nvme0n1p16): Supports (experimental) DIO atomic writes awu_min: 4096, awu_max: 4096
+[    3.243744] EXT4-fs (nvme0n1p16): mounted filesystem 1816cde1-89a8-4bcd-b63b-2a506a72b0e6 r/w with ordered data mode. Quota mode: none.
+[    3.328364] audit: type=1400 audit(1787036459.439:2): apparmor="STATUS" operation="profile_load" profile="unconfined" name="1password" pid=377 comm="apparmor_parser"
+[    3.328530] audit: type=1400 audit(1787036459.439:3): apparmor="STATUS" operation="profile_load" profile="unconfined" name="Discord" pid=378 comm="apparmor_parser"
+[    3.330503] audit: type=1400 audit(1787036459.441:4): apparmor="STATUS" operation="profile_load" profile="unconfined" name=4D6F6E676F444220436F6D70617373 pid=382 comm="apparmor_parser"
+[    3.332798] audit: type=1400 audit(1787036459.444:5): apparmor="STATUS" operation="profile_load" profile="unconfined" name="balena-etcher" pid=384 comm="apparmor_parser"
+[    3.334558] audit: type=1400 audit(1787036459.445:6): apparmor="STATUS" operation="profile_load" profile="unconfined" name="QtWebEngineProcess" pid=383 comm="apparmor_parser"
+[    3.337845] audit: type=1400 audit(1787036459.449:7): apparmor="STATUS" operation="profile_load" profile="unconfined" name="brave" pid=385 comm="apparmor_parser"
+[    3.338317] audit: type=1400 audit(1787036459.449:8): apparmor="STATUS" operation="profile_load" profile="unconfined" name="buildah" pid=387 comm="apparmor_parser"
+[    3.339424] audit: type=1400 audit(1787036459.450:9): apparmor="STATUS" operation="profile_load" profile="unconfined" name="cam" pid=389 comm="apparmor_parser"
+[    3.342710] audit: type=1400 audit(1787036459.453:10): apparmor="STATUS" operation="profile_load" profile="unconfined" name="ch-checkns" pid=390 comm="apparmor_parser"
+[    4.375790] 8021q: 802.1Q VLAN Support v1.8
+[    7.446372] EXT4-fs (nvme0n1p1): resizing filesystem from 1834747 to 4980475 blocks
+[    7.535452] EXT4-fs (nvme0n1p1): resized filesystem to 4980475
+[    9.363715] kauditd_printk_skb: 113 callbacks suppressed
+[    9.363718] audit: type=1400 audit(1787036465.474:124): apparmor="STATUS" operation="profile_replace" info="same as current profile, skipping" profile="unconfined" name="rsyslogd" pid=770 comm="apparmor_parser"
+[   10.808731] loop3: detected capacity change from 0 to 8
+[   13.407713] audit: type=1400 audit(1787036469.518:125): apparmor="DENIED" operation="capable" class="cap" profile="ubuntu_pro_esm_cache_systemd_detect_virt" pid=1297 comm="systemd-detect-" capability=38  capname="perfmon"
+[   30.369163] audit: type=1400 audit(1787036486.230:126): apparmor="STATUS" operation="profile_load" profile="unconfined" name="docker-default" pid=2031 comm="apparmor_parser"
+[   30.528532] Initializing XFRM netlink socket
+[   30.554777] bridge: filtering via arp/ip/ip6tables is no longer available by default. Update your scripts to load br_netfilter if you need this.
+[   55.787792] evm: overlay not supported
+[   59.982495] docker0: port 1(vethe2be862) entered blocking state
+[   59.982503] docker0: port 1(vethe2be862) entered disabled state
+[   59.982515] vethe2be862: entered allmulticast mode
+[   59.982547] vethe2be862: entered promiscuous mode
+[   59.990208] eth0: renamed from vethad9e370
+[   59.990672] docker0: port 1(vethe2be862) entered blocking state
+[   59.990677] docker0: port 1(vethe2be862) entered forwarding state
+[   60.546559] docker0: port 1(vethe2be862) entered disabled state
+[   60.546791] vethad9e370: renamed from eth0
+[   60.555494] docker0: port 1(vethe2be862) entered disabled state
+[   60.555819] vethe2be862 (unregistering): left allmulticast mode
+[   60.555822] vethe2be862 (unregistering): left promiscuous mode
+[   60.555825] docker0: port 1(vethe2be862) entered disabled state
+[  360.486274] docker0: port 1(vethfd898ea) entered blocking state
+[  360.486280] docker0: port 1(vethfd898ea) entered disabled state
+[  360.486289] vethfd898ea: entered allmulticast mode
+[  360.486320] vethfd898ea: entered promiscuous mode
+[  360.490701] eth0: renamed from veth2a5a92e
+[  360.493226] docker0: port 1(vethfd898ea) entered blocking state
+[  360.493231] docker0: port 1(vethfd898ea) entered forwarding state
+[  361.015699] docker0: port 1(vethfd898ea) entered disabled state
+[  361.016117] veth2a5a92e: renamed from eth0
+[  361.028146] docker0: port 1(vethfd898ea) entered disabled state
+[  361.028467] vethfd898ea (unregistering): left allmulticast mode
+[  361.028471] vethfd898ea (unregistering): left promiscuous mode
+[  361.028474] docker0: port 1(vethfd898ea) entered disabled state
+[  660.372816] docker0: port 1(veth8490184) entered blocking state
+[  660.372824] docker0: port 1(veth8490184) entered disabled state
+[  660.372834] veth8490184: entered allmulticast mode
+[  660.372890] veth8490184: entered promiscuous mode
+[  660.377587] eth0: renamed from vethe816ce9
+[  660.378265] docker0: port 1(veth8490184) entered blocking state
+[  660.378269] docker0: port 1(veth8490184) entered forwarding state
+[  660.915605] docker0: port 1(veth8490184) entered disabled state
+[  660.916085] vethe816ce9: renamed from eth0
+[  660.930952] docker0: port 1(veth8490184) entered disabled state
+[  660.931641] veth8490184 (unregistering): left allmulticast mode
+[  660.931646] veth8490184 (unregistering): left promiscuous mode
+[  660.931649] docker0: port 1(veth8490184) entered disabled state
