@@ -1,185 +1,215 @@
-// 48 x 36 inch research poster — pptxgenjs (revision 2: promise → proof narrative)
+// 48 x 36 inch research poster — pptxgenjs (revision 3: mirrors the written report)
 const pptxgen = require("pptxgenjs");
 const pres = new pptxgen();
 pres.defineLayout({ name: "POSTER", width: 48, height: 36 });
 pres.layout = "POSTER";
 
-const SCARLET = "B10202", INK = "22252B", MUTED = "5E5B55", TINT = "F5F4F0", LINE = "D9D6CF", WHITE = "FFFFFF", OK = "1F5FB0";
+const SCARLET = "B10202", INK = "22252B", MUTED = "5E5B55", TINT = "F5F4F0", LINE = "D9D6CF", WHITE = "FFFFFF", OK = "1F5FB0", PALE = "FBEAEA";
 const FONT = "Arial";
-
 const slide = pres.addSlide();
 slide.background = { color: WHITE };
 
 // ---------- title band ----------
-slide.addShape(pres.shapes.RECTANGLE, { x: 0, y: 0, w: 48, h: 5.2, fill: { color: SCARLET }, line: { color: SCARLET } });
-slide.addText("Every Student Gets the Same Classroom", { x: 1.2, y: 0.45, w: 34, h: 1.6, fontFace: FONT, fontSize: 84, bold: true, color: WHITE, isTextBox: true, margin: 0, valign: "middle" });
-slide.addText("Does the same programming environment run on every student’s laptop? Browser-based Docker IDEs for UNLV’s C++ and x86-64 assembly courses, tested on the operating systems and processors students own", {
-  x: 1.2, y: 2.15, w: 36, h: 1.3, fontFace: FONT, fontSize: 32, color: WHITE, isTextBox: true, margin: 0, valign: "middle",
+const BAND = 4.7;
+slide.addShape(pres.shapes.RECTANGLE, { x: 0, y: 0, w: 48, h: BAND, fill: { color: SCARLET }, line: { color: SCARLET } });
+slide.addText("Decentralized, Browser-Based Docker IDEs for C++ and x86-64 Assembly Education: An Evaluation on the Laptops Students Actually Own", {
+  x: 0.9, y: 0.4, w: 36.6, h: 2.5, fontFace: FONT, fontSize: 56, bold: true, color: WHITE, isTextBox: true, margin: 0, valign: "middle", lineSpacingMultiple: 0.98,
 });
 slide.addText([
   { text: "Sean Cuenco", options: { bold: true } },
-  { text: "  ·  Faculty Mentor: James Andro-Vasko, Ph.D.  ·  Department of Computer Science, University of Nevada, Las Vegas  ·  Office of Undergraduate Research SURF 2026", options: {} },
-], { x: 1.2, y: 3.65, w: 40, h: 1.0, fontFace: FONT, fontSize: 26, color: WHITE, isTextBox: true, margin: 0, valign: "middle" });
-slide.addText("github.com/seancnc003/UNLVDockerIDEs\nhub.docker.com/r/seancnc", { x: 36.5, y: 0.7, w: 10.3, h: 1.9, fontFace: "Courier New", fontSize: 22, color: WHITE, isTextBox: true, margin: 0, align: "right", valign: "top" });
+  { text: "   ·   Faculty Mentor: James Andro-Vasko, Ph.D.   ·   Department of Computer Science, University of Nevada, Las Vegas", options: {} },
+], { x: 0.9, y: 3.05, w: 36.6, h: 0.75, fontFace: FONT, fontSize: 28, color: WHITE, isTextBox: true, margin: 0, valign: "middle" });
+slide.addText("Summer Undergraduate Research Fellowship (SURF) 2026  ·  Office of Undergraduate Research, UNLV", {
+  x: 0.9, y: 3.75, w: 36.6, h: 0.6, fontFace: FONT, fontSize: 22, color: WHITE, isTextBox: true, margin: 0, valign: "middle",
+});
+slide.addText("Code, handouts, test script, raw results:\ngithub.com/seancnc003/UNLVDockerIDEs\n\nImages:\nhub.docker.com/r/seancnc/unlv-cpp-ide\nhub.docker.com/r/seancnc/unlv-x86-ide", {
+  x: 38.0, y: 0.5, w: 9.1, h: 3.7, fontFace: FONT, fontSize: 19, color: WHITE, isTextBox: true, margin: 0, align: "right", valign: "middle", lineSpacingMultiple: 1.05,
+});
 
 // ---------- geometry ----------
-const TOP = 5.9, GAP = 0.6, M = 1.0;
-const colW = [14.6, 15.4, 15.4];
-const colX = [M, M + colW[0] + GAP, M + colW[0] + GAP + colW[1] + GAP];
-const BODY = 24, HEAD = 40, SMALL = 20;
+const M = 0.9, GAP = 0.7, COLW = (48 - 2 * M - 2 * GAP) / 3; // 15.0
+const colX = [M, M + COLW + GAP, M + 2 * (COLW + GAP)];
+const TOP = BAND + 0.7;            // 5.4
+const BOTTOM_BAND = 28.0;          // where the full-width band starts
+const FOOT = 35.1;                 // last usable y
+const BODY = 25, HEAD = 40, SMALL = 21, SUB = 28;
 
-function header(x, y, w, text) {
-  slide.addText(text, { x, y, w, h: 0.9, fontFace: FONT, fontSize: HEAD, bold: true, color: SCARLET, isTextBox: true, margin: 0, valign: "middle" });
-  return y + 1.05;
+function header(x, y, w, text, h = 0.95) {
+  slide.addText(text, { x, y, w, h, fontFace: FONT, fontSize: HEAD, bold: true, color: SCARLET, isTextBox: true, margin: 0, valign: "bottom" });
+  return y + h + 0.15;
+}
+function subhead(x, y, w, text) {
+  slide.addText(text, { x, y, w, h: 0.6, fontFace: FONT, fontSize: SUB, bold: true, color: INK, isTextBox: true, margin: 0, valign: "bottom" });
+  return y + 0.7;
 }
 function text(x, y, w, h, parts, opts = {}) {
   const runs = Array.isArray(parts) ? parts : [{ text: parts }];
-  slide.addText(runs.map((r) => ({ text: r.text, options: Object.assign({ fontFace: FONT, fontSize: opts.size || BODY, color: opts.color || INK, breakLine: !!r.br, bullet: r.bullet ? { indent: 28 } : undefined, paraSpaceAfter: 6 }, r.options || {}) })), {
-    x, y, w, h, isTextBox: true, margin: 0, valign: "top", lineSpacingMultiple: 1.04,
+  slide.addText(runs.map((r) => ({ text: r.text, options: Object.assign({ fontFace: FONT, fontSize: opts.size || BODY, color: opts.color || INK, breakLine: !!r.br, bullet: r.bullet ? { indent: 30 } : undefined, paraSpaceAfter: opts.para == null ? 8 : opts.para }, r.options || {}) })), {
+    x, y, w, h, isTextBox: true, margin: 0, valign: "top", lineSpacingMultiple: opts.ls || 1.05,
   });
   return y + h;
 }
 function card(x, y, w, h, color = TINT) {
-  slide.addShape(pres.shapes.ROUNDED_RECTANGLE, { x, y, w, h, rectRadius: 0.15, fill: { color }, line: { color } });
+  slide.addShape(pres.shapes.RECTANGLE, { x, y, w, h, fill: { color }, line: { color } });
 }
-const hdrCell = (t) => ({ text: t, options: { bold: true, color: WHITE, fill: { color: INK } } });
+const hdrCell = (t, align) => ({ text: t, options: { bold: true, color: WHITE, fill: { color: INK }, align } });
 
-// ================= COLUMN 1: the problem, the arc, who carries the burden =================
-let x = colX[0], w = colW[0], y = TOP;
-y = header(x, y, w, "The problem: week one is lost to setup");
-y = text(x, y, w, 3.9, [
-  { text: "Every systems course starts the same way: a compiler, an assembler, a debugger, and an editor have to work on dozens of different laptops before anyone learns anything. Prior studies measured 75–100 minutes of class time per semester lost to installs [6], support traffic dominated by “it works on my machine” [3], and students with Apple Silicon Macs unable to run the course’s virtual machine at all [4]. At UNLV this touches several hundred CS 135 and CS 218 students every year." },
-]);
+// ================= COLUMN 1: abstract, background, UNLV path =================
+let x = colX[0], w = COLW, y = TOP;
 
-y = header(x, y + 0.1, w, "UNLV followed the same path as everyone else, one step behind");
-const stages = [
-  ["1. Shared login servers (SSH, PuTTY)", "bobby · sally · cardiac. Now decommissioned, and the wiki that documented them was deleted in 2025."],
-  ["2. Virtual machines, one per course", "CS 218 today: a 19 GB VirtualBox image for Intel and an experimental 2023 image for Apple Silicon so slow the course warns the editor “may not be usable.” Official advice for M1/M2 owners: go to the lab with a USB drive."],
-  ["3. A container on the student’s own laptop (this project)", "One 552 MB download, one command, VS Code in a browser tab. Files stay in a normal folder on the laptop. No server, no account, no VPN, works offline."],
-];
-stages.forEach((s, i) => {
-  const cy = y + i * 2.05;
-  const last = i === stages.length - 1;
-  slide.addShape(pres.shapes.OVAL, { x, y: cy + 0.16, w: 0.55, h: 0.55, fill: { color: last ? SCARLET : MUTED }, line: { color: last ? SCARLET : MUTED } });
-  if (!last) slide.addShape(pres.shapes.LINE, { x: x + 0.27, y: cy + 0.75, w: 0, h: 1.35, line: { color: LINE, width: 4 } });
-  slide.addText(s[0], { x: x + 0.85, y: cy, w: w - 0.85, h: 0.8, fontFace: FONT, fontSize: 25, bold: true, color: last ? SCARLET : INK, isTextBox: true, margin: 0, valign: "middle" });
-  slide.addText(s[1], { x: x + 0.85, y: cy + 0.78, w: w - 0.85, h: 1.25, fontFace: FONT, fontSize: SMALL, color: INK, isTextBox: true, margin: 0, valign: "top", lineSpacingMultiple: 1.02 });
-});
-y += stages.length * 2.05 + 0.15;
+// Abstract (boxed)
+card(x, y, w, 6.6);
+slide.addText("Abstract", { x: x + 0.4, y: y + 0.25, w: w - 0.8, h: 0.7, fontFace: FONT, fontSize: 34, bold: true, color: SCARLET, isTextBox: true, margin: 0, valign: "middle" });
+text(x + 0.4, y + 1.0, w - 0.8, 5.5,
+  "Students in UNLV’s introductory C++ (CS 135) and x86-64 assembly (CS 218) courses lose the first week of the semester installing a compiler, assembler, debugger, and editor on dozens of different laptops, and owners of Apple Silicon Macs often cannot run the course virtual machine at all. This project packages each course’s exact toolchain and a browser-served Visual Studio Code editor into a Docker image that runs entirely on the student’s own machine: one 552 MB download, one command, no server, no account, no telemetry. The fellowship asked whether that promise holds on the computers students actually own, and what the design gives up compared with shared SSH servers, course virtual machines, cloud editors such as CS50 on GitHub Codespaces, and monitored platforms such as CodeDive. One unmodified test script performed a student’s first day and then built and ran four real CS 218 assignments on four hosts: Intel Linux and ARM Linux rented from AWS, Windows 11 rented from Azure, and an M1 MacBook Pro. The same image ran every assignment correctly on all four, started in 0.5 s natively and 5–7 s under emulation, and idled at 55–260 MiB. The one limit is precise: the gdb debugger works on Intel/AMD hosts and is silent under both ARM translation layers, a trade made deliberately to keep the course’s real x86-64 instruction set. A classroom study is the next step.",
+  { size: 21, ls: 1.06, para: 0 });
+y += 6.6 + 0.35;
 
-y = header(x, y + 0.1, w, "Every approach hands the setup burden to someone");
-const burden = [
-  [hdrCell("Approach"), hdrCell("Who carries it"), hdrCell("What the student pays")],
-  ["Shared servers (UNLV, CSN)", "The department", "Needs network + VPN; everything vanishes when the server is retired"],
-  ["Course virtual machines (UNLV, Harvard 2011 [2], Reading [5])", "The student’s hardware", "Multi-GB images, slow boots, disk corruption; broken on Apple Silicon"],
-  ["Cloud editor (Harvard CS50 on GitHub Codespaces [1])", "A vendor, a grant, an account", "Internet required; students leave “not sure how to set up an IDE on my computer”"],
-  ["Monitored platform (CodeDive, South Korea [8])", "The university’s cluster, and the student’s privacy", "Every command and every 1-second typing pause is recorded"],
-  ["Local container (this project; cf. UCSD [3], Florida Tech [4])", "The student, once: install Docker", "One download, one command, then nothing"],
-];
-slide.addTable(burden.map((r, ri) => r.map((c, ci) => (typeof c === "string" ? { text: c, options: { bold: ci === 0, color: ri === 5 ? SCARLET : INK, fill: { color: ri === 5 ? "FBEAEA" : ri % 2 ? WHITE : TINT } } } : c))), {
-  x, y: y + 0.05, w, colW: [4.6, 4.0, 6.0], fontFace: FONT, fontSize: 17, border: { type: "solid", pt: 1, color: LINE }, margin: 0.08, valign: "middle", rowH: 0.95,
-});
-
-// ================= COLUMN 2: what we built, how we tested =================
-x = colX[1]; w = colW[1]; y = TOP;
-y = header(x, y, w, "What we built");
-y = text(x, y, w, 2.55, [
-  { text: "Two Docker images, one per course, each packing VS Code (served to the browser) with the exact tools the course expects: g++ for CS 135; yasm, nasm, ld, and gdb for CS 218. The instructor pins every version. The student installs Docker Desktop once, runs one command, and opens a browser tab. Every AI feature in the editor is switched off, per course policy." },
-]);
-card(x, y, w, 1.15, INK);
-slide.addText("docker run -p 127.0.0.1:8218:8080 -v ~/UNLV/x86-workspace:/home/coder/workspace seancnc/unlv-x86-ide", {
-  x: x + 0.3, y, w: w - 0.6, h: 1.15, fontFace: "Courier New", fontSize: 17, color: WHITE, isTextBox: true, margin: 0, valign: "middle",
-});
-y += 1.4;
-const figW = 9.6, figH = figW * (1560 / 1640);
-slide.addImage({ path: __dirname + "/fig1-architecture.png", x: x + (w - figW) / 2, y, w: figW, h: figH });
-y += figH + 0.15;
-y = text(x, y, w, 0.8, "Figure 1. Everything runs on the student’s machine. Coursework lives in an ordinary folder that survives deleting or updating the container.", { size: SMALL, color: MUTED });
-
-y = header(x, y + 0.15, w, "How we tested it: same exam, four kinds of computer");
+y = header(x, y, w, "1   Background: week one is lost to setup");
+y = text(x, y, w, 2.9,
+  "Every systems course starts the same way: a compiler, an assembler, a debugger, and an editor must work on dozens of different laptops before anyone learns anything. Prior studies measured 75–100 minutes of class time per semester lost to installs [6], support traffic dominated by environment mismatch rather than course content [3], and students with M1/M2 MacBooks unable to run the x86 virtual machines their courses assumed [4]. Several hundred CS 135 and CS 218 students a year are affected, and the friction falls hardest on the cheapest and newest machines.");
+y = subhead(x, y + 0.1, w, "Research questions answered before deployment");
 y = text(x, y, w, 2.5, [
-  { text: "We cannot borrow one of every laptop students own, so we rented them: for a few dollars total, AWS and Azure supplied a fresh Intel Linux machine, an ARM Linux machine, and a Windows 11 machine, and a base-model M1 MacBook Pro stood in for Apple Silicon. On each, one published script performed a student’s first day (download, open the editor, write, assemble, run, debug) and then built and ran four real CS 218 assignments, writing down everything it observed." },
-]);
-// four machine cards
-const machines = [
-  ["Windows 11 PC", "Intel / AMD", "✓ all assignments", "✓ debugger"],
-  ["Linux PC", "Intel / AMD", "✓ all assignments", "✓ debugger"],
-  ["Apple Silicon Mac", "M1 Pro, 16 GB", "✓ all assignments", "✗ debugger silent*"],
-  ["Linux on ARM", "AWS Graviton", "✓ all assignments†", "✗ debugger silent*"],
-];
-const mw = (w - 3 * 0.3) / 4;
-machines.forEach((m, i) => {
-  const mx = x + i * (mw + 0.3);
-  card(mx, y, mw, 3.3);
-  slide.addText(m[0], { x: mx + 0.2, y: y + 0.15, w: mw - 0.4, h: 0.7, fontFace: FONT, fontSize: 21, bold: true, color: INK, isTextBox: true, margin: 0, valign: "middle" });
-  slide.addText(m[1], { x: mx + 0.2, y: y + 0.8, w: mw - 0.4, h: 0.5, fontFace: FONT, fontSize: 16, color: MUTED, isTextBox: true, margin: 0, valign: "middle" });
-  slide.addText(m[2], { x: mx + 0.2, y: y + 1.45, w: mw - 0.4, h: 0.75, fontFace: FONT, fontSize: 19, bold: true, color: OK, isTextBox: true, margin: 0, valign: "middle" });
-  slide.addText(m[3], { x: mx + 0.2, y: y + 2.2, w: mw - 0.4, h: 0.75, fontFace: FONT, fontSize: 19, bold: true, color: m[3].startsWith("✓") ? OK : SCARLET, isTextBox: true, margin: 0, valign: "middle" });
-});
-y += 3.45;
-y = text(x, y, w, 1.6, "* Under translation the debugger appears to finish but writes no values, so debugger assignments need an Intel/AMD machine; the student handout says so.  † Needs Docker’s own translator; the one that ships with Ubuntu 24.04 crashed, which we reproduced and documented.", { size: 16, color: MUTED });
+  { text: "RQ1 Reproducibility. ", options: { bold: true } }, { text: "Do the images run the documented workflows and real CS 218 assignments?", br: true },
+  { text: "RQ2 Portability. ", options: { bold: true } }, { text: "Which operating systems and processors can run the assembly environment?", br: true },
+  { text: "RQ3 Resource cost. ", options: { bold: true } }, { text: "Startup, storage, memory, compile time, and the emulation overhead on ARM.", br: true },
+  { text: "RQ4 Persistence. ", options: { bold: true } }, { text: "Do student files survive replacing the container?", br: true },
+  { text: "RQ5 Architecture fidelity. ", options: { bold: true } }, { text: "How far does an amd64-only image, including its debugger, work on ARM?" },
+], { size: 22, para: 4 });
 
-// ================= COLUMN 3: what we found =================
-x = colX[2]; w = colW[2]; y = TOP;
-y = header(x, y, w, "What we found");
-const tiles = [
-  ["4 of 4", "kinds of computer ran every real CS 218 assignment correctly, including the multithreaded one"],
-  ["Identical", "the same 552 MB file, byte for byte, on Windows, macOS, and Linux: the promise a VM could never make"],
-  ["0.5 s", "until the editor is ready on Intel/AMD machines; about 5 s on Apple Silicon; a VM boots in minutes"],
-  ["552 MB", "one-time download, versus the 19 GB virtual machine the course distributes today"],
-  ["< $10", "to rent every test machine, failed attempts included; students pay nothing and need no account"],
-  ["1 limit", "the debugger goes silent on Apple Silicon and ARM, and we can say exactly why"],
+y = header(x, y + 0.15, w, "UNLV’s own path, one step behind the literature");
+const stages = [
+  ["1. Shared login servers over SSH (PuTTY)", "bobby, sally, cardiac: two decades of departmental Linux hosts and a submit script that required logging in even from the lab. Now decommissioned; the wiki documenting them was deleted in a 2025 site rebuild [12]."],
+  ["2. Virtual machines, one per course", "CS 218 today: a 19 GB VirtualBox image for Intel and an experimental Fall-2023 image for Apple Silicon that emulates a whole x86-64 computer, so slowly the course warns VS Code “may not be usable.” Official advice for M1/M2 owners: go to the TBE-A311 lab with a USB drive."],
+  ["3. A container on the student’s own laptop (this project)", "One 552 MB download, one command, VS Code in a browser tab. Files stay in a normal folder on the laptop. No server, no account, no VPN; works offline."],
 ];
-const tw = (w - 0.35) / 2, th = 2.6;
-tiles.forEach((t, i) => {
-  const tx = x + (i % 2) * (tw + 0.35), ty = y + Math.floor(i / 2) * (th + 0.3);
-  card(tx, ty, tw, th, i === 5 ? "FBEAEA" : TINT);
-  slide.addText(t[0], { x: tx + 0.3, y: ty + 0.15, w: tw - 0.6, h: 1.1, fontFace: FONT, fontSize: 54, bold: true, color: SCARLET, isTextBox: true, margin: 0, valign: "middle" });
-  slide.addText(t[1], { x: tx + 0.3, y: ty + 1.25, w: tw - 0.6, h: 1.3, fontFace: FONT, fontSize: 18, color: INK, isTextBox: true, margin: 0, valign: "top", lineSpacingMultiple: 1.0 });
+const stageH = [2.0, 2.3, 1.8];
+stages.forEach((s, i) => {
+  const last = i === stages.length - 1;
+  slide.addShape(pres.shapes.OVAL, { x, y: y + 0.12, w: 0.6, h: 0.6, fill: { color: last ? SCARLET : MUTED }, line: { color: last ? SCARLET : MUTED } });
+  if (!last) slide.addShape(pres.shapes.LINE, { x: x + 0.3, y: y + 0.75, w: 0, h: stageH[i] - 0.75, line: { color: LINE, width: 4 } });
+  slide.addText(s[0], { x: x + 0.9, y, w: w - 0.9, h: 0.8, fontFace: FONT, fontSize: 25, bold: true, color: last ? SCARLET : INK, isTextBox: true, margin: 0, valign: "middle" });
+  slide.addText(s[1], { x: x + 0.9, y: y + 0.8, w: w - 0.9, h: stageH[i] - 0.8, fontFace: FONT, fontSize: SMALL, color: INK, isTextBox: true, margin: 0, valign: "top", lineSpacingMultiple: 1.04 });
+  y += stageH[i];
 });
-y += 3 * (th + 0.3) + 0.1;
 
-// simple chart: seconds until editor ready
-slide.addChart(pres.charts.BAR, [{ name: "Seconds until the editor is ready", labels: ["Linux on ARM", "Apple Silicon Mac", "Linux PC", "Windows 11 PC"], values: [6.7, 4.8, 0.5, 0.6] }], {
-  x, y, w, h: 4.6, barDir: "bar", barGapWidthPct: 45,
+// ================= COLUMN 2: methods =================
+x = colX[1]; y = TOP;
+y = header(x, y, w, "2   Methods: what we built");
+y = text(x, y, w, 2.6,
+  "Two Docker images, one per course, each packing code-server (VS Code served to the browser) with the exact toolchain the course expects: g++ for CS 135; yasm, nasm, ld, and gdb for CS 218. The instructor pins every version. The x86 image is deliberately amd64-only so students assemble and run real x86-64 binaries; on ARM hosts Docker runs it through a translation layer. Every AI feature in the editor is disabled per course policy.");
+card(x, y, w, 1.05, INK);
+slide.addText("docker run -p 127.0.0.1:8218:8080 -v ~/UNLV/x86-workspace:/home/coder/workspace seancnc/unlv-x86-ide", {
+  x: x + 0.35, y, w: w - 0.7, h: 1.05, fontFace: "Courier New", fontSize: 19, color: WHITE, isTextBox: true, margin: 0, valign: "middle",
+});
+y += 1.05 + 0.3;
+const figW = 7.8, figH = figW * (1560 / 1640);
+slide.addImage({ path: __dirname + "/fig1-architecture.png", x: x + (w - figW) / 2, y, w: figW, h: figH });
+y += figH + 0.1;
+y = text(x, y, w, 0.85, [{ text: "Figure 1. ", options: { bold: true } }, { text: "One course IDE. Everything runs on the student’s machine; coursework lives in an ordinary host folder that survives deleting or updating the container. The only network dependency is the first download." }], { size: 20, color: MUTED, ls: 1.02 });
+
+y = subhead(x, y + 0.15, w, "2.2  Evaluation: same exam, four kinds of computer");
+y = text(x, y, w, 3.1,
+  "We cannot borrow one of every laptop students own, so we rented them (Table 1). On each host the same unmodified script (ci-test.sh) performed a student’s first day and more: a timed download that records the image digest; a timed start until the editor answers; a starter-file check; three assemble-link-run cycles; a scripted gdb probe; idle memory; a timed build and run of four real CS 218 assignments (ast3, ast04, ast06, ast12, the last multithreaded) with peak memory sampled; and destruction and recreation of the container to check that files survive. Every number on this poster is transcribed from the JSON the script writes.");
+y = text(x, y + 0.05, w, 0.55, [{ text: "Table 1. ", options: { bold: true } }, { text: "The four hosts. Cells 1 and 2 are same-size Intel/ARM siblings, so their comparison isolates emulation." }], { size: 20, color: MUTED, para: 0 });
+const hosts = [
+  [hdrCell("Cell"), hdrCell("Host"), hdrCell("OS / Docker"), hdrCell("x86 image")],
+  ["1  Linux amd64", "AWS m8i.large, Intel Xeon, 2 vCPU / 8 GB", "Ubuntu 24.04, Docker Engine 29.1", "native"],
+  ["2  Linux arm64", "AWS m8g.large, Graviton (ARM), 2 vCPU / 8 GB", "Ubuntu 24.04, Docker Engine 29.1, QEMU", "emulated"],
+  ["3  Windows amd64", "Azure D4s_v5, Intel Xeon, 4 vCPU / 16 GB", "Windows 11 Pro 24H2, Docker Desktop, WSL2", "native"],
+  ["4  macOS arm64", "MacBook Pro 14-inch (2021), M1 Pro, 16 GB, owned", "macOS 26.4, Docker Desktop 29.2 (Rosetta)", "emulated"],
+];
+slide.addTable(hosts.map((r, ri) => r.map((c, ci) => (typeof c === "string" ? { text: c, options: { bold: ci === 0, color: ci === 3 && c === "emulated" ? SCARLET : INK, fill: { color: ri % 2 ? TINT : WHITE } } } : c))), {
+  x, y, w, colW: [3.1, 5.4, 4.6, 1.9], fontFace: FONT, fontSize: 18, border: { type: "solid", pt: 1, color: LINE }, margin: 0.09, valign: "middle", rowH: [0.6, 0.85, 0.85, 0.85, 0.85],
+});
+
+// ================= COLUMN 3: results =================
+x = colX[2]; y = TOP;
+y = header(x, y, w, "3   Results");
+const heroes = [["4 of 4", "hosts ran every real CS 218 assignment correctly, including the multithreaded one"], ["0.5 s", "until the editor is ready on Intel/AMD; 5–7 s under emulation; a course VM boots in minutes"], ["552 MB", "one-time download, byte-identical on every host, versus a 19 GB virtual machine"]];
+const hw = (w - 2 * 0.35) / 3, hh = 2.75;
+heroes.forEach((t, i) => {
+  const hx = x + i * (hw + 0.35);
+  card(hx, y, hw, hh);
+  slide.addText(t[0], { x: hx + 0.25, y: y + 0.15, w: hw - 0.5, h: 1.05, fontFace: FONT, fontSize: 50, bold: true, color: SCARLET, isTextBox: true, margin: 0, valign: "middle" });
+  slide.addText(t[1], { x: hx + 0.25, y: y + 1.2, w: hw - 0.5, h: 1.45, fontFace: FONT, fontSize: 18, color: INK, isTextBox: true, margin: 0, valign: "top", lineSpacingMultiple: 1.0 });
+});
+y += hh + 0.35;
+
+y = text(x, y, w, 0.55, [{ text: "Table 2. ", options: { bold: true } }, { text: "Selected results for the x86 image (all values from the unmodified script)." }], { size: 20, color: MUTED, para: 0 });
+const res = [
+  [hdrCell("Metric"), hdrCell("1 Linux\nnative", "center"), hdrCell("2 Linux ARM\nemulated", "center"), hdrCell("3 Windows 11\nnative", "center"), hdrCell("4 M1 Mac\nemulated", "center")],
+  ["Debugger (gdb) probe", "working", "broken", "working", "broken"],
+  ["Start until editor ready (s)", "0.5", "6.7", "0.6", "4.8"],
+  ["Idle memory (MiB)", "54", "255", "56", "263"],
+  ["Peak memory, coursework (MiB)", "n/a", "334", "90", "358"],
+  ["ast06 build (s)", "0.2", "2.8", "0.5", "2.5"],
+  ["ast12 build (s)", "0.3", "3.6", "0.6", "3.1"],
+  ["All four assignments pass", "yes", "yes", "yes", "yes"],
+  ["Files survive replacement", "yes", "yes", "yes", "yes"],
+  ["Checks passed / failed", "13 / 0", "12 / 0", "13 / 0", "12 / 0"],
+];
+slide.addTable(res.map((r, ri) => r.map((c, ci) => (typeof c === "string" ? { text: c, options: { bold: ci === 0 || c === "broken", align: ci ? "center" : "left", color: c === "broken" ? SCARLET : c === "working" ? OK : INK, fill: { color: ri % 2 ? TINT : WHITE } } } : c))), {
+  x, y, w, colW: [5.4, 2.4, 2.4, 2.4, 2.4], fontFace: FONT, fontSize: 18, border: { type: "solid", pt: 1, color: LINE }, margin: 0.08, valign: "middle", rowH: [0.95, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7],
+});
+y += 0.95 + 9 * 0.7 + 0.35;
+
+slide.addChart(pres.charts.BAR, [{ name: "Seconds until the editor is ready", labels: ["2 Linux ARM (emulated)", "4 M1 Mac (emulated)", "3 Windows 11 (native)", "1 Linux (native)"], values: [6.7, 4.8, 0.6, 0.5] }], {
+  x, y, w, h: 4.2, barDir: "bar", barGapWidthPct: 40,
   chartColors: [OK],
-  showTitle: true, title: "Seconds until the editor is ready (a course VM takes minutes)", titleFontFace: FONT, titleFontSize: 21, titleColor: INK, titleAlign: "left",
-  showValue: true, dataLabelPosition: "outEnd", dataLabelFontSize: 16, dataLabelColor: INK, dataLabelFormatCode: "0.0",
+  showTitle: true, title: "Figure 2. Seconds until the editor is ready", titleFontFace: FONT, titleFontSize: 20, titleColor: INK, titleAlign: "left",
+  showValue: true, dataLabelPosition: "outEnd", dataLabelFontSize: 17, dataLabelColor: INK, dataLabelFormatCode: "0.0",
   showLegend: false,
   catAxisLabelFontSize: 17, catAxisLabelColor: INK, catAxisLabelFontFace: FONT, catAxisLineShow: false,
-  valAxisLabelFontSize: 14, valAxisLabelColor: MUTED, valAxisLabelFontFace: FONT, valAxisMinVal: 0, valAxisMaxVal: 8, valAxisMajorUnit: 2, valAxisLineShow: false,
+  valAxisLabelFontSize: 15, valAxisLabelColor: MUTED, valAxisLabelFontFace: FONT, valAxisMinVal: 0, valAxisMaxVal: 8, valAxisMajorUnit: 2, valAxisLineShow: false,
   valGridLine: { color: LINE, size: 1 }, catGridLine: { style: "none" },
   plotArea: { fill: { color: WHITE } }, chartArea: { fill: { color: WHITE } },
 });
-y += 4.75;
-y = text(x, y, w, 3.0, [
-  { text: "Why the limit exists, in one sentence. ", options: { bold: true, color: SCARLET } },
-  { text: "The assembly image is x86-64 on purpose, because the course teaches x86-64; on ARM chips it runs through a translator, and today’s translators run the programs correctly but cannot support the debugger. Windows and Intel machines, most of the class, get everything. Under translation a debugger script still “succeeds” and writes its output file, but with none of the values, which is why the student handout tells Apple Silicon owners to produce debugger deliverables on an Intel machine." },
+y += 4.2 + 0.3;
+y = text(x, y, w, 2.85, [
+  { text: "The support boundary is a translator boundary, not an operating-system boundary. ", options: { bold: true, color: SCARLET } },
+  { text: "Windows and Linux on Intel/AMD are native and get everything; Windows 11, which dominates student laptops, was the strongest host in the matrix. Apple Silicon works because Apple supplies its Rosetta translator to Docker’s Linux VM. Emulation costs about one order of magnitude on builds (10–14×), yet every emulated build finished in under four seconds. The one loss is gdb: under translation a debugger script still “succeeds” and writes its file, but with no register values, so the handout tells Apple Silicon owners to produce debugger deliverables on an Intel machine. On ARM Linux the stock Ubuntu 24.04 QEMU crashed translating the editor itself; Docker’s own translator passed every check, so the fix is one line in the handout." },
+], { size: SMALL });
+y = text(x, y + 0.1, w, BOTTOM_BAND - 0.6 - (y + 0.1), [
+  { text: "Where this sits. ", options: { bold: true, color: SCARLET } },
+  { text: "CS50 took the container and browser editor to GitHub’s servers [1]; this project puts the same pair back on the student’s machine, and the measurements show the trade is affordable. Cadenas et al. kept a working debugger by changing the course’s instruction set to whatever the emulator provided [5]; this design keeps the real x86-64 instruction set and loses the debugger on ARM. Native hardware gets both; nothing on ARM yet does, and this evaluation makes that trade-off measured and explicit." },
 ], { size: SMALL });
 
-// ---------- bottom band ----------
-const BY = 30.9;
-slide.addShape(pres.shapes.LINE, { x: M, y: BY - 0.35, w: 48 - 2 * M, h: 0, line: { color: LINE, width: 3 } });
-let fy = header(colX[0], BY, colW[0] + GAP + colW[1], "What comes next");
-text(colX[0], fy, colW[0] + GAP + colW[1] - 0.4, 3.6, [
-  { text: "Run it in a real section of CS 218 and CS 135 and measure what only a classroom can: how many students reach a working setup without help, how many staff minutes it saves, and how students feel about it, using survey instruments adapted from [3, 4, 6]. A three-student pilot class has already run on it.", bullet: true, br: true },
-  { text: "Build a second assembly image for ARM chips that keeps the editor native and translates only the student’s program, which could bring the debugger back to Apple Silicon and Windows-on-ARM laptops.", bullet: true, br: true },
-  { text: "Reuse the rent-four-computers, one-script method to evaluate environments for other courses (Operating Systems next).", bullet: true },
-], { size: 21 });
-
-let ry = header(colX[2], BY, colW[2], "References");
-const refs = [
-  "[1] Malan. Containerizing CS50. ITiCSE 2024.",
-  "[2] Malan. From Cluster to Cloud to Appliance. ITiCSE 2013.",
-  "[3] Valstar, Griswold, Porter. Using DevContainers to Standardize Student Development Environments. ITiCSE 2020.",
-  "[4] Fernalld, OConnor, Sudhakaran, Nur. Lightweight Symphony. SIGITE 2023.",
-  "[5] Cadenas et al. Virtualization for Cost-Effective Teaching of Assembly Language Programming. IEEE Trans. Educ. 2015.",
-  "[6] Harvie, Cody, Morrell, Estes. Using Virtual Machines to Enhance the Educational Experience. SIGITE 2019.",
-  "[8] Park et al. CodeDive: A Web-Based IDE with Real-Time Code Activity Monitoring. Applied Sciences 2025.",
+// ================= BOTTOM BAND: discussion, next steps, references =================
+slide.addShape(pres.shapes.LINE, { x: M, y: BOTTOM_BAND - 0.35, w: 48 - 2 * M, h: 0, line: { color: LINE, width: 3 } });
+const wideW = 2 * COLW + GAP;
+let by = header(colX[0], BOTTOM_BAND, wideW, "4   Discussion: every approach hands the setup burden to someone");
+const burden = [
+  [hdrCell("Approach"), hdrCell("Who carries the burden"), hdrCell("What it costs the student")],
+  ["Shared login servers over SSH (UNLV bobby / sally / cardiac)", "The department", "Network and VPN dependence; the environment and its documentation vanish when the servers are retired"],
+  ["Course virtual machines (CS 218 images; CS50 Appliance [2]; Reading’s QEMU lab [5])", "The student’s hardware", "Multi-gigabyte images, fixed RAM reservations, slow boots, disk corruption; unusable or very slow on Apple Silicon"],
+  ["Cloud-hosted browser IDE (CS50 on GitHub Codespaces, 700,000+ users [1])", "A vendor, a grant, an account", "Internet required; the environment disappears with the account; students leave “not sure how to set up an IDE on my computer”"],
+  ["Monitored classroom platform (CodeDive, South Korea [8])", "The institution’s cluster, and the student’s privacy", "Every process and every one-second typing pause recorded (24,845 snapshots from 95 students in two weeks); consent that cannot realistically be withheld"],
+  ["Local container with browser editor (this project; cf. UCSD [3], Florida Tech [4])", "The student, once: install Docker Desktop", "One download and one command; offline afterward; files stay on the laptop; debugger unavailable on Apple Silicon and ARM"],
 ];
-slide.addText(refs.map((r, i) => ({ text: r, options: { breakLine: i < refs.length - 1, paraSpaceAfter: 3 } })), { x: colX[2], y: ry, w: colW[2], h: 3.0, fontFace: FONT, fontSize: 14, color: MUTED, isTextBox: true, margin: 0, valign: "top", lineSpacingMultiple: 1.0 });
-slide.addText("Supported by the UNLV Office of Undergraduate Research Summer Undergraduate Research Fellowship. Every number on this poster comes from the published test script’s output files, archived in the repository (tests/record-results). Reference numbers match the written report.", {
-  x: colX[2], y: ry + 3.05, w: colW[2], h: 1.0, fontFace: FONT, fontSize: 13, italic: true, color: MUTED, isTextBox: true, margin: 0, valign: "top",
+slide.addTable(burden.map((r, ri) => r.map((c, ci) => (typeof c === "string" ? { text: c, options: { bold: ci === 0, color: ri === 5 ? SCARLET : INK, fill: { color: ri === 5 ? PALE : ri % 2 ? TINT : WHITE } } } : c))), {
+  x: colX[0], y: by, w: wideW, colW: [10.2, 7.0, 13.5], fontFace: FONT, fontSize: 19, border: { type: "solid", pt: 1, color: LINE }, margin: 0.1, valign: "middle", rowH: [0.65, 1.05, 1.05, 1.05, 1.05, 1.05],
 });
+
+let ny = header(colX[2], BOTTOM_BAND, COLW, "5   What comes next");
+ny = text(colX[2], ny, COLW, 2.95, [
+  { text: "A classroom study in CS 218 and CS 135 with IRB approval: how many students reach a working setup without help, how many staff minutes it saves, and how students feel about it, using instruments adapted from [3, 4, 6]. A three-student high-school pilot has already run on the C++ image.", bullet: true, br: true },
+  { text: "A hybrid assembly image for ARM that runs the editor natively and translates only the student’s program, which could restore the debugger on Apple Silicon and Windows-on-ARM.", bullet: true, br: true },
+  { text: "Reuse the one-script, rent-four-computers method to vet environments for other courses, starting with Operating Systems.", bullet: true },
+], { size: 20, para: 6, ls: 1.03 });
+slide.addText("Supported by the UNLV Office of Undergraduate Research Summer Undergraduate Research Fellowship. Every number on this poster comes from the published test script’s output files, archived in the repository under tests/record-results.", { x: colX[2], y: ny - 0.05, w: COLW, h: 0.75, fontFace: FONT, fontSize: 15, italic: true, color: MUTED, isTextBox: true, margin: 0, valign: "top", lineSpacingMultiple: 1.02 });
+ny += 0.75;
+slide.addText("References (numbered as in the written report)", { x: colX[2], y: ny + 0.05, w: COLW, h: 0.45, fontFace: FONT, fontSize: 20, bold: true, color: INK, isTextBox: true, margin: 0, valign: "bottom" });
+const refs = [
+  "[1] D. J. Malan. Containerizing CS50: Standardizing Students’ Programming Environments. ITiCSE 2024.",
+  "[2] D. J. Malan. From Cluster to Cloud to Appliance. ITiCSE 2013.",
+  "[3] S. Valstar, W. G. Griswold, L. Porter. Using DevContainers to Standardize Student Development Environments. ITiCSE 2020.",
+  "[4] K. Fernalld, T. OConnor, S. Sudhakaran, N. Nur. Lightweight Symphony: Reducing CS Student Anxiety with Standardized Docker Environments. SIGITE 2023.",
+  "[5] J. O. Cadenas et al. Virtualization for Cost-Effective Teaching of Assembly Language Programming. IEEE Trans. Educ. 58(4), 2015.",
+  "[6] D. P. Harvie, J. R. Cody, C. Morrell, T. T. Estes. Using Virtual Machines to Enhance the Educational Experience. SIGITE 2019.",
+  "[8] H. Park et al. CodeDive: A Web-Based IDE with Real-Time Code Activity Monitoring. Applied Sciences 15(19), 2025.",
+  "[12] UNLV Dept. of Computer Science. Student Center: Remote Access and File Storage. tux.cs.unlv.edu, accessed Aug. 2026.",
+];
+slide.addText(refs.map((r, i) => ({ text: r, options: { breakLine: i < refs.length - 1, paraSpaceAfter: 1 } })), { x: colX[2], y: ny + 0.5, w: COLW, h: FOOT - (ny + 0.5), fontFace: FONT, fontSize: 13.5, color: MUTED, isTextBox: true, margin: 0, valign: "top", lineSpacingMultiple: 1.0 });
 
 pres.writeFile({ fileName: process.argv[2] || "poster.pptx" }).then((f) => console.log("wrote", f));
