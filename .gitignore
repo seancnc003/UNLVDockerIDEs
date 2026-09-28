@@ -15,3 +15,9 @@ papers/literature/
 
 # macOS
 .DS_Store
+
+# OUR SURF materials: keep downloaded literature PDFs and CS 218 course sources out of the public repo
+OUR/Research/Related Papers/papers/
+OUR/Research/code/
+.DS_Store
+OUR/Research/Weekly Check-In.docx
