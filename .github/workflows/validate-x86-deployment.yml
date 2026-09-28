@@ -1,0 +1,174 @@
+name: Validate x86 deployment
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'x86/**'
+      - 'scripts/release-check.sh'
+      - '.github/workflows/validate-x86-deployment.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  linux-amd64:
+    name: Native Linux amd64 deployment
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pull the published image
+        run: docker pull --platform linux/amd64 seancnc/unlv-x86-ide:latest
+
+      - name: Verify the published manifest is single-platform
+        shell: bash
+        run: |
+          if docker manifest inspect seancnc/unlv-x86-ide:latest | grep -q '"manifests"'; then
+            echo 'Expected a plain single-platform manifest, but found an OCI index.' >&2
+            exit 1
+          fi
+
+      - name: Start the documented deployment
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/UNLV/x86-workspace"
+          # The image deliberately uses UID/GID 1000 to match the first user on
+          # a normal Linux installation. GitHub's hosted runner uses UID 1001,
+          # so make this temporary workspace represent the documented host.
+          sudo chown 1000:1000 "$RUNNER_TEMP/UNLV/x86-workspace"
+          docker run -d \
+            --platform linux/amd64 \
+            --name unlv-x86-ci \
+            -p 127.0.0.1:8218:8080 \
+            -v "$RUNNER_TEMP/UNLV/x86-workspace:/home/coder/workspace" \
+            seancnc/unlv-x86-ide:latest
+
+      - name: Verify IDE, persistence, toolchain, and GDB
+        shell: bash
+        run: |
+          ready=false
+          for _ in $(seq 1 30); do
+            if curl -fsS --max-time 2 http://127.0.0.1:8218/healthz >/dev/null; then
+              ready=true
+              break
+            fi
+            sleep 2
+          done
+          if [ "$ready" != true ]; then
+            echo 'The IDE did not become healthy.' >&2
+            docker logs unlv-x86-ci
+            exit 1
+          fi
+
+          test -f "$RUNNER_TEMP/UNLV/x86-workspace/hello.asm"
+          test -f "$RUNNER_TEMP/UNLV/x86-workspace/Makefile"
+          docker exec unlv-x86-ci yasm --version
+          docker exec unlv-x86-ci nasm --version
+          docker exec unlv-x86-ci bash -lc \
+            'cd ~/workspace && make && test "$(./hello)" = "Hello, x86!"'
+
+          gdb_output="$(docker exec unlv-x86-ci bash -lc \
+            'cd ~/workspace && gdb -q -batch \
+              -ex "break _start" \
+              -ex run \
+              -ex "x/i \$pc" \
+              -ex si \
+              -ex "info registers rip" \
+              ./hello' 2>&1)"
+          printf '%s\n' "$gdb_output"
+          grep -q 'Breakpoint 1' <<<"$gdb_output"
+          grep -Eq '^rip[[:space:]]+' <<<"$gdb_output"
+
+          docker exec unlv-x86-ci sh -c \
+            "printf 'student work survives replacement\n' > \
+              /home/coder/workspace/student-file.txt"
+          docker rm -f unlv-x86-ci
+          docker run -d \
+            --platform linux/amd64 \
+            --name unlv-x86-ci \
+            -p 127.0.0.1:8218:8080 \
+            -v "$RUNNER_TEMP/UNLV/x86-workspace:/home/coder/workspace" \
+            seancnc/unlv-x86-ide:latest
+          docker exec unlv-x86-ci grep -q \
+            'student work survives replacement' \
+            /home/coder/workspace/student-file.txt
+
+      - name: Clean up Linux test container
+        if: always()
+        run: docker rm -f unlv-x86-ci >/dev/null 2>&1 || true
+
+  windows-hosted:
+    name: Windows hosted-runner deployment probe
+    runs-on: windows-2025
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate PowerShell workspace and probe Docker
+        id: docker
+        shell: pwsh
+        run: |
+          $workspace = Join-Path $env:RUNNER_TEMP 'UNLV\x86-workspace'
+          New-Item -ItemType Directory -Force -Path $workspace | Out-Null
+          $mount = "${workspace}:/home/coder/workspace"
+          if (-not $mount.EndsWith(':/home/coder/workspace')) {
+            throw "PowerShell bind-mount path was malformed: $mount"
+          }
+
+          docker --version
+          $serverOs = docker info --format '{{.OSType}}' 2>$null
+          if ($LASTEXITCODE -eq 0 -and $serverOs -eq 'linux') {
+            'linux_daemon=true' >> $env:GITHUB_OUTPUT
+            "Linux Docker daemon detected; running the deployment test." >> $env:GITHUB_STEP_SUMMARY
+          }
+          else {
+            'linux_daemon=false' >> $env:GITHUB_OUTPUT
+            @"
+          The GitHub-hosted Windows runner does not expose a Linux Docker daemon.
+          The PowerShell path and Docker client checks passed, but a full Docker
+          Desktop deployment requires a self-hosted Windows runner or a real PC.
+          "@ >> $env:GITHUB_STEP_SUMMARY
+          }
+
+      - name: Pull and start on Windows when supported
+        if: steps.docker.outputs.linux_daemon == 'true'
+        shell: pwsh
+        run: |
+          $workspace = Join-Path $env:RUNNER_TEMP 'UNLV\x86-workspace'
+          $mount = "${workspace}:/home/coder/workspace"
+          docker pull --platform linux/amd64 seancnc/unlv-x86-ide:latest
+          docker run -d `
+            --platform linux/amd64 `
+            --name unlv-x86-windows-ci `
+            -p 127.0.0.1:8218:8080 `
+            -v $mount `
+            seancnc/unlv-x86-ide:latest
+
+          $ready = $false
+          foreach ($attempt in 1..30) {
+            try {
+              Invoke-WebRequest -UseBasicParsing -TimeoutSec 2 `
+                http://127.0.0.1:8218/healthz | Out-Null
+              $ready = $true
+              break
+            }
+            catch {
+              Start-Sleep -Seconds 2
+            }
+          }
+          if (-not $ready) {
+            docker logs unlv-x86-windows-ci
+            throw 'The IDE did not become healthy on Windows.'
+          }
+
+          docker exec unlv-x86-windows-ci bash -lc `
+            'cd ~/workspace && make && test "$(./hello)" = "Hello, x86!"'
+
+      - name: Clean up Windows test container
+        if: always() && steps.docker.outputs.linux_daemon == 'true'
+        shell: pwsh
+        run: docker rm -f unlv-x86-windows-ci
