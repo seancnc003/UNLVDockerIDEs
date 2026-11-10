@@ -4,6 +4,7 @@
 // Revision 4: larger callout labels, shorter Discussion/Purpose/Conclusions, Methods split into a plain route + technical details.
 // Revision 5: readability pass — bigger card labels and table type, plain words at point of use, Figure 1 redrawn natively with readable labels.
 // Revision 6: hierarchy pass — meaning in the big card labels, definitions under the headline, no repeated findings, capability rows emphasised.
+// Revision 7 (author review): Results thinned to the metrics that matter (two finding cards, timing line, 7-row table in plain words); Conclusions adds applicability to other fields and AI-assisted package authoring.
 // Run: NODE_PATH=<dir with node_modules> node poster-virtual.js out.pptx && python3 finish-virtual.py out.pptx
 const pptxgen = require("pptxgenjs");
 const pres = new pptxgen();
@@ -105,50 +106,52 @@ para(LX + PAD + 0.25, tdy, LW - 2 * PAD - 0.5, y + bh - PAD - 0.15 - tdy, [
 // ================= MIDDLE COLUMN: Results (headline + callouts + table), Figures =================
 y = 6.69;
 y = heading(MX, y, MW, "Results");
-bh = 14.2; box(MX, y, MW, bh);
+bh = 14.4; box(MX, y, MW, bh);
 let ry = para(MX + PAD, y + PAD, MW - 2 * PAD, 1.45, [
   { text: "All four tested computers built and ran four assembly-course assignments. ", options: { bold: true } },
   { text: "Neither ARM computer, including the Apple Silicon Mac, could use the debugger.", options: { bold: true, color: SCARLET }, br: true },
-  { text: "A debugger pauses a program so a student can inspect it. ARM is the processor family used in Apple Silicon Macs.", options: { fontSize: 25, color: MUTED } },
+  { text: "ARM is the processor family used in Apple Silicon Macs; most Windows PCs use Intel-style processors.", options: { fontSize: 25, color: MUTED } },
 ], { size: 30, para: 0, ls: 1.04 });
 const heroes = [
-  ["4 of 4 computers", [{ text: "built and ran all four assignments" }]],
-  ["Editor opening", [{ text: "Intel: ", options: { bold: true } }, { text: "0.5–0.6 s", options: { bold: true, color: SCARLET }, br: true }, { text: "ARM: ", options: { bold: true } }, { text: "4.8–6.7 s", options: { bold: true, color: SCARLET } }]],
-  ["552 MB download", [{ text: "Docker installation is additional" }]],
-  ["Debugger available", [{ text: "Intel: ", options: { bold: true } }, { text: "2 of 2", options: { bold: true, color: SCARLET }, br: true }, { text: "ARM: ", options: { bold: true } }, { text: "0 of 2", options: { bold: true, color: SCARLET } }]],
+  ["Assignments ran: 4 of 4 computers", [{ text: "Coursework also survived deleting the workspace on all four." }]],
+  ["Debugger worked: 2 of 4 computers", [{ text: "Intel 2 of 2 · ARM 0 of 2", options: { bold: true, color: SCARLET }, br: true }, { text: "A debugger pauses a program so a student can inspect it. Some assignments need one." }]],
 ];
-const hw = (MW - 2 * PAD - 3 * 0.25) / 4, hh = 2.3;
+const hw = (MW - 2 * PAD - 0.3) / 2, hh = 2.55;
 heroes.forEach((t, i) => {
-  const hx = MX + PAD + i * (hw + 0.25), hy = ry + 0.1;
-  slide.addShape(pres.shapes.RECTANGLE, { x: hx, y: hy, w: hw, h: hh, fill: { color: i === 3 ? PALE : TINT }, line: { color: i === 3 ? PALE : TINT } });
-  slide.addText(t[0], { x: hx + 0.2, y: hy + 0.1, w: hw - 0.4, h: 0.75, fontFace: HEADF, fontSize: 28, bold: true, color: SCARLET, isTextBox: true, margin: 0, valign: "middle" });
-  slide.addText(t[1].map((r) => ({ text: r.text, options: Object.assign({ fontFace: BODYF, fontSize: 27, color: INK, breakLine: !!r.br }, r.options || {}) })), { x: hx + 0.2, y: hy + 0.9, w: hw - 0.4, h: hh - 1.0, isTextBox: true, margin: 0, valign: "top", lineSpacingMultiple: 1.0 });
+  const hx = MX + PAD + i * (hw + 0.3), hy = ry + 0.1;
+  slide.addShape(pres.shapes.RECTANGLE, { x: hx, y: hy, w: hw, h: hh, fill: { color: i === 1 ? PALE : TINT }, line: { color: i === 1 ? PALE : TINT } });
+  slide.addText(t[0], { x: hx + 0.25, y: hy + 0.12, w: hw - 0.5, h: 0.8, fontFace: HEADF, fontSize: 34, bold: true, color: SCARLET, isTextBox: true, margin: 0, valign: "middle" });
+  slide.addText(t[1].map((r) => ({ text: r.text, options: Object.assign({ fontFace: BODYF, fontSize: 28, color: INK, breakLine: !!r.br }, r.options || {}) })), { x: hx + 0.25, y: hy + 1.0, w: hw - 0.5, h: hh - 1.1, isTextBox: true, margin: 0, valign: "top", lineSpacingMultiple: 1.0 });
 });
-let noteY = ry + 0.1 + hh + 0.12;
-noteY = para(MX + PAD, noteY, MW - 2 * PAD, 0.45, "Only first-start editor times are shown. Docker installation was not timed; download times are reported separately.", { size: 24, color: INK, para: 0 });
-let ty = noteY + 0.1;
-ty = para(MX + PAD, ty, MW - 2 * PAD, 0.5, [{ text: "Table 1. ", options: { bold: true } }, { text: "Capabilities and measurements for the four tested configurations. Times describe these systems only. Memory in MiB." }], { size: 21, color: MUTED, para: 0 });
+let noteY = ry + 0.1 + hh + 0.15;
+noteY = para(MX + PAD, noteY, MW - 2 * PAD, 1.05, [
+  { text: "Wait until the editor opens: ", options: { bold: true } }, { text: "Intel 0.5–0.6 s, ARM 4.8–6.7 s. " },
+  { text: "Download: ", options: { bold: true } }, { text: "552 MB; installing Docker is extra. Times start after Docker is installed and the package downloaded." },
+], { size: 28, color: INK, para: 0, ls: 1.02 });
+let ty = noteY + 0.05;
+ty = para(MX + PAD, ty, MW - 2 * PAD, 0.5, [{ text: "Table 1. ", options: { bold: true } }, { text: "Results for the four tested computers. MiB is a memory unit close to a megabyte." }], { size: 21, color: MUTED, para: 0 });
 const hdrCell = (t, sub) => ({ text: [{ text: t, options: { bold: true, breakLine: true } }, { text: sub, options: { bold: false, fontSize: 17 } }], options: { color: WHITE, fill: { color: GREY }, align: "center", fontFace: BODYF, valign: "middle" } });
+const group = (t) => [{ text: t, options: { colspan: 5, bold: true, italic: true, fontSize: 23, color: INK, fill: { color: "D9D9D9" }, align: "left", fontFace: BODYF } }];
 const res = [
   [{ text: "Measure", options: { bold: true, color: WHITE, fill: { color: GREY }, fontFace: BODYF } },
     hdrCell("Windows 11 PC", "Intel, 4 cores, 16 GB\nrented (Azure)"), hdrCell("Linux PC", "Intel, 2 cores, 8 GB\nrented (AWS)"), hdrCell("Apple Mac", "M1 Pro (ARM), 16 GB\nowned MacBook Pro"), hdrCell("Linux on ARM", "Graviton ARM, 2 cores, 8 GB\nrented (AWS)")],
+  group("Did it work?"),
   ["All four assignments built and ran", "yes", "yes", "yes", "yes"],
-  ["Parallel-work answer correct", "yes", "yes", "yes", "yes"],
-  ["Coursework kept after deletion", "yes", "yes", "yes", "yes"],
-  ["Debugger available", "yes", "yes", "no", "no"],
-  ["Package download time (s)", "53", "16", "45", "13"],
-  ["Editor opens after first start (s)", "0.6", "0.5", "4.8", "6.7"],
-  ["Memory while idle (MiB)", "56", "54", "263", "255"],
-  ["Peak memory during assignments (MiB)", "90", "not captured*", "358", "334"],
-  ["Slowest assignment build (s)", "0.6", "0.3", "3.1", "3.6"],
-  ["Checks met / failed / unavailable", "13 / 0 / 0", "13 / 0 / 0", "12 / 0 / 1", "12 / 0 / 1"],
+  ["Parallel-work answer was correct", "yes", "yes", "yes", "yes"],
+  ["Coursework kept after workspace deleted", "yes", "yes", "yes", "yes"],
+  ["Debugger worked", "yes", "yes", "no", "no"],
+  group("How long did it take, and how much memory did it use?"),
+  ["Download time (seconds)", "53", "16", "45", "13"],
+  ["Wait for the editor to open (seconds)", "0.6", "0.5", "4.8", "6.7"],
+  ["Highest recorded memory (MiB)", "90", "not captured*", "358", "334"],
 ];
-const rowH = 0.55, tw = MW - 2 * PAD;
-slide.addTable(res.map((r, ri) => r.map((c, ci) => (typeof c === "string" ? { text: c, options: { bold: ci === 0 || c === "no" || c === "yes", fontSize: ri <= 4 ? 25 : 22, align: ci ? "center" : "left", color: c === "no" ? SCARLET : c === "yes" ? OK : INK, fill: { color: ri <= 4 ? (ri % 2 ? "E8EEF7" : "F3F6FB") : (ri % 2 ? TINT : WHITE) } } } : c))), {
-  x: MX + PAD, y: ty + 0.02, w: tw, colW: [tw - 4 * 2.85, 2.85, 2.85, 2.85, 2.85], fontFace: BODYF, fontSize: 23, border: { type: "solid", pt: 1, color: "BFBFBF" }, margin: 0.06, valign: "middle", rowH: [1.5, 0.62, 0.62, 0.62, 0.62, rowH, rowH, rowH, rowH, rowH, rowH],
+const tw = MW - 2 * PAD;
+const rowHs = [1.5, 0.5, 0.62, 0.62, 0.62, 0.62, 0.5, 0.6, 0.6, 0.6];
+slide.addTable(res.map((r, ri) => r.map((c, ci) => (typeof c === "string" ? { text: c, options: { bold: ci === 0 || c === "no" || c === "yes", fontSize: 26, align: ci ? "center" : "left", color: c === "no" ? SCARLET : c === "yes" ? OK : INK, fill: { color: ri <= 5 ? (ri % 2 ? "E8EEF7" : "F3F6FB") : (ri % 2 ? TINT : WHITE) } } } : c))), {
+  x: MX + PAD, y: ty + 0.02, w: tw, colW: [tw - 4 * 2.66, 2.66, 2.66, 2.66, 2.66], fontFace: BODYF, fontSize: 23, border: { type: "solid", pt: 1, color: "BFBFBF" }, margin: 0.06, valign: "middle", rowH: rowHs,
 });
-ty += 0.02 + 1.5 + 4 * 0.62 + 6 * rowH + 0.1;
-para(MX + PAD, ty, tw, y + bh - PAD - ty, "*The Linux PC finished faster than the memory sampler could record a peak. The computers differed in provider and resources; times describe these test systems. “Unavailable” is the debugger check, recorded rather than passed or failed on ARM.", { size: 21, color: MUTED, para: 0, ls: 1.0 });
+ty += 0.02 + rowHs.reduce((a, b) => a + b, 0) + 0.1;
+para(MX + PAD, ty, tw, y + bh - PAD - ty, "*No memory peak was recorded for the Linux PC: its assignments finished before the sampler could take a reading. Timing differences cannot be attributed to processor family alone; the computers differed in provider and resources. Idle memory, build times and the full 13-item checklist are in the repository’s results tables.", { size: 21, color: MUTED, para: 0, ls: 1.0 });
 y += bh + GAPV;
 
 y = heading(MX, y, MW, "Figures");
@@ -204,16 +207,16 @@ para(cx, y + PAD + figH + 0.06, cw, 0.75, "First-start times after Docker is ins
 // ================= RIGHT COLUMN: Key Terms, Discussion, Conclusions/Future Research, References/Acknowledgements =================
 y = 6.69;
 y = heading(RX, y, RW, "Key Terms");
-bh = 5.4; box(RX, y, RW, bh);
+bh = 4.5; box(RX, y, RW, bh);
 const KT = [
   ["Container", "a ready-made package of a course’s tools. Docker is the free software that runs it."],
-  ["Virtual machine", "a whole simulated computer inside a computer; the course’s current one is a 19 GB disk, a different measure from a download."],
+  ["Virtual machine", "a whole simulated computer inside a computer; the course’s current one is a 19 GB disk."],
   ["IDE / editor", "the application students write programs in; here it opens in a browser tab."],
   ["Assembly", "programming with instructions tied closely to the processor."],
   ["Build", "convert a written program into a form the computer can run."],
-  ["Debugger", "a tool that pauses a running program so a student can look inside it. Some assignments require one."],
+  ["Debugger", "a tool that pauses a running program so a student can look inside it."],
   ["Working memory", "temporary space used while software runs, separate from saved files."],
-  ["Processor families", "a processor carries out program instructions. Intel-style and ARM processors understand different basic instructions; Apple Silicon Macs use ARM."],
+  ["Processor families", "Intel-style and ARM processors understand different basic instructions; Apple Silicon Macs use ARM."],
   ["Translator", "software that runs instructions written for a different processor family. Some features may be unavailable."],
 ];
 const kcw = (RW - 2 * PAD - 0.4) / 2;
@@ -225,19 +228,20 @@ const kcw = (RW - 2 * PAD - 0.4) / 2;
 y += bh + GAPV;
 
 y = heading(RX, y, RW, "Discussion");
-bh = 4.7; box(RX, y, RW, bh);
+bh = 3.5; box(RX, y, RW, bh);
 para(RX + PAD, y + PAD, RW - 2 * PAD, bh - 2 * PAD, [
-  lead("Why debugging matters."), { text: "Some assignments require students to pause a program and inspect its values. On the tested ARM computers those steps still need an Intel computer or the campus lab; everything else ran.", br: true },
-  lead("Possible explanation."), { text: "The package uses Intel-style instructions because that is what the course teaches. ARM computers run it through translation software, which may explain the debugger limit. Other hardware and software differences were not isolated." },
+  lead("What it means."), { text: "On the tested ARM computers, assignments that need the debugger still need an Intel computer or the campus lab. All four tested assignments ran.", br: true },
+  lead("Possible explanation."), { text: "The package uses Intel-style instructions because that is what the course teaches. ARM computers run it through translation software, which may explain the debugger limit. Other differences were not isolated." },
 ], { para: 8, ls: 1.04, size: 32 });
 y += bh + GAPV;
 
 y = heading(RX, y, RW, "Conclusions/Future Research");
-bh = 4.4; box(RX, y, RW, bh);
+bh = 6.6; box(RX, y, RW, bh);
 para(RX + PAD, y + PAD, RW - 2 * PAD, bh - 2 * PAD, [
-  lead("Conclusion."), { text: "These four tests support assignment execution and coursework preservation, and show a debugging barrier on the two ARM computers.", br: true },
+  lead("Conclusion."), { text: "On four tested computers the package ran all four tested assignments and kept coursework; the two ARM computers could not use the debugger.", br: true },
   lead("Not tested."), { text: "Student setup success, time saved, or help requests. Four machines are examples, not a survey.", br: true },
-  lead("Next."), { text: "Seek university ethics (IRB) approval for a classroom study in both courses [3, 4, 6]; evaluate a revised ARM container that could enable debugger use on ARM." },
+  lead("Next."), { text: "Seek university ethics (IRB) approval for a classroom study in both courses [3, 4, 6]; test a revised ARM container that could restore the debugger.", br: true },
+  lead("Possible applications (not tested here)."), { text: "Courses using statistics, mapping, engineering or laboratory software could distribute similar packages. A separate study could test whether AI coding assistants help instructors build and maintain them." },
 ], { para: 7, ls: 1.04, size: 32 });
 y += bh + GAPV;
 
@@ -246,7 +250,7 @@ bh = BOTTOM - y; box(RX, y, RW, bh);
 para(RX + PAD, y + PAD, RW - 2 * PAD, bh - 2 * PAD, [
   { text: "[1] D. J. Malan. Containerizing CS50. ITiCSE 2024.  [3] S. Valstar, W. G. Griswold, L. Porter. Using DevContainers to Standardize Student Development Environments. ITiCSE 2020.  [4] K. Fernalld et al. Lightweight Symphony: Reducing CS Student Anxiety with Standardized Docker Environments. SIGITE 2023.  [6] D. P. Harvie et al. Using Virtual Machines to Enhance the Educational Experience. SIGITE 2019.  [8] H. Park et al. CodeDive: A Web-Based IDE with Real-Time Code Activity Monitoring. Applied Sciences 15(19), 2025.  [12] UNLV Dept. of Computer Science. Student Center: Remote Access and File Storage. tux.cs.unlv.edu, accessed Aug. 2026.", br: true },
   { text: "Supported by the UNLV Office of Undergraduate Research Summer Undergraduate Research Fellowship. Every number on this poster comes from the published test script’s output files, archived in the project repository.", options: { italic: true } },
-], { size: 20, color: MUTED, para: 6, ls: 1.03 });
+], { size: 22, color: MUTED, para: 6, ls: 1.03 });
 
 slide.addNotes("Opening (about 90 seconds, roughly 180 words): Software setup can delay the start of a programming course. Several hundred UNLV students a year must install four tools before coursework begins, and some newer Macs cannot run the course's existing virtual machine. I packaged each course's tools and a code editor into a container, a ready-made package of software that runs on the student's own computer: one download, one command, and it opens in a browser tab. I tested whether it worked across four computer configurations. Laptops use one of two processor families: Intel-style chips in most Windows PCs, and ARM chips in Apple Silicon Macs. I used three rented cloud computers, Windows and Linux on Intel and Linux on ARM, plus my own Apple Silicon MacBook. The same automated checklist ran on each: download the package, open the editor, build and run four real assembly assignments, try the debugger, delete the container, and check that the coursework survives. All four computers built and ran every assignment. The editor opened in about half a second on Intel and five to seven seconds on ARM. Some assignments need a debugger, the tool that pauses a program so you can look inside. The one limit: neither ARM computer could use it. Translation software may explain that; four machines cannot prove it. No students have used it yet; that classroom study is next. Then: use Figure 1 to show one student task end to end, Table 1 for the Intel-versus-ARM comparison, and close with what was not tested.");
 

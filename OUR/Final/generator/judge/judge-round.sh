@@ -29,6 +29,6 @@ ADDITIONAL CONTEXT FOR THIS ROUND (round $R of an iterative revision):
 - Fixed constraints the student cannot change, so do not deduct for them: the TITLE and author line are locked because the abstract was already accepted under that title; only four machines were tested and no student study exists yet (only honest wording about this is possible, not new data); the technical detail about the cloud test machines and the exact test procedure is included deliberately because the student expects technical judges to probe it; the architecture diagram (Figure 1) stays.
 - Re-score every criterion 1-5 and give a letter grade. Then end your report with exactly one line: "VERDICT: SATISFIED" if every criterion scores 4 or higher and the overall grade is B+ or better, otherwise "VERDICT: NOT SATISFIED". If not satisfied, make section 4 the specific remaining changes, ranked, with replacement wording.
 BRIEF
-} > brief-r$R.md
+[ -n "$EXTRA" ] && cat "$EXTRA"; } > brief-r$R.md
 codex exec --skip-git-repo-check -s read-only -C "$J" -i full-1.jpg -i header.jpg -i left-column.jpg -i middle-column.jpg -i right-column.jpg -o "$J/codex-judge-report.md" - < brief-r$R.md > codex-run.log 2>&1
 echo "round $R done: $(grep -o 'VERDICT: .*' "$J/codex-judge-report.md" | tail -1)"

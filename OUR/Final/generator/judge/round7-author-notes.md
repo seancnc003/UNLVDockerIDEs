@@ -1,0 +1,5 @@
+
+AUTHOR'S CHANGES IN THIS ROUND (round 7), made after the student reviewed the poster personally:
+- The student judged the Results panel too dense and cut Table 1 to the measures a reviewer from another field can read: four "Did it work?" rows and three measurements (download time, wait for the editor to open, peak memory). Idle memory, build times and the checklist tally moved to the repository and are referenced in the footnote. Two large finding cards replaced four small ones. Judge whether the Results panel now reads at TV distance and whether anything essential was lost.
+- Conclusions/Future Research gained a "Beyond computer science" item on applicability to other courses with specialized software and on AI coding assistants helping instructors build such packages. Judge whether that claim is appropriately hedged for a poster whose evidence is four machines, and whether a non-CS judge would find it meaningful.
+- The figures stay as they are (the student has no better visual evidence), so do not spend changes on replacing them; label wording suggestions are fine.
