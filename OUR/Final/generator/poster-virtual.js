@@ -157,40 +157,47 @@ y += bh + GAPV;
 y = heading(MX, y, MW, "Figures");
 bh = BOTTOM - y; box(MX, y, MW, bh);
 const figH = bh - 2 * PAD - 0.8, figW = 8.6;
-// ---- Figure 1, drawn natively so every label is readable ----
+// ---- Figure 1: what changes for a student (today vs this project) ----
 {
   const fx = MX + PAD, fy = y + PAD, fw = figW, fh = figH;
   slide.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: fx, y: fy, w: fw, h: fh, fill: { color: "FAFAFA" }, line: { color: "9E9E9E", width: 1.5 }, rectRadius: 0.15 });
-  slide.addText("STUDENT’S OWN LAPTOP — works offline after the first download", { x: fx + 0.25, y: fy + 0.1, w: fw - 0.5, h: 0.4, fontFace: BODYF, fontSize: 18, bold: true, color: MUTED, isTextBox: true, margin: 0 });
-  const bx = fx + 0.45, bw = fw - 0.9;
-  function node(ny, nh, title, sub, accent) {
-    slide.addShape(pres.shapes.RECTANGLE, { x: bx, y: ny, w: bw, h: nh, fill: { color: WHITE }, line: { color: accent ? SCARLET : "7F7F7F", width: accent ? 2.5 : 1.25 } });
-    slide.addText(title, { x: bx + 0.2, y: ny + 0.08, w: bw - 0.4, h: 0.5, fontFace: BODYF, fontSize: 28, bold: true, color: accent ? SCARLET : INK, isTextBox: true, margin: 0, align: "center", valign: "middle" });
-    if (sub) slide.addText(sub, { x: bx + 0.2, y: ny + 0.58, w: bw - 0.4, h: nh - 0.65, fontFace: BODYF, fontSize: 19, color: MUTED, isTextBox: true, margin: 0, align: "center", valign: "top", lineSpacingMultiple: 1.0 });
+  const g = 0.15, lw = 1.15, cw2 = (fw - lw - 4 * g) / 2;
+  const colX = [fx + g + lw + g, fx + g + lw + g + cw2 + g];
+  let ry2 = fy + g;
+  // column headers
+  slide.addShape(pres.shapes.RECTANGLE, { x: colX[0], y: ry2, w: cw2, h: 0.5, fill: { color: "7F7F7F" }, line: { color: "7F7F7F" } });
+  slide.addText("TODAY", { x: colX[0], y: ry2, w: cw2, h: 0.5, fontFace: HEADF, fontSize: 22, bold: true, color: WHITE, isTextBox: true, margin: 0, align: "center", valign: "middle" });
+  slide.addShape(pres.shapes.RECTANGLE, { x: colX[1], y: ry2, w: cw2, h: 0.5, fill: { color: SCARLET }, line: { color: SCARLET } });
+  slide.addText("THIS PROJECT", { x: colX[1], y: ry2, w: cw2, h: 0.5, fontFace: HEADF, fontSize: 22, bold: true, color: WHITE, isTextBox: true, margin: 0, align: "center", valign: "middle" });
+  ry2 += 0.5 + g;
+  function rowLabel(ry, rh, t) {
+    slide.addText(t, { x: fx + g, y: ry, w: lw, h: rh, fontFace: HEADF, fontSize: 22, bold: true, color: INK, isTextBox: true, margin: 0, align: "left", valign: "middle" });
   }
-  function arrow(ay, ah, label, twoWay) {
-    slide.addShape(pres.shapes.LINE, { x: bx + bw / 2, y: ay, w: 0, h: ah, line: { color: "7F7F7F", width: 2, endArrowType: "triangle", beginArrowType: twoWay ? "triangle" : "none" } });
-    slide.addText(label, { x: bx + bw / 2 + 0.15, y: ay, w: bw / 2 - 0.2, h: ah, fontFace: BODYF, fontSize: 16, color: MUTED, isTextBox: true, margin: 0, valign: "middle" });
+  function cell(ci, ry, rh, runs) {
+    const accent = ci === 1;
+    slide.addShape(pres.shapes.RECTANGLE, { x: colX[ci], y: ry, w: cw2, h: rh, fill: { color: WHITE }, line: { color: accent ? SCARLET : "9E9E9E", width: accent ? 2.25 : 1.25 } });
+    slide.addText(runs.map((r) => ({ text: r.text, options: Object.assign({ fontFace: BODYF, fontSize: 19, color: INK, breakLine: !!r.br }, r.options || {}) })),
+      { x: colX[ci] + 0.15, y: ry + 0.08, w: cw2 - 0.3, h: rh - 0.16, isTextBox: true, margin: 0, align: "left", valign: "middle", lineSpacingMultiple: 1.0 });
   }
-  let ny = fy + 0.5;
-  node(ny, 0.9, "Web browser", "any browser already on the laptop"); ny += 0.9;
-  arrow(ny, 0.5, "browser connection on this computer"); ny += 0.5;
-  const inner = [
-    "Programming editor shown in the browser (code-server)",
-    "Course tools: versions chosen by the instructor",
-    "Editor settings preinstalled; built-in AI features disabled",
-  ];
-  const ch2 = 0.6 + inner.length * 0.42 + 0.08;
-  node(ny, ch2, "Course workspace (Docker container)", null, true);
-  inner.forEach((t, i) => {
-    slide.addShape(pres.shapes.RECTANGLE, { x: bx + 0.25, y: ny + 0.6 + i * 0.42, w: bw - 0.5, h: 0.38, fill: { color: TINT }, line: { color: TINT } });
-    slide.addText(t, { x: bx + 0.35, y: ny + 0.6 + i * 0.42, w: bw - 0.7, h: 0.38, fontFace: BODYF, fontSize: 16, color: INK, isTextBox: true, margin: 0, valign: "middle" });
-  });
-  ny += ch2;
-  arrow(ny, 0.5, "shared coursework folder (bind mount)", true); ny += 0.5;
-  node(ny, fy + fh - 0.15 - ny, "Coursework folder on this laptop", "coursework stays on the laptop after the container is deleted", false);
+  const r1 = 1.75, r2 = 1.65;
+  rowLabel(ry2, r1, "Install");
+  cell(0, ry2, r1, [{ text: "Four tools installed one by one. The assembly course’s virtual machine is a 19 GB disk that some newer Macs cannot run." }]);
+  cell(1, ry2, r1, [{ text: "One download ", options: { bold: true, color: SCARLET } }, { text: "(552 MB), after Docker is installed. The same package, with the instructor’s tool versions, on every computer." }]);
+  ry2 += r1 + g;
+  rowLabel(ry2, r2, "Open");
+  cell(0, ry2, r2, [{ text: "Start the virtual machine, or open each tool separately." }]);
+  cell(1, ry2, r2, [{ text: "One command. ", options: { bold: true, color: SCARLET } }, { text: "The editor opens in a browser tab (0.5–0.6 s on Intel, 4.8–6.7 s on ARM). Works offline afterwards." }]);
+  ry2 += r2 + g;
+  const r3 = fy + fh - g - ry2;
+  rowLabel(ry2, r3, "Your files");
+  slide.addShape(pres.shapes.RECTANGLE, { x: colX[0], y: ry2, w: 2 * cw2 + g, h: r3, fill: { color: PALE }, line: { color: SCARLET, width: 2.25 } });
+  slide.addText([
+    { text: "Coursework is saved in an ordinary folder on the laptop, not inside the package, ", options: { bold: true } },
+    { text: "so deleting the package loses nothing." },
+  ].map((r) => ({ text: r.text, options: Object.assign({ fontFace: BODYF, fontSize: 19, color: INK }, r.options) })),
+    { x: colX[0] + 0.15, y: ry2 + 0.08, w: 2 * cw2 + g - 0.3, h: r3 - 0.16, isTextBox: true, margin: 0, align: "left", valign: "middle", lineSpacingMultiple: 1.0 });
 }
-para(MX + PAD, y + PAD + figH + 0.06, figW, 0.75, [{ text: "Figure 1. ", options: { bold: true } }, { text: "Everything runs on the student’s own laptop. The internet is needed only for the first download." }], { size: 21, color: MUTED, ls: 1.0, para: 0 });
+para(MX + PAD, y + PAD + figH + 0.06, figW, 0.75, [{ text: "Figure 1. ", options: { bold: true } }, { text: "What changes for a student: one download and one command replace installing four tools; coursework stays in a normal folder." }], { size: 21, color: MUTED, ls: 1.0, para: 0 });
 const cx = MX + PAD + figW + 0.4, cw = MX + MW - PAD - cx;
 slide.addChart(pres.charts.BAR, [{ name: "Seconds until the editor opens", labels: ["Linux on ARM", "Apple Silicon Mac", "Windows 11 (Intel)", "Linux PC (Intel)"], values: [6.7, 4.8, 0.6, 0.5] }], {
   x: cx, y: y + PAD, w: cw, h: figH, barDir: "bar", barGapWidthPct: 40, chartColors: [SCARLET],
@@ -252,6 +259,6 @@ para(RX + PAD, y + PAD, RW - 2 * PAD, bh - 2 * PAD, [
   { text: "Supported by the UNLV Office of Undergraduate Research Summer Undergraduate Research Fellowship. Every number on this poster comes from the published test script’s output files, archived in the project repository.", options: { italic: true } },
 ], { size: 22, color: MUTED, para: 6, ls: 1.03 });
 
-slide.addNotes("Opening (about 90 seconds, roughly 180 words): Software setup can delay the start of a programming course. Several hundred UNLV students a year must install four tools before coursework begins, and some newer Macs cannot run the course's existing virtual machine. I packaged each course's tools and a code editor into a container, a ready-made package of software that runs on the student's own computer: one download, one command, and it opens in a browser tab. I tested whether it worked across four computer configurations. Laptops use one of two processor families: Intel-style chips in most Windows PCs, and ARM chips in Apple Silicon Macs. I used three rented cloud computers, Windows and Linux on Intel and Linux on ARM, plus my own Apple Silicon MacBook. The same automated checklist ran on each: download the package, open the editor, build and run four real assembly assignments, try the debugger, delete the container, and check that the coursework survives. All four computers built and ran every assignment. The editor opened in about half a second on Intel and five to seven seconds on ARM. Some assignments need a debugger, the tool that pauses a program so you can look inside. The one limit: neither ARM computer could use it. Translation software may explain that; four machines cannot prove it. The next step is deployment: offering the packages and handouts in both courses and learning from the support requests, alongside a fix for the ARM debugger. Then: use Figure 1 to show one student task end to end, Table 1 for the Intel-versus-ARM comparison, and close with what was not tested.\n\nQ&A, if asked about other fields: Biology and chemistry already share research tools as containers, through the BioContainers project, the Rocker images for R, and Jupyter Docker Stacks, so the practice exists at the research level; this project is the classroom version, with the editor, the instructor's tool versions and the student's files kept outside the package. Examples that fit the browser-based model directly: R with Bioconductor (genomics statistics, a notorious first-week install), BLAST, Bowtie2 and SAMtools (sequence alignment), QIIME 2 (microbiome analysis; its own documentation recommends running it in a container), Biopython in Jupyter notebooks; in chemistry, RDKit and Open Babel (cheminformatics in Python), GROMACS (molecular dynamics) and Psi4 or NWChem (quantum chemistry), all with long native installs. Desktop visualization apps such as PyMOL, ImageJ/Fiji or Avogadro would need a different delivery route, so I would not claim them. If asked about AI: the student IDE has every AI feature switched off by design; the AI question is only whether coding assistants help an instructor write and maintain the package, which was not tested.");
+slide.addNotes("Opening (about 90 seconds, roughly 180 words): Software setup can delay the start of a programming course. Several hundred UNLV students a year must install four tools before coursework begins, and some newer Macs cannot run the course's existing virtual machine. I packaged each course's tools and a code editor into a container, a ready-made package of software that runs on the student's own computer: one download, one command, and it opens in a browser tab. I tested whether it worked across four computer configurations. Laptops use one of two processor families: Intel-style chips in most Windows PCs, and ARM chips in Apple Silicon Macs. I used three rented cloud computers, Windows and Linux on Intel and Linux on ARM, plus my own Apple Silicon MacBook. The same automated checklist ran on each: download the package, open the editor, build and run four real assembly assignments, try the debugger, delete the container, and check that the coursework survives. All four computers built and ran every assignment. The editor opened in about half a second on Intel and five to seven seconds on ARM. Some assignments need a debugger, the tool that pauses a program so you can look inside. The one limit: neither ARM computer could use it. Translation software may explain that; four machines cannot prove it. The next step is deployment: offering the packages and handouts in both courses and learning from the support requests, alongside a fix for the ARM debugger. Then: use Figure 1 to contrast today's setup with one download and one command, Table 1 for the Intel-versus-ARM comparison, and close with what was not tested.\n\nQ&A, if asked about other fields: Biology and chemistry already share research tools as containers, through the BioContainers project, the Rocker images for R, and Jupyter Docker Stacks, so the practice exists at the research level; this project is the classroom version, with the editor, the instructor's tool versions and the student's files kept outside the package. Examples that fit the browser-based model directly: R with Bioconductor (genomics statistics, a notorious first-week install), BLAST, Bowtie2 and SAMtools (sequence alignment), QIIME 2 (microbiome analysis; its own documentation recommends running it in a container), Biopython in Jupyter notebooks; in chemistry, RDKit and Open Babel (cheminformatics in Python), GROMACS (molecular dynamics) and Psi4 or NWChem (quantum chemistry), all with long native installs. Desktop visualization apps such as PyMOL, ImageJ/Fiji or Avogadro would need a different delivery route, so I would not claim them. If asked about AI: the student IDE has every AI feature switched off by design; the AI question is only whether coding assistants help an instructor write and maintain the package, which was not tested.");
 
 pres.writeFile({ fileName: process.argv[2] || "poster-virtual.pptx" }).then((f) => console.log("wrote", f));
